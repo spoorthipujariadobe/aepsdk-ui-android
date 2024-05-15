@@ -11,8 +11,8 @@ VERSION_REGEX="[0-9]+\.[0-9]+\.[0-9]+"
 GRADLE_PROPERTIES_FILE=$ROOT_DIR"/code/gradle.properties"
 
 # NotificationBuilder files
-NOTIFICATION_BUILDER_CONSTANTS_FILE=$ROOT_DIR"/code/notificationbuilder/src/java/com/adobe/marketing/mobile/NotificationBuilder.kt"
-NOTIFICATION_BUILDER_CONSTANTS_FILE_VERSION_REGEX="^ +const val VERSION *= *"
+NOTIFICATIONBUILDER_CONSTANTFILE=$ROOT_DIR"/code/notificationbuilder/src/java/com/adobe/marketing/mobile/NotificationBuilder.kt"
+NOTIFICATIONBUILDER_CONSTANTFILE_VERSION_REGEX="^ +const val VERSION *= *"
 
 help()
 {
@@ -119,8 +119,12 @@ then
    help
 fi
 
-eval CONSTANTS_FILE=\$$"$NAME_UC"_CONSTANTS_FILE
-eval CONSTANTS_FILE_VERSION_REGEX=\$$"$NAME_UC"_CONSTANTS_FILE_VERSION_REGEX
+
+NAME_LC=$(echo "$NAME" | tr '[:upper:]' '[:lower:]')
+NAME_UC=$(echo "$NAME" | tr '[:lower:]' '[:upper:]')
+
+eval CONSTANTS_FILE=\$$"$NAME_UC"_CONSTANTFILE
+eval CONSTANTS_FILE_VERSION_REGEX=\$$"$NAME_UC"_CONSTANTFILE_VERSION_REGEX
 GRADLE_TAG="$NAME_LC"Version
 
 echo "$LINE"

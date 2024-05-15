@@ -10,14 +10,13 @@
 # governing permissions and limitations under the License.
 #
 
-name: Update Version
+name: Update Versions
 on:
   workflow_dispatch:
     inputs:
       notificationbuilder-version: 
         description: 'New version to use for the NotificationBuilder. Example: 3.0.0'
-        required: true
-
+        required: false
 
 jobs:
   update-version:
@@ -27,59 +26,17 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
     
-    - name: Update NotificationBuilder version
-      run: (./scripts/version.sh -u -n NotificationBuilder -v ${{ github.event.inputs.version }}")
-
-    - name: Create Pull Request
-      uses: peter-evans/create-pull-request@v5
-      with:
-        token: ${{ github.token }}
-        commit-message: Updating version to ${{ github.event.inputs.version }}.
-        branch: version-${{ github.event.inputs.version }}-update
-        delete-branch: true
-        title: Updating version to ${{ github.event.inputs.version }}
-        body: Updating version to ${{ github.event.inputs.version }}
-
-
-
-name: Update Versions
-
-on:
-  workflow_dispatch:
-    inputs:
-      notificationbuilder-version: 
-        description: 'New version to use for the NotificationBuilder extension. Example: 3.0.0'
-        required: false
-
-jobs:
-  update-version:
-    runs-on: ubuntu-latest
-
-    steps:
-    
-    - name: Checkout
-      uses: actions/checkout@v3
-    
     - if: ${{ github.event.inputs.notificationbuilder-version != '' }}
-      name: Update AEPNotificationBuilder version
-      run: (sh ./scripts/version.sh -u -n Core -v ${{ github.event.inputs.notificationbuilder-version }})    
+      name: Update NotificationBuilder version
+      run: (sh ./scripts/version.sh -u -n NotificationBuilder -v ${{ github.event.inputs.notificationbuilder-version }})  
 
     - name: Generate Commit Message
       shell: bash
       run: |
         COMMIT_MSG=""
-        if [ "${{ github.event.inputs.core-version }}" ]; then
-          COMMIT_MSG="[Core-${{ github.event.inputs.core-version }}]"
+        if [ "${{ github.event.inputs.notificationbuilder-version }}" ]; then
+          COMMIT_MSG="[NotificationBuilder-${{ github.event.inputs.notificationbuilder-version }}]"
         fi
-        if [ "${{ github.event.inputs.identity-version }}" ]; then
-          COMMIT_MSG="$COMMIT_MSG [Identity-${{ github.event.inputs.identity-version }}]"
-        fi 
-        if [ "${{ github.event.inputs.lifecycle-version }}" ]; then
-          COMMIT_MSG="$COMMIT_MSG [Lifecycle-${{ github.event.inputs.lifecycle-version }}]"
-        fi 
-        if [ "${{ github.event.inputs.signal-version }}" ]; then
-        COMMIT_MSG="$COMMIT_MSG [Signal-${{ github.event.inputs.signal-version }}]"
-        fi 
         echo $COMMIT_MSG
         echo COMMIT_MSG=$COMMIT_MSG >> $GITHUB_ENV
 
