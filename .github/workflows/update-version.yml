@@ -1,0 +1,92 @@
+#
+# Copyright 2024 Adobe. All rights reserved.
+# This file is licensed to you under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License. You may obtain a copy
+# of the License at http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software distributed under
+# the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR REPRESENTATIONS
+# OF ANY KIND, either express or implied. See the License for the specific language
+# governing permissions and limitations under the License.
+#
+
+name: Update Version
+on:
+  workflow_dispatch:
+    inputs:
+      notificationbuilder-version: 
+        description: 'New version to use for the NotificationBuilder. Example: 3.0.0'
+        required: true
+
+
+jobs:
+  update-version:
+    runs-on: ubuntu-latest
+
+    steps:    
+    - name: Checkout
+      uses: actions/checkout@v3
+    
+    - name: Update NotificationBuilder version
+      run: (./scripts/version.sh -u -n NotificationBuilder -v ${{ github.event.inputs.version }}")
+
+    - name: Create Pull Request
+      uses: peter-evans/create-pull-request@v5
+      with:
+        token: ${{ github.token }}
+        commit-message: Updating version to ${{ github.event.inputs.version }}.
+        branch: version-${{ github.event.inputs.version }}-update
+        delete-branch: true
+        title: Updating version to ${{ github.event.inputs.version }}
+        body: Updating version to ${{ github.event.inputs.version }}
+
+
+
+name: Update Versions
+
+on:
+  workflow_dispatch:
+    inputs:
+      notificationbuilder-version: 
+        description: 'New version to use for the NotificationBuilder extension. Example: 3.0.0'
+        required: false
+
+jobs:
+  update-version:
+    runs-on: ubuntu-latest
+
+    steps:
+    
+    - name: Checkout
+      uses: actions/checkout@v3
+    
+    - if: ${{ github.event.inputs.notificationbuilder-version != '' }}
+      name: Update AEPNotificationBuilder version
+      run: (sh ./scripts/version.sh -u -n Core -v ${{ github.event.inputs.notificationbuilder-version }})    
+
+    - name: Generate Commit Message
+      shell: bash
+      run: |
+        COMMIT_MSG=""
+        if [ "${{ github.event.inputs.core-version }}" ]; then
+          COMMIT_MSG="[Core-${{ github.event.inputs.core-version }}]"
+        fi
+        if [ "${{ github.event.inputs.identity-version }}" ]; then
+          COMMIT_MSG="$COMMIT_MSG [Identity-${{ github.event.inputs.identity-version }}]"
+        fi 
+        if [ "${{ github.event.inputs.lifecycle-version }}" ]; then
+          COMMIT_MSG="$COMMIT_MSG [Lifecycle-${{ github.event.inputs.lifecycle-version }}]"
+        fi 
+        if [ "${{ github.event.inputs.signal-version }}" ]; then
+        COMMIT_MSG="$COMMIT_MSG [Signal-${{ github.event.inputs.signal-version }}]"
+        fi 
+        echo $COMMIT_MSG
+        echo COMMIT_MSG=$COMMIT_MSG >> $GITHUB_ENV
+
+    - name: Create Pull Request
+      uses: peter-evans/create-pull-request@v5
+      with:
+        delete-branch: true
+        commit-message: Update versions ${{ env.COMMIT_MSG }}
+        title: Update versions ${{ env.COMMIT_MSG }}
+        body: Update versions ${{ env.COMMIT_MSG }}
