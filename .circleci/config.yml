@@ -39,7 +39,7 @@ jobs:
           command: make javadoc
 
       - store_artifacts:
-          path: code/userprofile/build/docs/javadoc
+          path: code/notificationbuilder/build/docs/javadoc
 
       - run:
           name: Assemble phone
@@ -58,10 +58,10 @@ jobs:
           command: make unit-test-coverage
 
       - store_test_results:
-          path: code/userprofile/build/test-results/testPhoneDebugUnitTest
+          path: code/notificationbuilder/build/test-results/testPhoneDebugUnitTest
 
       - codecov/upload:
-          file: code/userprofile/build/reports/coverage/test/phone/debug/report.xml
+          file: code/notificationbuilder/build/reports/coverage/test/phone/debug/report.xml
           flags: unit-tests
 
 
