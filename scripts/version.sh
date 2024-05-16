@@ -11,7 +11,7 @@ VERSION_REGEX="[0-9]+\.[0-9]+\.[0-9]+"
 GRADLE_PROPERTIES_FILE=$ROOT_DIR"/code/gradle.properties"
 
 # NotificationBuilder files
-NOTIFICATIONBUILDER_CONSTANTFILE=$ROOT_DIR"/code/notificationbuilder/src/java/com/adobe/marketing/mobile/NotificationBuilder.kt"
+NOTIFICATIONBUILDER_CONSTANTFILE=$ROOT_DIR"/code/notificationbuilder/src/main/java/com/adobe/marketing/mobile/notificationbuilder/NotificationBuilder.kt"
 NOTIFICATIONBUILDER_CONSTANTFILE_VERSION_REGEX="^ +const val VERSION *= *"
 
 help()

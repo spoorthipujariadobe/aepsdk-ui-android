@@ -18,6 +18,10 @@ on:
         description: 'New version to use for the NotificationBuilder. Example: 3.0.0'
         required: false
 
+      core-dependency:
+        description: '[Optional] Update Core dependency in pom.xml. Example: 3.0.0'
+        required: false
+
 jobs:
   update-version:
     runs-on: ubuntu-latest
@@ -28,7 +32,7 @@ jobs:
     
     - if: ${{ github.event.inputs.notificationbuilder-version != '' }}
       name: Update NotificationBuilder version
-      run: (sh ./scripts/version.sh -u -n NotificationBuilder -v ${{ github.event.inputs.notificationbuilder-version }})  
+      run: (sh ./scripts/version.sh -u -n NotificationBuilder -v ${{ github.event.inputs.notificationbuilder-version }} -d "Core ${{ github.event.inputs.core-dependency }}")  
 
     - name: Generate Commit Message
       shell: bash
