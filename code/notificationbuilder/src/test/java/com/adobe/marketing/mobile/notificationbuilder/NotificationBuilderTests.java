@@ -12,6 +12,7 @@
 package com.adobe.marketing.mobile.notificationbuilder;
 
 import static org.junit.Assert.assertEquals;
+
 import org.junit.Test;
 
 public class NotificationBuilderTests {

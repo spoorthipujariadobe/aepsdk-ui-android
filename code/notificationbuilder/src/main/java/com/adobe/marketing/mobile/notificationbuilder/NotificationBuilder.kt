@@ -9,9 +9,9 @@
   governing permissions and limitations under the License.
 */
 
-package com.adobe.marketing.mobile.notificationbuilder;
+package com.adobe.marketing.mobile.notificationbuilder
 
-import kotlin.jvm.JvmStatic;
+import kotlin.jvm.JvmStatic
 
 object NotificationBuilder {
     private const val SELF_TAG = "NotificationBuilder"
