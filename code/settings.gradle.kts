@@ -31,5 +31,6 @@ dependencyResolutionManagement {
 
 rootProject.name = "aepsdk-notificationbuilder-android"
 include (
-        ":notificationbuilder"
+        ":notificationbuilder",
+        ":testapp"
 )
