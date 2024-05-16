@@ -74,7 +74,7 @@ jobs:
           echo $GPG_OWNERTRUST | base64 --decode | gpg --import-ownertrust --no-tty --batch --yes
 
       - name: Publish to Maven Central Repository
-        run: make ${{  github.event.inputs.component }}-publish-main
+        run: make ${{  github.event.inputs.component }}-publish
         env:
           SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
           SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
