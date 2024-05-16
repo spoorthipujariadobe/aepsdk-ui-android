@@ -19,6 +19,6 @@ public class NotificationBuilderTests {
 
     @Test
     public void test_extensionVersion() {
-        assertEquals("3.0.0", NotificationBuilder.extensionVersion());
+        assertEquals("3.0.0", NotificationBuilder.version());
     }
 }

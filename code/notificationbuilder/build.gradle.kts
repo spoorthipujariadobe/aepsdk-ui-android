@@ -26,6 +26,7 @@ aepLibrary {
     moduleVersion = notificationbuilderVersion
     enableSpotless = true
     enableCheckStyle = true
+    enableDokkaDoc = true
     
     publishing {
         mavenRepoName = notificationbuilderMavenRepoName

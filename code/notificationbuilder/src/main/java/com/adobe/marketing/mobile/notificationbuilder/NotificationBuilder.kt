@@ -18,7 +18,7 @@ object NotificationBuilder {
     const val VERSION = "3.0.0"
 
     @JvmStatic
-    fun extensionVersion(): String {
+    fun version(): String {
         return VERSION
     }
 }
