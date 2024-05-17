@@ -9,16 +9,22 @@
   governing permissions and limitations under the License.
 */
 
-package com.adobe.marketing.mobile.notificationbuilder;
+package com.adobe.marketing.mobile.notificationbuilder.internal
 
-import static org.junit.Assert.assertEquals;
+import org.junit.Test
+import kotlin.test.assertEquals
 
-import org.junit.Test;
-
-public class NotificationBuilderTests {
+class PushTemplateTypeTest {
 
     @Test
-    public void test_extensionVersion() {
-        assertEquals("3.0.0", NotificationBuilder.version());
+    fun `test for fromString for each of the enum values`() {
+        PushTemplateType.values().forEach { value ->
+            assertEquals(value, PushTemplateType.fromString(value.value))
+        }
+    }
+
+    @Test
+    fun `test to ensure that invalid values map to unknown value`() {
+        assertEquals(PushTemplateType.UNKNOWN, PushTemplateType.fromString("SomeRandomValue"))
     }
 }
