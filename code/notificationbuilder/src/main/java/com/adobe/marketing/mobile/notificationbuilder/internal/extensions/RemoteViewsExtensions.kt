@@ -18,10 +18,10 @@ import android.graphics.Color
 import android.view.View
 import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
+import com.adobe.marketing.mobile.notificationbuilder.R
 import com.adobe.marketing.mobile.notificationbuilder.internal.PendingIntentUtils
 import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateConstants
 import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateImageUtils
-import com.adobe.marketing.mobile.notificationbuilder.R
 import com.adobe.marketing.mobile.services.Log
 import com.adobe.marketing.mobile.services.ServiceProvider
 import com.adobe.marketing.mobile.util.UrlUtils

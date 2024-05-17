@@ -17,10 +17,10 @@ import android.content.Context
 import android.view.View
 import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
+import com.adobe.marketing.mobile.notificationbuilder.R
 import com.adobe.marketing.mobile.notificationbuilder.internal.NotificationConstructionFailedException
 import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateConstants
 import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateImageUtils
-import com.adobe.marketing.mobile.notificationbuilder.R
 import com.adobe.marketing.mobile.notificationbuilder.internal.builders.extensions.createNotificationChannelIfRequired
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.ZeroBezelPushTemplate
 import com.adobe.marketing.mobile.services.Log

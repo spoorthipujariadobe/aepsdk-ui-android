@@ -16,8 +16,8 @@ import android.content.Context
 import android.os.Build
 import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
-import com.adobe.marketing.mobile.notificationbuilder.internal.NotificationConstructionFailedException
 import com.adobe.marketing.mobile.notificationbuilder.R
+import com.adobe.marketing.mobile.notificationbuilder.internal.NotificationConstructionFailedException
 import com.adobe.marketing.mobile.notificationbuilder.internal.builders.extensions.setNotificationBackgroundColor
 import com.adobe.marketing.mobile.notificationbuilder.internal.builders.extensions.setNotificationBodyTextColor
 import com.adobe.marketing.mobile.notificationbuilder.internal.builders.extensions.setNotificationClickAction

@@ -21,10 +21,10 @@ import android.view.View
 import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
 import androidx.core.app.RemoteInput
+import com.adobe.marketing.mobile.notificationbuilder.R
 import com.adobe.marketing.mobile.notificationbuilder.internal.NotificationConstructionFailedException
 import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateConstants
 import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateImageUtils
-import com.adobe.marketing.mobile.notificationbuilder.R
 import com.adobe.marketing.mobile.notificationbuilder.internal.builders.extensions.createNotificationChannelIfRequired
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.InputBoxPushTemplate
 import com.adobe.marketing.mobile.services.Log

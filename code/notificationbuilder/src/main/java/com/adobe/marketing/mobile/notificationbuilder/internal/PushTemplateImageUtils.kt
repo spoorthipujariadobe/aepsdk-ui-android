@@ -307,9 +307,9 @@ internal object PushTemplateImageUtils {
             (
                 applicationCacheDir
                     .toString() + File.separator +
-                        PushTemplateConstants.CACHE_BASE_DIR
+                    PushTemplateConstants.CACHE_BASE_DIR
                 ) + File.separator +
-                    PushTemplateConstants.PUSH_IMAGE_CACHE
+                PushTemplateConstants.PUSH_IMAGE_CACHE
             )
     }
 }
