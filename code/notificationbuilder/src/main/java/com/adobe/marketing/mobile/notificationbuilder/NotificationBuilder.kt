@@ -11,8 +11,31 @@
 
 package com.adobe.marketing.mobile.notificationbuilder
 
-import kotlin.jvm.JvmStatic
+import android.app.Activity
+import android.content.BroadcastReceiver
+import android.content.Intent
+import androidx.core.app.NotificationCompat
+import com.adobe.marketing.mobile.notificationbuilder.builders.AutoCarouselNotificationBuilder
+import com.adobe.marketing.mobile.notificationbuilder.builders.BasicNotificationBuilder
+import com.adobe.marketing.mobile.notificationbuilder.builders.InputBoxNotificationBuilder
+import com.adobe.marketing.mobile.notificationbuilder.builders.LegacyNotificationBuilder
+import com.adobe.marketing.mobile.notificationbuilder.builders.ManualCarouselNotificationBuilder
+import com.adobe.marketing.mobile.notificationbuilder.builders.ZeroBezelNotificationBuilder
+import com.adobe.marketing.mobile.notificationbuilder.templates.AEPPushTemplate
+import com.adobe.marketing.mobile.notificationbuilder.templates.AutoCarouselPushTemplate
+import com.adobe.marketing.mobile.notificationbuilder.templates.BasicPushTemplate
+import com.adobe.marketing.mobile.notificationbuilder.templates.CarouselPushTemplate
+import com.adobe.marketing.mobile.notificationbuilder.templates.InputBoxPushTemplate
+import com.adobe.marketing.mobile.notificationbuilder.templates.ManualCarouselPushTemplate
+import com.adobe.marketing.mobile.notificationbuilder.templates.ZeroBezelPushTemplate
+import com.adobe.marketing.mobile.services.Log
+import com.adobe.marketing.mobile.services.ServiceProvider
 
+/**
+ * Public facing object to construct a [NotificationCompat.Builder] object for the specified [PushTemplateType].
+ * The [constructNotificationBuilder] methods will build the appropriate notification based on the provided
+ * [AEPPushTemplate] or [Intent].
+ */
 object NotificationBuilder {
     private const val SELF_TAG = "NotificationBuilder"
     const val VERSION = "3.0.0"
@@ -20,5 +43,158 @@ object NotificationBuilder {
     @JvmStatic
     fun version(): String {
         return VERSION
+    }
+
+    @Throws(NotificationConstructionFailedException::class)
+    @JvmStatic
+    fun constructNotificationBuilder(
+        messageData: Map<String, String>,
+        trackerActivityClass: Class<out Activity>?,
+        broadcastReceiverClass: Class<out BroadcastReceiver>?
+    ): NotificationCompat.Builder {
+        val context = ServiceProvider.getInstance().appContextService.applicationContext
+            ?: throw NotificationConstructionFailedException("Application context is null, cannot build a notification.")
+        val pushTemplateType =
+            PushTemplateType.fromString(messageData[PushTemplateConstants.PushPayloadKeys.TEMPLATE_TYPE])
+
+        when (pushTemplateType) {
+            PushTemplateType.BASIC -> {
+                val basicPushTemplate = BasicPushTemplate(messageData)
+                return BasicNotificationBuilder.construct(
+                    context,
+                    basicPushTemplate,
+                    trackerActivityClass,
+                    broadcastReceiverClass
+                )
+            }
+
+            PushTemplateType.CAROUSEL -> {
+                val carouselPushTemplate =
+                    CarouselPushTemplate.createCarouselPushTemplate(messageData)
+
+                when (carouselPushTemplate) {
+                    is AutoCarouselPushTemplate -> {
+                        return AutoCarouselNotificationBuilder.construct(
+                            context,
+                            carouselPushTemplate,
+                            trackerActivityClass,
+                            broadcastReceiverClass
+                        )
+                    }
+
+                    is ManualCarouselPushTemplate -> {
+                        return ManualCarouselNotificationBuilder.construct(
+                            context,
+                            carouselPushTemplate,
+                            trackerActivityClass,
+                            broadcastReceiverClass
+                        )
+                    }
+
+                    else -> {
+                        Log.trace(
+                            PushTemplateConstants.LOG_TAG,
+                            SELF_TAG,
+                            "Unknown carousel push template type, creating a legacy style notification."
+                        )
+                        return LegacyNotificationBuilder.construct(
+                            context,
+                            BasicPushTemplate(messageData),
+                            trackerActivityClass
+                        )
+                    }
+                }
+            }
+
+            PushTemplateType.ZERO_BEZEL -> {
+                val zeroBezelPushTemplate = ZeroBezelPushTemplate(messageData)
+                return ZeroBezelNotificationBuilder.construct(
+                    context,
+                    zeroBezelPushTemplate,
+                    trackerActivityClass
+                )
+            }
+
+            PushTemplateType.INPUT_BOX -> {
+                return InputBoxNotificationBuilder.construct(
+                    context,
+                    InputBoxPushTemplate(messageData),
+                    trackerActivityClass,
+                    broadcastReceiverClass
+                )
+            }
+
+            PushTemplateType.UNKNOWN -> {
+                return LegacyNotificationBuilder.construct(
+                    context,
+                    BasicPushTemplate(messageData),
+                    trackerActivityClass
+                )
+            }
+        }
+    }
+
+    @Throws(NotificationConstructionFailedException::class)
+    @JvmStatic
+    fun constructNotificationBuilder(
+        intent: Intent,
+        trackerActivityClass: Class<out Activity>?,
+        broadcastReceiverClass: Class<out BroadcastReceiver>?
+    ): NotificationCompat.Builder {
+        val context = ServiceProvider.getInstance().appContextService.applicationContext
+            ?: throw NotificationConstructionFailedException("Application context is null, cannot build a notification.")
+        val pushTemplateType =
+            PushTemplateType.fromString(intent.getStringExtra(PushTemplateConstants.IntentKeys.TEMPLATE_TYPE))
+
+        when (pushTemplateType) {
+            PushTemplateType.BASIC -> {
+                Log.trace(
+                    PushTemplateConstants.LOG_TAG,
+                    SELF_TAG,
+                    "Building a basic style push notification."
+                )
+                return BasicNotificationBuilder.construct(
+                    context,
+                    BasicPushTemplate(intent),
+                    trackerActivityClass,
+                    broadcastReceiverClass
+                )
+            }
+
+            PushTemplateType.CAROUSEL -> {
+                return ManualCarouselNotificationBuilder.construct(
+                    context,
+                    ManualCarouselPushTemplate(intent),
+                    trackerActivityClass,
+                    broadcastReceiverClass
+                )
+            }
+
+            PushTemplateType.INPUT_BOX -> {
+                return InputBoxNotificationBuilder.construct(
+                    context,
+                    InputBoxPushTemplate(intent),
+                    trackerActivityClass,
+                    broadcastReceiverClass
+                )
+            }
+
+            PushTemplateType.UNKNOWN -> {
+                return LegacyNotificationBuilder.construct(
+                    context,
+                    BasicPushTemplate(intent),
+                    trackerActivityClass
+                )
+            }
+
+            else -> {
+                // default to legacy notification
+                return LegacyNotificationBuilder.construct(
+                    context,
+                    BasicPushTemplate(intent),
+                    trackerActivityClass
+                )
+            }
+        }
     }
 }
