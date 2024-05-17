@@ -47,7 +47,7 @@ jobs:
 
       - run:
           name: Build Jitpack Library
-          command: make ci-publish-maven-local-jitpack
+          command: make notificationbuilder-publish-maven-local-jitpack
 
       - run:
           name: Build Test app
