@@ -15,7 +15,6 @@ import android.app.Activity
 import android.content.BroadcastReceiver
 import android.content.Intent
 import androidx.core.app.NotificationCompat
-import com.adobe.marketing.mobile.notificationbuilder.NotificationBuilder.constructNotificationBuilder
 import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateConstants
 import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateType
 import com.adobe.marketing.mobile.notificationbuilder.internal.builders.AutoCarouselNotificationBuilder
