@@ -12,6 +12,7 @@
 package com.adobe.marketing.mobile.notificationbuilder.internal.templates
 
 import android.content.Intent
+import com.adobe.marketing.mobile.notificationbuilder.PushTemplateIntentConstants
 import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateConstants
 import com.adobe.marketing.mobile.services.Log
 import com.adobe.marketing.mobile.util.DataReader
@@ -68,13 +69,13 @@ internal open class CarouselPushTemplate : AEPPushTemplate {
         val intentExtras =
             intent.extras ?: throw IllegalArgumentException("Intent extras are null")
         carouselOperationMode =
-            intentExtras.getString(PushTemplateConstants.IntentKeys.CAROUSEL_OPERATION_MODE)
+            intentExtras.getString(PushTemplateIntentConstants.IntentKeys.CAROUSEL_OPERATION_MODE)
                 ?: PushTemplateConstants.DefaultValues.AUTO_CAROUSEL_MODE
         carouselLayoutType =
-            intentExtras.getString(PushTemplateConstants.IntentKeys.CAROUSEL_LAYOUT_TYPE)
+            intentExtras.getString(PushTemplateIntentConstants.IntentKeys.CAROUSEL_LAYOUT_TYPE)
                 ?: PushTemplateConstants.DefaultValues.DEFAULT_MANUAL_CAROUSEL_MODE
         rawCarouselItems =
-            intentExtras.getString(PushTemplateConstants.IntentKeys.CAROUSEL_ITEMS) ?: ""
+            intentExtras.getString(PushTemplateIntentConstants.IntentKeys.CAROUSEL_ITEMS) ?: ""
         carouselItems = parseCarouselItemsFromString(rawCarouselItems)
     }
 

@@ -21,11 +21,12 @@ import android.graphics.Bitmap
 import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
 import com.adobe.marketing.mobile.notificationbuilder.NotificationConstructionFailedException
+import com.adobe.marketing.mobile.notificationbuilder.PushTemplateIntentConstants
 import com.adobe.marketing.mobile.notificationbuilder.R
 import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateConstants
 import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateImageUtils
-import com.adobe.marketing.mobile.notificationbuilder.internal.builders.extensions.createNotificationChannelIfRequired
-import com.adobe.marketing.mobile.notificationbuilder.internal.builders.extensions.setRemoteViewClickAction
+import com.adobe.marketing.mobile.notificationbuilder.internal.extensions.createNotificationChannelIfRequired
+import com.adobe.marketing.mobile.notificationbuilder.internal.extensions.setRemoteViewClickAction
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.CarouselPushTemplate
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.ManualCarouselPushTemplate
 import com.adobe.marketing.mobile.services.Log
@@ -35,7 +36,7 @@ import com.adobe.marketing.mobile.services.caching.CacheService
  * Object responsible for constructing a [NotificationCompat.Builder] object containing a manual or filmstrip carousel push template notification.
  */
 internal object ManualCarouselNotificationBuilder {
-    private const val SELF_TAG = "ManualCarouselTemplateNotificationBuilder"
+    private const val SELF_TAG = "ManualCarouselNotificationBuilder"
 
     @Throws(NotificationConstructionFailedException::class)
     fun construct(
@@ -185,7 +186,7 @@ internal object ManualCarouselNotificationBuilder {
         val carouselIndices: Triple<Int, Int, Int>
         if (pushTemplate.intentAction?.isNotEmpty() == true) {
             carouselIndices =
-                if (pushTemplate.intentAction == PushTemplateConstants.IntentActions.MANUAL_CAROUSEL_LEFT_CLICKED || pushTemplate.intentAction == PushTemplateConstants.IntentActions.FILMSTRIP_LEFT_CLICKED) {
+                if (pushTemplate.intentAction == PushTemplateIntentConstants.IntentActions.MANUAL_CAROUSEL_LEFT_CLICKED || pushTemplate.intentAction == PushTemplateIntentConstants.IntentActions.FILMSTRIP_LEFT_CLICKED) {
                     getNewIndicesForNavigateLeft(pushTemplate.centerImageIndex, imageUris.size)
                 } else {
                     getNewIndicesForNavigateRight(pushTemplate.centerImageIndex, imageUris.size)
@@ -260,13 +261,13 @@ internal object ManualCarouselNotificationBuilder {
         val clickPair =
             if (pushTemplate.carouselLayoutType == PushTemplateConstants.DefaultValues.DEFAULT_MANUAL_CAROUSEL_MODE) {
                 Pair(
-                    PushTemplateConstants.IntentActions.MANUAL_CAROUSEL_LEFT_CLICKED,
-                    PushTemplateConstants.IntentActions.MANUAL_CAROUSEL_RIGHT_CLICKED
+                    PushTemplateIntentConstants.IntentActions.MANUAL_CAROUSEL_LEFT_CLICKED,
+                    PushTemplateIntentConstants.IntentActions.MANUAL_CAROUSEL_RIGHT_CLICKED
                 )
             } else {
                 Pair(
-                    PushTemplateConstants.IntentActions.FILMSTRIP_LEFT_CLICKED,
-                    PushTemplateConstants.IntentActions.FILMSTRIP_RIGHT_CLICKED
+                    PushTemplateIntentConstants.IntentActions.FILMSTRIP_LEFT_CLICKED,
+                    PushTemplateIntentConstants.IntentActions.FILMSTRIP_RIGHT_CLICKED
                 )
             }
 
@@ -508,87 +509,87 @@ internal object ManualCarouselNotificationBuilder {
 
             flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
             putExtra(
-                PushTemplateConstants.IntentKeys.TEMPLATE_TYPE,
+                PushTemplateIntentConstants.IntentKeys.TEMPLATE_TYPE,
                 pushTemplate.templateType?.value
             )
             putExtra(
-                PushTemplateConstants.IntentKeys.CHANNEL_ID,
+                PushTemplateIntentConstants.IntentKeys.CHANNEL_ID,
                 channelId
             )
             putExtra(
-                PushTemplateConstants.IntentKeys.CUSTOM_SOUND, pushTemplate.sound
+                PushTemplateIntentConstants.IntentKeys.CUSTOM_SOUND, pushTemplate.sound
             )
             putExtra(
-                PushTemplateConstants.IntentKeys.CENTER_IMAGE_INDEX,
+                PushTemplateIntentConstants.IntentKeys.CENTER_IMAGE_INDEX,
                 pushTemplate.centerImageIndex
             )
             putExtra(
-                PushTemplateConstants.IntentKeys.IMAGE_URLS,
+                PushTemplateIntentConstants.IntentKeys.IMAGE_URLS,
                 downloadedImageUris.toTypedArray()
             )
             putExtra(
-                PushTemplateConstants.IntentKeys.IMAGE_CAPTIONS,
+                PushTemplateIntentConstants.IntentKeys.IMAGE_CAPTIONS,
                 imageCaptions.toTypedArray()
             )
             putExtra(
-                PushTemplateConstants.IntentKeys.IMAGE_CLICK_ACTIONS,
+                PushTemplateIntentConstants.IntentKeys.IMAGE_CLICK_ACTIONS,
                 imageClickActions.toTypedArray()
             )
-            putExtra(PushTemplateConstants.IntentKeys.TITLE_TEXT, pushTemplate.title)
-            putExtra(PushTemplateConstants.IntentKeys.BODY_TEXT, pushTemplate.body)
+            putExtra(PushTemplateIntentConstants.IntentKeys.TITLE_TEXT, pushTemplate.title)
+            putExtra(PushTemplateIntentConstants.IntentKeys.BODY_TEXT, pushTemplate.body)
             putExtra(
-                PushTemplateConstants.IntentKeys.EXPANDED_BODY_TEXT,
+                PushTemplateIntentConstants.IntentKeys.EXPANDED_BODY_TEXT,
                 pushTemplate.expandedBodyText
             )
             putExtra(
-                PushTemplateConstants.IntentKeys.NOTIFICATION_BACKGROUND_COLOR,
+                PushTemplateIntentConstants.IntentKeys.NOTIFICATION_BACKGROUND_COLOR,
                 pushTemplate.notificationBackgroundColor
             )
             putExtra(
-                PushTemplateConstants.IntentKeys.TITLE_TEXT_COLOR,
+                PushTemplateIntentConstants.IntentKeys.TITLE_TEXT_COLOR,
                 pushTemplate.titleTextColor
             )
             putExtra(
-                PushTemplateConstants.IntentKeys.EXPANDED_BODY_TEXT_COLOR,
+                PushTemplateIntentConstants.IntentKeys.EXPANDED_BODY_TEXT_COLOR,
                 pushTemplate.expandedBodyTextColor
             )
             putExtra(
-                PushTemplateConstants.IntentKeys.SMALL_ICON, pushTemplate.smallIcon
+                PushTemplateIntentConstants.IntentKeys.SMALL_ICON, pushTemplate.smallIcon
             )
             putExtra(
-                PushTemplateConstants.IntentKeys.LARGE_ICON, pushTemplate.largeIcon
+                PushTemplateIntentConstants.IntentKeys.LARGE_ICON, pushTemplate.largeIcon
             )
             putExtra(
-                PushTemplateConstants.IntentKeys.SMALL_ICON_COLOR,
+                PushTemplateIntentConstants.IntentKeys.SMALL_ICON_COLOR,
                 pushTemplate.smallIconColor
             )
             putExtra(
-                PushTemplateConstants.IntentKeys.VISIBILITY,
+                PushTemplateIntentConstants.IntentKeys.VISIBILITY,
                 pushTemplate.getNotificationVisibility()
             )
             putExtra(
-                PushTemplateConstants.IntentKeys.IMPORTANCE,
+                PushTemplateIntentConstants.IntentKeys.IMPORTANCE,
                 pushTemplate.getNotificationImportance()
             )
             putExtra(
-                PushTemplateConstants.IntentKeys.TICKER, pushTemplate.ticker
+                PushTemplateIntentConstants.IntentKeys.TICKER, pushTemplate.ticker
             )
             putExtra(
-                PushTemplateConstants.IntentKeys.TAG, pushTemplate.tag
+                PushTemplateIntentConstants.IntentKeys.TAG, pushTemplate.tag
             )
             putExtra(
-                PushTemplateConstants.IntentKeys.STICKY, pushTemplate.isNotificationSticky
+                PushTemplateIntentConstants.IntentKeys.STICKY, pushTemplate.isNotificationSticky
             )
-            putExtra(PushTemplateConstants.IntentKeys.ACTION_URI, pushTemplate.actionUri)
+            putExtra(PushTemplateIntentConstants.IntentKeys.ACTION_URI, pushTemplate.actionUri)
             putExtra(
-                PushTemplateConstants.IntentKeys.PAYLOAD_VERSION, pushTemplate.payloadVersion
+                PushTemplateIntentConstants.IntentKeys.PAYLOAD_VERSION, pushTemplate.payloadVersion
             )
             putExtra(
-                PushTemplateConstants.IntentKeys.CAROUSEL_ITEMS,
+                PushTemplateIntentConstants.IntentKeys.CAROUSEL_ITEMS,
                 pushTemplate.rawCarouselItems
             )
             putExtra(
-                PushTemplateConstants.IntentKeys.CAROUSEL_LAYOUT_TYPE,
+                PushTemplateIntentConstants.IntentKeys.CAROUSEL_LAYOUT_TYPE,
                 pushTemplate.carouselLayoutType
             )
         }

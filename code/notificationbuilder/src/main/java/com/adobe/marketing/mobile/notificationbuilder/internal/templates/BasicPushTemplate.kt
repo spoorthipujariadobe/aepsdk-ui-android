@@ -13,6 +13,7 @@ package com.adobe.marketing.mobile.notificationbuilder.internal.templates
 
 import android.content.Intent
 import androidx.annotation.VisibleForTesting
+import com.adobe.marketing.mobile.notificationbuilder.PushTemplateIntentConstants
 import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateConstants
 import com.adobe.marketing.mobile.services.Log
 import com.adobe.marketing.mobile.util.DataReader
@@ -130,14 +131,14 @@ internal class BasicPushTemplate : AEPPushTemplate {
         val intentExtras =
             intent.extras ?: throw IllegalArgumentException("Intent extras are null")
         actionButtonsString =
-            intentExtras.getString(PushTemplateConstants.IntentKeys.ACTION_BUTTONS_STRING)
+            intentExtras.getString(PushTemplateIntentConstants.IntentKeys.ACTION_BUTTONS_STRING)
         actionButtonsList = getActionButtonsFromString(actionButtonsString)
         remindLaterEpochTimestamp =
-            intentExtras.getLong(PushTemplateConstants.IntentKeys.REMIND_EPOCH_TS)
+            intentExtras.getLong(PushTemplateIntentConstants.IntentKeys.REMIND_EPOCH_TS)
         remindLaterDelaySeconds =
-            intentExtras.getInt(PushTemplateConstants.IntentKeys.REMIND_DELAY_SECONDS)
+            intentExtras.getInt(PushTemplateIntentConstants.IntentKeys.REMIND_DELAY_SECONDS)
         remindLaterText =
-            intentExtras.getString(PushTemplateConstants.IntentKeys.REMIND_LABEL)
+            intentExtras.getString(PushTemplateIntentConstants.IntentKeys.REMIND_LABEL)
     }
 
     /**

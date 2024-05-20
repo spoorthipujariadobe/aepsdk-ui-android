@@ -15,6 +15,7 @@ import android.app.Activity
 import android.content.BroadcastReceiver
 import android.content.Intent
 import androidx.core.app.NotificationCompat
+import com.adobe.marketing.mobile.notificationbuilder.NotificationBuilder.constructNotificationBuilder
 import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateConstants
 import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateType
 import com.adobe.marketing.mobile.notificationbuilder.internal.builders.AutoCarouselNotificationBuilder
@@ -146,7 +147,7 @@ object NotificationBuilder {
         val context = ServiceProvider.getInstance().appContextService.applicationContext
             ?: throw NotificationConstructionFailedException("Application context is null, cannot build a notification.")
         val pushTemplateType =
-            PushTemplateType.fromString(intent.getStringExtra(PushTemplateConstants.IntentKeys.TEMPLATE_TYPE))
+            PushTemplateType.fromString(intent.getStringExtra(PushTemplateIntentConstants.IntentKeys.TEMPLATE_TYPE))
 
         when (pushTemplateType) {
             PushTemplateType.BASIC -> {

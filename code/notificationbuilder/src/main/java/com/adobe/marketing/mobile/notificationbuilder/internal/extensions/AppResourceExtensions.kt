@@ -9,7 +9,7 @@
   governing permissions and limitations under the License.
 */
 
-package com.adobe.marketing.mobile.notificationbuilder.internal.builders.extensions
+package com.adobe.marketing.mobile.notificationbuilder.internal.extensions
 
 import android.content.ContentResolver
 import android.content.Context
