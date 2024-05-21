@@ -40,9 +40,5 @@
         <item name="android:maxLines">1</item>
         <item name="android:ellipsize">end</item>
     </style>
-    <style name="DayNightTheme" parent="Theme.AppCompat.DayNight">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-    </style>
+    <style name="DayNightTheme" parent="Theme.AppCompat.DayNight"/>
 </resources>

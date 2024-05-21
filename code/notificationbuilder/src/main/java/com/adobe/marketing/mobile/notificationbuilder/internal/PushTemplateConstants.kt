@@ -17,7 +17,7 @@ import java.util.concurrent.TimeUnit
  * This object holds all constant values for handling out-of-the-box push template notifications
  */
 internal object PushTemplateConstants {
-    const val LOG_TAG = "PushTemplateConstants"
+    const val LOG_TAG = "PushTemplates"
     const val CACHE_BASE_DIR = "pushtemplates"
     const val PUSH_IMAGE_CACHE = "pushimagecache"
 
