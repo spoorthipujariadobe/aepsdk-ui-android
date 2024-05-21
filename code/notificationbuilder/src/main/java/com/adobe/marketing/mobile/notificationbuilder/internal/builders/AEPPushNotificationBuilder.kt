@@ -18,15 +18,15 @@ import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
 import com.adobe.marketing.mobile.notificationbuilder.NotificationConstructionFailedException
 import com.adobe.marketing.mobile.notificationbuilder.R
-import com.adobe.marketing.mobile.notificationbuilder.internal.builders.extensions.setNotificationBackgroundColor
-import com.adobe.marketing.mobile.notificationbuilder.internal.builders.extensions.setNotificationBodyTextColor
-import com.adobe.marketing.mobile.notificationbuilder.internal.builders.extensions.setNotificationClickAction
-import com.adobe.marketing.mobile.notificationbuilder.internal.builders.extensions.setNotificationDeleteAction
-import com.adobe.marketing.mobile.notificationbuilder.internal.builders.extensions.setNotificationTitleTextColor
-import com.adobe.marketing.mobile.notificationbuilder.internal.builders.extensions.setRemoteViewLargeIcon
-import com.adobe.marketing.mobile.notificationbuilder.internal.builders.extensions.setSmallIcon
-import com.adobe.marketing.mobile.notificationbuilder.internal.builders.extensions.setSound
-import com.adobe.marketing.mobile.notificationbuilder.internal.builders.extensions.setVisibility
+import com.adobe.marketing.mobile.notificationbuilder.internal.extensions.setNotificationBackgroundColor
+import com.adobe.marketing.mobile.notificationbuilder.internal.extensions.setNotificationBodyTextColor
+import com.adobe.marketing.mobile.notificationbuilder.internal.extensions.setNotificationClickAction
+import com.adobe.marketing.mobile.notificationbuilder.internal.extensions.setNotificationDeleteAction
+import com.adobe.marketing.mobile.notificationbuilder.internal.extensions.setNotificationTitleTextColor
+import com.adobe.marketing.mobile.notificationbuilder.internal.extensions.setRemoteViewLargeIcon
+import com.adobe.marketing.mobile.notificationbuilder.internal.extensions.setSmallIcon
+import com.adobe.marketing.mobile.notificationbuilder.internal.extensions.setSound
+import com.adobe.marketing.mobile.notificationbuilder.internal.extensions.setVisibility
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.AEPPushTemplate
 
 // TODO: The utilities provided by this builder assumes the id's for various common elements (R.id.basic_small_layout,

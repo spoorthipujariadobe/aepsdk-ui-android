@@ -12,6 +12,7 @@
 package com.adobe.marketing.mobile.notificationbuilder.internal.templates
 
 import android.content.Intent
+import com.adobe.marketing.mobile.notificationbuilder.PushTemplateIntentConstants
 import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateConstants
 import com.adobe.marketing.mobile.services.Log
 import com.adobe.marketing.mobile.util.DataReader
@@ -90,26 +91,26 @@ internal class ProductCatalogPushTemplate : AEPPushTemplate {
 
     constructor(intent: Intent) : super(intent) {
         val buttonText =
-            intent.getStringExtra(PushTemplateConstants.IntentKeys.CATALOG_CTA_BUTTON_TEXT)
+            intent.getStringExtra(PushTemplateIntentConstants.IntentKeys.CATALOG_CTA_BUTTON_TEXT)
         ctaButtonText = buttonText
-            ?: throw IllegalArgumentException("Required field \"${PushTemplateConstants.IntentKeys.CATALOG_CTA_BUTTON_TEXT}\" not found.")
+            ?: throw IllegalArgumentException("Required field \"${PushTemplateIntentConstants.IntentKeys.CATALOG_CTA_BUTTON_TEXT}\" not found.")
         val buttonColor =
-            intent.getStringExtra(PushTemplateConstants.IntentKeys.CATALOG_CTA_BUTTON_COLOR)
+            intent.getStringExtra(PushTemplateIntentConstants.IntentKeys.CATALOG_CTA_BUTTON_COLOR)
         ctaButtonColor = buttonColor
-            ?: throw IllegalArgumentException("Required field \"${PushTemplateConstants.IntentKeys.CATALOG_CTA_BUTTON_COLOR}\" not found.")
+            ?: throw IllegalArgumentException("Required field \"${PushTemplateIntentConstants.IntentKeys.CATALOG_CTA_BUTTON_COLOR}\" not found.")
         val buttonUri =
-            intent.getStringExtra(PushTemplateConstants.IntentKeys.CATALOG_CTA_BUTTON_URI)
+            intent.getStringExtra(PushTemplateIntentConstants.IntentKeys.CATALOG_CTA_BUTTON_URI)
         ctaButtonUri = buttonUri
-            ?: throw IllegalArgumentException("Required field \"${PushTemplateConstants.IntentKeys.CATALOG_CTA_BUTTON_URI}\" not found.")
-        val layout = intent.getStringExtra(PushTemplateConstants.IntentKeys.CATALOG_LAYOUT)
+            ?: throw IllegalArgumentException("Required field \"${PushTemplateIntentConstants.IntentKeys.CATALOG_CTA_BUTTON_URI}\" not found.")
+        val layout = intent.getStringExtra(PushTemplateIntentConstants.IntentKeys.CATALOG_LAYOUT)
         displayLayout = layout
-            ?: throw IllegalArgumentException("Required field \"${PushTemplateConstants.IntentKeys.CATALOG_LAYOUT}\" not found.")
-        val items = intent.getStringExtra(PushTemplateConstants.IntentKeys.CATALOG_ITEMS)
+            ?: throw IllegalArgumentException("Required field \"${PushTemplateIntentConstants.IntentKeys.CATALOG_LAYOUT}\" not found.")
+        val items = intent.getStringExtra(PushTemplateIntentConstants.IntentKeys.CATALOG_ITEMS)
         rawCatalogItems = items
-            ?: throw IllegalArgumentException("Required field \"${PushTemplateConstants.IntentKeys.CATALOG_ITEMS}\" not found.")
+            ?: throw IllegalArgumentException("Required field \"${PushTemplateIntentConstants.IntentKeys.CATALOG_ITEMS}\" not found.")
         catalogItems = parseCatalogItemsFromString(rawCatalogItems)
         currentIndex = intent.getIntExtra(
-            PushTemplateConstants.IntentKeys.CATALOG_ITEM_INDEX,
+            PushTemplateIntentConstants.IntentKeys.CATALOG_ITEM_INDEX,
             PushTemplateConstants.DefaultValues.PRODUCT_CATALOG_START_INDEX
         )
     }

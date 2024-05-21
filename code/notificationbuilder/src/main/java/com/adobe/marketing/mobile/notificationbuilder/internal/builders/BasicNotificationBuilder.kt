@@ -21,11 +21,12 @@ import android.view.View
 import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
 import com.adobe.marketing.mobile.notificationbuilder.NotificationConstructionFailedException
+import com.adobe.marketing.mobile.notificationbuilder.PushTemplateIntentConstants
 import com.adobe.marketing.mobile.notificationbuilder.R
 import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateConstants
 import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateImageUtils
-import com.adobe.marketing.mobile.notificationbuilder.internal.builders.extensions.addActionButtons
-import com.adobe.marketing.mobile.notificationbuilder.internal.builders.extensions.createNotificationChannelIfRequired
+import com.adobe.marketing.mobile.notificationbuilder.internal.extensions.addActionButtons
+import com.adobe.marketing.mobile.notificationbuilder.internal.extensions.createNotificationChannelIfRequired
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.BasicPushTemplate
 import com.adobe.marketing.mobile.services.Log
 
@@ -33,7 +34,7 @@ import com.adobe.marketing.mobile.services.Log
  * Object responsible for constructing a [NotificationCompat.Builder] object containing a basic push template notification.
  */
 internal object BasicNotificationBuilder {
-    private const val SELF_TAG = "BasicTemplateNotificationBuilder"
+    private const val SELF_TAG = "BasicNotificationBuilder"
 
     @Throws(NotificationConstructionFailedException::class)
     fun construct(
@@ -157,100 +158,104 @@ internal object BasicNotificationBuilder {
             "Creating a remind later pending intent from a push template object."
         )
 
-        val remindIntent = Intent(PushTemplateConstants.IntentActions.REMIND_LATER_CLICKED).apply {
-            setClass(context.applicationContext, broadcastReceiverClass)
+        val remindIntent =
+            Intent(PushTemplateIntentConstants.IntentActions.REMIND_LATER_CLICKED).apply {
+                setClass(context.applicationContext, broadcastReceiverClass)
 
-            flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-            putExtra(
-                PushTemplateConstants.IntentKeys.TEMPLATE_TYPE, pushTemplate.templateType?.value
-            )
-            putExtra(
-                PushTemplateConstants.IntentKeys.IMAGE_URI, pushTemplate.imageUrl
-            )
-            putExtra(
-                PushTemplateConstants.IntentKeys.ACTION_URI, pushTemplate.actionUri
-            )
-            putExtra(PushTemplateConstants.IntentKeys.CHANNEL_ID, channelId)
-            putExtra(
-                PushTemplateConstants.IntentKeys.CUSTOM_SOUND, pushTemplate.sound
-            )
-            putExtra(
-                PushTemplateConstants.IntentKeys.TITLE_TEXT,
-                pushTemplate.title
-            )
-            putExtra(
-                PushTemplateConstants.IntentKeys.BODY_TEXT,
-                pushTemplate.body
-            )
-            putExtra(
-                PushTemplateConstants.IntentKeys.EXPANDED_BODY_TEXT,
-                pushTemplate.expandedBodyText
-            )
-            putExtra(
-                PushTemplateConstants.IntentKeys.NOTIFICATION_BACKGROUND_COLOR,
-                pushTemplate.notificationBackgroundColor
-            )
-            putExtra(
-                PushTemplateConstants.IntentKeys.TITLE_TEXT_COLOR,
-                pushTemplate.titleTextColor
-            )
-            putExtra(
-                PushTemplateConstants.IntentKeys.EXPANDED_BODY_TEXT_COLOR,
-                pushTemplate.expandedBodyTextColor
-            )
-            putExtra(
-                PushTemplateConstants.IntentKeys.SMALL_ICON, pushTemplate.smallIcon
-            )
-            putExtra(
-                PushTemplateConstants.IntentKeys.SMALL_ICON_COLOR,
-                pushTemplate.smallIconColor
-            )
-            putExtra(
-                PushTemplateConstants.IntentKeys.LARGE_ICON, pushTemplate.largeIcon
-            )
-            putExtra(
-                PushTemplateConstants.IntentKeys.VISIBILITY,
-                pushTemplate.getNotificationVisibility()
-            )
-            putExtra(
-                PushTemplateConstants.IntentKeys.IMPORTANCE,
-                pushTemplate.getNotificationImportance()
-            )
-            putExtra(
-                PushTemplateConstants.IntentKeys.BADGE_COUNT, pushTemplate.badgeCount
-            )
-            putExtra(
-                PushTemplateConstants.IntentKeys.REMIND_EPOCH_TS,
-                pushTemplate.remindLaterEpochTimestamp
-            )
-            putExtra(
-                PushTemplateConstants.IntentKeys.REMIND_DELAY_SECONDS,
-                pushTemplate.remindLaterDelaySeconds
-            )
-            putExtra(
-                PushTemplateConstants.IntentKeys.REMIND_LABEL, pushTemplate.remindLaterText
-            )
-            putExtra(
-                PushTemplateConstants.IntentKeys.ACTION_BUTTONS_STRING,
-                pushTemplate.actionButtonsString
-            )
-            putExtra(
-                PushTemplateConstants.IntentKeys.STICKY, pushTemplate.isNotificationSticky
-            )
-            putExtra(
-                PushTemplateConstants.IntentKeys.TAG, pushTemplate.tag
-            )
-            putExtra(
-                PushTemplateConstants.IntentKeys.TICKER, pushTemplate.ticker
-            )
-            putExtra(
-                PushTemplateConstants.IntentKeys.PAYLOAD_VERSION, pushTemplate.payloadVersion
-            )
-            putExtra(
-                PushTemplateConstants.IntentKeys.PRIORITY,
-                pushTemplate.notificationPriority
-            )
-        }
+                flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                putExtra(
+                    PushTemplateIntentConstants.IntentKeys.TEMPLATE_TYPE,
+                    pushTemplate.templateType?.value
+                )
+                putExtra(
+                    PushTemplateIntentConstants.IntentKeys.IMAGE_URI, pushTemplate.imageUrl
+                )
+                putExtra(
+                    PushTemplateIntentConstants.IntentKeys.ACTION_URI, pushTemplate.actionUri
+                )
+                putExtra(PushTemplateIntentConstants.IntentKeys.CHANNEL_ID, channelId)
+                putExtra(
+                    PushTemplateIntentConstants.IntentKeys.CUSTOM_SOUND, pushTemplate.sound
+                )
+                putExtra(
+                    PushTemplateIntentConstants.IntentKeys.TITLE_TEXT,
+                    pushTemplate.title
+                )
+                putExtra(
+                    PushTemplateIntentConstants.IntentKeys.BODY_TEXT,
+                    pushTemplate.body
+                )
+                putExtra(
+                    PushTemplateIntentConstants.IntentKeys.EXPANDED_BODY_TEXT,
+                    pushTemplate.expandedBodyText
+                )
+                putExtra(
+                    PushTemplateIntentConstants.IntentKeys.NOTIFICATION_BACKGROUND_COLOR,
+                    pushTemplate.notificationBackgroundColor
+                )
+                putExtra(
+                    PushTemplateIntentConstants.IntentKeys.TITLE_TEXT_COLOR,
+                    pushTemplate.titleTextColor
+                )
+                putExtra(
+                    PushTemplateIntentConstants.IntentKeys.EXPANDED_BODY_TEXT_COLOR,
+                    pushTemplate.expandedBodyTextColor
+                )
+                putExtra(
+                    PushTemplateIntentConstants.IntentKeys.SMALL_ICON, pushTemplate.smallIcon
+                )
+                putExtra(
+                    PushTemplateIntentConstants.IntentKeys.SMALL_ICON_COLOR,
+                    pushTemplate.smallIconColor
+                )
+                putExtra(
+                    PushTemplateIntentConstants.IntentKeys.LARGE_ICON, pushTemplate.largeIcon
+                )
+                putExtra(
+                    PushTemplateIntentConstants.IntentKeys.VISIBILITY,
+                    pushTemplate.getNotificationVisibility()
+                )
+                putExtra(
+                    PushTemplateIntentConstants.IntentKeys.IMPORTANCE,
+                    pushTemplate.getNotificationImportance()
+                )
+                putExtra(
+                    PushTemplateIntentConstants.IntentKeys.BADGE_COUNT, pushTemplate.badgeCount
+                )
+                putExtra(
+                    PushTemplateIntentConstants.IntentKeys.REMIND_EPOCH_TS,
+                    pushTemplate.remindLaterEpochTimestamp
+                )
+                putExtra(
+                    PushTemplateIntentConstants.IntentKeys.REMIND_DELAY_SECONDS,
+                    pushTemplate.remindLaterDelaySeconds
+                )
+                putExtra(
+                    PushTemplateIntentConstants.IntentKeys.REMIND_LABEL,
+                    pushTemplate.remindLaterText
+                )
+                putExtra(
+                    PushTemplateIntentConstants.IntentKeys.ACTION_BUTTONS_STRING,
+                    pushTemplate.actionButtonsString
+                )
+                putExtra(
+                    PushTemplateIntentConstants.IntentKeys.STICKY, pushTemplate.isNotificationSticky
+                )
+                putExtra(
+                    PushTemplateIntentConstants.IntentKeys.TAG, pushTemplate.tag
+                )
+                putExtra(
+                    PushTemplateIntentConstants.IntentKeys.TICKER, pushTemplate.ticker
+                )
+                putExtra(
+                    PushTemplateIntentConstants.IntentKeys.PAYLOAD_VERSION,
+                    pushTemplate.payloadVersion
+                )
+                putExtra(
+                    PushTemplateIntentConstants.IntentKeys.PRIORITY,
+                    pushTemplate.notificationPriority
+                )
+            }
 
         return PendingIntent.getBroadcast(
             context,

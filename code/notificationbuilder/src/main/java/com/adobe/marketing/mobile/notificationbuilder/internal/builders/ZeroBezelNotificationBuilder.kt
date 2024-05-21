@@ -21,12 +21,12 @@ import com.adobe.marketing.mobile.notificationbuilder.NotificationConstructionFa
 import com.adobe.marketing.mobile.notificationbuilder.R
 import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateConstants
 import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateImageUtils
-import com.adobe.marketing.mobile.notificationbuilder.internal.builders.extensions.createNotificationChannelIfRequired
+import com.adobe.marketing.mobile.notificationbuilder.internal.extensions.createNotificationChannelIfRequired
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.ZeroBezelPushTemplate
 import com.adobe.marketing.mobile.services.Log
 
 internal object ZeroBezelNotificationBuilder {
-    private const val SELF_TAG = "BasicTemplateNotificationBuilder"
+    private const val SELF_TAG = "ZeroBezelNotificationBuilder"
 
     @Throws(NotificationConstructionFailedException::class)
     fun construct(

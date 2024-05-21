@@ -12,6 +12,7 @@
 package com.adobe.marketing.mobile.notificationbuilder.internal.templates
 
 import android.content.Intent
+import com.adobe.marketing.mobile.notificationbuilder.PushTemplateIntentConstants
 import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateConstants
 import com.adobe.marketing.mobile.util.DataReader
 
@@ -55,16 +56,16 @@ internal class InputBoxPushTemplate : AEPPushTemplate {
         val intentExtras =
             intent.extras ?: throw IllegalArgumentException("Intent extras are null")
         val receiverName =
-            intentExtras.getString(PushTemplateConstants.IntentKeys.INPUT_BOX_RECEIVER_NAME)
+            intentExtras.getString(PushTemplateIntentConstants.IntentKeys.INPUT_BOX_RECEIVER_NAME)
         inputBoxReceiverName = receiverName
-            ?: throw IllegalArgumentException("Required field \"${PushTemplateConstants.IntentKeys.INPUT_BOX_RECEIVER_NAME}\" not found.")
+            ?: throw IllegalArgumentException("Required field \"${PushTemplateIntentConstants.IntentKeys.INPUT_BOX_RECEIVER_NAME}\" not found.")
         inputTextHint = intentExtras.getString(
-            PushTemplateConstants.IntentKeys.INPUT_BOX_HINT,
+            PushTemplateIntentConstants.IntentKeys.INPUT_BOX_HINT,
             PushTemplateConstants.DefaultValues.INPUT_BOX_DEFAULT_REPLY_TEXT
         )
         feedbackText =
-            intentExtras.getString(PushTemplateConstants.IntentKeys.INPUT_BOX_FEEDBACK_TEXT)
+            intentExtras.getString(PushTemplateIntentConstants.IntentKeys.INPUT_BOX_FEEDBACK_TEXT)
         feedbackImage =
-            intentExtras.getString(PushTemplateConstants.IntentKeys.INPUT_BOX_FEEDBACK_IMAGE)
+            intentExtras.getString(PushTemplateIntentConstants.IntentKeys.INPUT_BOX_FEEDBACK_IMAGE)
     }
 }

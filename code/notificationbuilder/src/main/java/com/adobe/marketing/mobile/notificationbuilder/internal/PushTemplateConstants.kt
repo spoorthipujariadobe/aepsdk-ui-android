@@ -17,16 +17,9 @@ import java.util.concurrent.TimeUnit
  * This object holds all constant values for handling out-of-the-box push template notifications
  */
 internal object PushTemplateConstants {
-    const val LOG_TAG = "AEPSDKPushTemplates"
+    const val LOG_TAG = "PushTemplates"
     const val CACHE_BASE_DIR = "pushtemplates"
     const val PUSH_IMAGE_CACHE = "pushimagecache"
-    const val DEFAULT_CHANNEL_ID = "AEPSDKPushChannel"
-
-    // When no channel name is received from the push notification, this default channel name is
-    // used.
-    // This will appear in the notification settings for the app.
-    const val DEFAULT_CHANNEL_NAME = "AEPSDK Push Notifications"
-    const val SILENT_CHANNEL_NAME = "AEPSDK Silent Push Notifications"
 
     /** Enum to denote the type of action  */
     enum class ActionType {
@@ -53,7 +46,12 @@ internal object PushTemplateConstants {
     }
 
     internal object DefaultValues {
-        const val SILENT_NOTIFICATION_CHANNEL_ID = "AEPSDK Silent Push Notifications"
+        // When no channel name is received from the push notification, this default channel name is used.
+        // This will appear in the notification settings for the app.
+        const val DEFAULT_CHANNEL_NAME = "AEPSDK Push Notifications"
+        const val SILENT_CHANNEL_NAME = "AEPSDK Silent Push Notifications"
+        const val DEFAULT_CHANNEL_ID = "AEPSDKPushChannel"
+        const val SILENT_NOTIFICATION_CHANNEL_ID = "AEPSDKSilentPushChannel"
         const val CAROUSEL_MAX_BITMAP_WIDTH = 300
         const val CAROUSEL_MAX_BITMAP_HEIGHT = 200
         const val AUTO_CAROUSEL_MODE = "auto"
@@ -70,62 +68,6 @@ internal object PushTemplateConstants {
         // value?
         val PUSH_NOTIFICATION_IMAGE_CACHE_EXPIRY_IN_MILLISECONDS: Long =
             TimeUnit.DAYS.toMillis(3) // 3 days
-    }
-
-    internal object IntentActions {
-        const val FILMSTRIP_LEFT_CLICKED = "filmstrip_left"
-        const val FILMSTRIP_RIGHT_CLICKED = "filmstrip_right"
-        const val REMIND_LATER_CLICKED = "remind_clicked"
-        const val MANUAL_CAROUSEL_LEFT_CLICKED = "manual_left"
-        const val MANUAL_CAROUSEL_RIGHT_CLICKED = "manual_right"
-        const val INPUT_RECEIVED = "input_received"
-    }
-
-    internal object IntentKeys {
-        const val CENTER_IMAGE_INDEX = "centerImageIndex"
-        const val IMAGE_URI = "imageUri"
-        const val IMAGE_URLS = "imageUrls"
-        const val IMAGE_CAPTIONS = "imageCaptions"
-        const val IMAGE_CLICK_ACTIONS = "imageClickActions"
-        const val ACTION_URI = "actionUri"
-        const val ACTION_TYPE = "actionType"
-        const val CHANNEL_ID = "channelId"
-        const val CUSTOM_SOUND = "customSound"
-        const val TITLE_TEXT = "titleText"
-        const val BODY_TEXT = "bodyText"
-        const val EXPANDED_BODY_TEXT = "expandedBodyText"
-        const val NOTIFICATION_BACKGROUND_COLOR = "notificationBackgroundColor"
-        const val TITLE_TEXT_COLOR = "titleTextColor"
-        const val EXPANDED_BODY_TEXT_COLOR = "expandedBodyTextColor"
-        const val BADGE_COUNT = "badgeCount"
-        const val LARGE_ICON = "largeIcon"
-        const val SMALL_ICON = "smallIcon"
-        const val SMALL_ICON_COLOR = "smallIconColor"
-        const val PRIORITY = "priority"
-        const val VISIBILITY = "visibility"
-        const val IMPORTANCE = "importance"
-        const val REMIND_DELAY_SECONDS = "remindDelaySeconds"
-        const val REMIND_EPOCH_TS = "remindEpochTimestamp"
-        const val REMIND_LABEL = "remindLaterLabel"
-        const val ACTION_BUTTONS_STRING = "actionButtonsString"
-        const val STICKY = "sticky"
-        const val TAG = "tag"
-        const val TICKER = "ticker"
-        const val PAYLOAD_VERSION = "version"
-        const val TEMPLATE_TYPE = "templateType"
-        const val CAROUSEL_OPERATION_MODE = "carouselOperationMode"
-        const val CAROUSEL_LAYOUT_TYPE = "carouselLayoutType"
-        const val CAROUSEL_ITEMS = "carouselItems"
-        const val INPUT_BOX_HINT = "inputBoxHint"
-        const val INPUT_BOX_FEEDBACK_TEXT = "feedbackText"
-        const val INPUT_BOX_FEEDBACK_IMAGE = "feedbackImage"
-        const val INPUT_BOX_RECEIVER_NAME = "feedbackReceiverName"
-        const val CATALOG_CTA_BUTTON_TEXT = "ctaButtonText"
-        const val CATALOG_CTA_BUTTON_COLOR = "ctaButtonColor"
-        const val CATALOG_CTA_BUTTON_URI = "ctaButtonUri"
-        const val CATALOG_LAYOUT = "displayLayout"
-        const val CATALOG_ITEMS = "catalogItems"
-        const val CATALOG_ITEM_INDEX = "catalogIndex"
     }
 
     internal object MethodNames {
