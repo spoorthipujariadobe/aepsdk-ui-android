@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- black text for light mode -->
     <color name="colorPrimary">#000000</color>
-    <color name="colorPrimaryDark">#ffffff</color>
-    <color name="colorAccent">#03DAC5</color>
+    <!-- white text for dark mode -->
+    <color name="colorPrimaryDark">#FFFFFF</color>
+     <!-- blue color for accent -->
+    <color name="colorAccent">#3333CC</color>
 </resources>

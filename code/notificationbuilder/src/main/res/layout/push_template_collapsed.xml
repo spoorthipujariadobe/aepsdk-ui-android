@@ -6,7 +6,7 @@
     android:clipToPadding="false"
     android:clipChildren="false"
     android:orientation="vertical"
-    android:theme="@style/AppTheme">
+    android:theme="@style/DayNightTheme">
 
     <ImageView
         android:id="@+id/large_icon"
