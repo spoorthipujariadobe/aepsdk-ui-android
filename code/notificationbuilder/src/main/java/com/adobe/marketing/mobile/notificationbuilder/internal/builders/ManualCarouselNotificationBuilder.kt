@@ -24,6 +24,7 @@ import com.adobe.marketing.mobile.notificationbuilder.NotificationConstructionFa
 import com.adobe.marketing.mobile.notificationbuilder.PushTemplateIntentConstants
 import com.adobe.marketing.mobile.notificationbuilder.R
 import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateConstants
+import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateConstants.LOG_TAG
 import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateImageUtils
 import com.adobe.marketing.mobile.notificationbuilder.internal.extensions.createNotificationChannelIfRequired
 import com.adobe.marketing.mobile.notificationbuilder.internal.extensions.setRemoteViewClickAction
@@ -45,11 +46,7 @@ internal object ManualCarouselNotificationBuilder {
         trackerActivityClass: Class<out Activity>?,
         broadcastReceiverClass: Class<out BroadcastReceiver>?
     ): NotificationCompat.Builder {
-        Log.trace(
-            PushTemplateConstants.LOG_TAG,
-            SELF_TAG,
-            "Building a manual carousel template push notification."
-        )
+        Log.trace(LOG_TAG, SELF_TAG, "Building a manual carousel template push notification.")
 
         // download carousel images
         val downloadedImagesCount = PushTemplateImageUtils.cacheImages(
@@ -62,8 +59,7 @@ internal object ManualCarouselNotificationBuilder {
         // to be downloaded
         if (downloadedImagesCount < PushTemplateConstants.DefaultValues.CAROUSEL_MINIMUM_IMAGE_COUNT) {
             Log.trace(
-                PushTemplateConstants.LOG_TAG,
-                SELF_TAG,
+                LOG_TAG, SELF_TAG,
                 "Less than 3 images are available for the manual carousel push template, falling back to a basic push template."
             )
             if (downloadedImagesCount > 0) {
@@ -161,11 +157,7 @@ internal object ManualCarouselNotificationBuilder {
             val imageUri: String = item.imageUri
             val pushImage: Bitmap? = PushTemplateImageUtils.getCachedImage(imageUri)
             if (pushImage == null) {
-                Log.trace(
-                    PushTemplateConstants.LOG_TAG,
-                    SELF_TAG,
-                    "Failed to retrieve an image from $imageUri, will not create a new carousel item."
-                )
+                Log.trace(LOG_TAG, SELF_TAG, "Failed to retrieve an image from $imageUri, will not create a new carousel item.")
                 continue
             }
             validCarouselItems.add(item)
@@ -444,8 +436,7 @@ internal object ManualCarouselNotificationBuilder {
         val newCenterIndex = (centerIndex - 1 + listSize) % listSize
         val newLeftIndex = (newCenterIndex - 1 + listSize) % listSize
         Log.trace(
-            PushTemplateConstants.LOG_TAG,
-            SELF_TAG,
+            LOG_TAG, SELF_TAG,
             "Calculated new indices. New center index is $newCenterIndex, new left index is $newLeftIndex, and new right index is $centerIndex."
         )
         return Triple(newLeftIndex, newCenterIndex, centerIndex)

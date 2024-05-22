@@ -16,7 +16,7 @@ import android.app.NotificationManager
 import android.content.Context
 import android.os.Build
 import androidx.core.app.NotificationCompat
-import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateConstants
+import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateConstants.LOG_TAG
 import com.adobe.marketing.mobile.notificationbuilder.internal.extensions.addActionButtons
 import com.adobe.marketing.mobile.notificationbuilder.internal.extensions.createNotificationChannelIfRequired
 import com.adobe.marketing.mobile.notificationbuilder.internal.extensions.setLargeIcon
@@ -38,11 +38,7 @@ internal object LegacyNotificationBuilder {
         pushTemplate: BasicPushTemplate,
         trackerActivityClass: Class<out Activity>?
     ): NotificationCompat.Builder {
-        Log.trace(
-            PushTemplateConstants.LOG_TAG,
-            SELF_TAG,
-            "Building a legacy style push notification."
-        )
+        Log.trace(LOG_TAG, SELF_TAG, "Building a legacy style push notification.")
 
         // create the notification channel
         val notificationManager =

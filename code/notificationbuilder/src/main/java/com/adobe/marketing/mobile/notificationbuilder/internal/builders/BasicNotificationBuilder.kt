@@ -23,6 +23,7 @@ import com.adobe.marketing.mobile.notificationbuilder.NotificationConstructionFa
 import com.adobe.marketing.mobile.notificationbuilder.PushTemplateIntentConstants
 import com.adobe.marketing.mobile.notificationbuilder.R
 import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateConstants
+import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateConstants.LOG_TAG
 import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateImageUtils
 import com.adobe.marketing.mobile.notificationbuilder.internal.extensions.addActionButtons
 import com.adobe.marketing.mobile.notificationbuilder.internal.extensions.createNotificationChannelIfRequired
@@ -43,11 +44,7 @@ internal object BasicNotificationBuilder {
         trackerActivityClass: Class<out Activity>?,
         broadcastReceiverClass: Class<out BroadcastReceiver>?
     ): NotificationCompat.Builder {
-        Log.trace(
-            PushTemplateConstants.LOG_TAG,
-            SELF_TAG,
-            "Building a basic template push notification."
-        )
+        Log.trace(LOG_TAG, SELF_TAG, "Building a basic template push notification.")
         val packageName = context.packageName
         val smallLayout = RemoteViews(packageName, R.layout.push_template_collapsed)
         val expandedLayout = RemoteViews(packageName, R.layout.push_template_expanded)
@@ -72,11 +69,7 @@ internal object BasicNotificationBuilder {
         val downloadedImageCount = PushTemplateImageUtils.cacheImages(listOf(imageUri))
 
         if (downloadedImageCount == 0) {
-            Log.trace(
-                PushTemplateConstants.LOG_TAG,
-                SELF_TAG,
-                "No image found for basic push template."
-            )
+            Log.trace(LOG_TAG, SELF_TAG, "No image found for basic push template.")
             expandedLayout.setViewVisibility(R.id.expanded_template_image, View.GONE)
         } else {
             expandedLayout.setImageViewBitmap(
@@ -146,11 +139,7 @@ internal object BasicNotificationBuilder {
         if (broadcastReceiverClass == null) {
             return null
         }
-        Log.trace(
-            PushTemplateConstants.LOG_TAG,
-            SELF_TAG,
-            "Creating a remind later pending intent from a push template object."
-        )
+        Log.trace(LOG_TAG, SELF_TAG, "Creating a remind later pending intent from a push template object.")
 
         val remindIntent = pushTemplate.createIntent(PushTemplateIntentConstants.IntentActions.REMIND_LATER_CLICKED)
         remindIntent.putExtra(PushTemplateConstants.PushPayloadKeys.CHANNEL_ID, channelId)

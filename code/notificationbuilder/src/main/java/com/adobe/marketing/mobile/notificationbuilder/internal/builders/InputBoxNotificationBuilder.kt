@@ -44,10 +44,7 @@ internal object InputBoxNotificationBuilder {
         trackerActivityClass: Class<out Activity>?,
         broadcastReceiverClass: Class<out BroadcastReceiver>?
     ): NotificationCompat.Builder {
-        Log.trace(
-            LOG_TAG, SELF_TAG,
-            "Building an input box template push notification."
-        )
+        Log.trace(LOG_TAG, SELF_TAG, "Building an input box template push notification.")
         val packageName = context.packageName
         val smallLayout = RemoteViews(packageName, R.layout.push_template_collapsed)
         val expandedLayout = RemoteViews(packageName, R.layout.push_template_expanded)
@@ -76,10 +73,7 @@ internal object InputBoxNotificationBuilder {
             val pushImage = PushTemplateImageUtils.getCachedImage(imageUri)
             expandedLayout.setImageViewBitmap(R.id.expanded_template_image, pushImage)
         } else {
-            Log.trace(
-                LOG_TAG, SELF_TAG,
-                "No image found for input box push template."
-            )
+            Log.trace(LOG_TAG, SELF_TAG, "No image found for input box push template.")
             expandedLayout.setViewVisibility(R.id.expanded_template_image, View.GONE)
         }
 

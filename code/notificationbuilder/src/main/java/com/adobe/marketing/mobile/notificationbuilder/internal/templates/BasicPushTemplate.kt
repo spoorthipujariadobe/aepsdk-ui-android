@@ -37,11 +37,8 @@ internal class BasicPushTemplate(data: NotificationData) : AEPPushTemplate(data)
                     type ?: ActionType.NONE.name
                 )
             } catch (e: IllegalArgumentException) {
-                Log.warning(
-                    LOG_TAG,
-                    SELF_TAG,
-                    "Invalid action button type provided, defaulting to NONE. Error : ${e.localizedMessage}"
-                )
+                Log.warning(LOG_TAG, SELF_TAG,
+                    "Invalid action button type provided, defaulting to NONE. Error : ${e.localizedMessage}")
                 ActionType.NONE
             }
         }
@@ -70,16 +67,12 @@ internal class BasicPushTemplate(data: NotificationData) : AEPPushTemplate(data)
                     if (type == ActionType.WEBURL.name || type == ActionType.DEEPLINK.name) {
                         uri = jsonObject.optString(ActionButtons.URI)
                     }
-                    Log.trace(
-                        LOG_TAG, SELF_TAG,
-                        "Creating an ActionButton with label ($label), uri ($uri), and type ($type)."
-                    )
+                    Log.trace(LOG_TAG, SELF_TAG,
+                        "Creating an ActionButton with label ($label), uri ($uri), and type ($type).")
                     ActionButton(label, uri, type)
                 } catch (e: JSONException) {
-                    Log.warning(
-                        LOG_TAG, SELF_TAG,
-                        "Exception in converting actionButtons json string to json object, Error : ${e.localizedMessage}."
-                    )
+                    Log.warning(LOG_TAG, SELF_TAG,
+                        "Exception in converting actionButtons json string to json object, Error : ${e.localizedMessage}.")
                     null
                 }
             }
@@ -139,11 +132,9 @@ internal class BasicPushTemplate(data: NotificationData) : AEPPushTemplate(data)
     @VisibleForTesting
     internal fun getActionButtonsFromString(actionButtons: String?): List<ActionButton>? {
         if (actionButtons == null) {
-            Log.debug(
-                LOG_TAG, SELF_TAG,
+            Log.debug(LOG_TAG, SELF_TAG,
                 "Exception in converting actionButtons json string to json object, Error :" +
-                    " actionButtons is null"
-            )
+                    " actionButtons is null")
             return null
         }
         val actionButtonList = mutableListOf<ActionButton>()
@@ -155,10 +146,8 @@ internal class BasicPushTemplate(data: NotificationData) : AEPPushTemplate(data)
                 actionButtonList.add(button)
             }
         } catch (e: JSONException) {
-            Log.warning(
-                LOG_TAG, SELF_TAG,
-                "Exception in converting actionButtons json string to json object, Error : ${e.localizedMessage}"
-            )
+            Log.warning(LOG_TAG, SELF_TAG,
+                "Exception in converting actionButtons json string to json object, Error : ${e.localizedMessage}")
             return null
         }
         return actionButtonList

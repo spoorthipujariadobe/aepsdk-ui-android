@@ -16,6 +16,7 @@ import android.content.BroadcastReceiver
 import android.content.Intent
 import androidx.core.app.NotificationCompat
 import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateConstants
+import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateConstants.LOG_TAG
 import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateType
 import com.adobe.marketing.mobile.notificationbuilder.internal.builders.AutoCarouselNotificationBuilder
 import com.adobe.marketing.mobile.notificationbuilder.internal.builders.BasicNotificationBuilder
@@ -96,11 +97,7 @@ object NotificationBuilder {
                     }
 
                     else -> {
-                        Log.trace(
-                            PushTemplateConstants.LOG_TAG,
-                            SELF_TAG,
-                            "Unknown carousel push template type, creating a legacy style notification."
-                        )
+                        Log.trace(LOG_TAG, SELF_TAG, "Unknown carousel push template type, creating a legacy style notification.")
                         return LegacyNotificationBuilder.construct(
                             context,
                             BasicPushTemplate(notificationData),
@@ -150,15 +147,11 @@ object NotificationBuilder {
         val extras = intent.extras ?: throw NotificationConstructionFailedException("Intent extras are null, cannot re-build the notification.")
         val pushTemplateType =
             PushTemplateType.fromString(intent.getStringExtra(PushTemplateConstants.PushPayloadKeys.TEMPLATE_TYPE))
-        val intentData = IntentData(extras)
+        val intentData = IntentData(extras, intent.action)
 
         when (pushTemplateType) {
             PushTemplateType.BASIC -> {
-                Log.trace(
-                    PushTemplateConstants.LOG_TAG,
-                    SELF_TAG,
-                    "Building a basic style push notification."
-                )
+                Log.trace(LOG_TAG, SELF_TAG, "Building a basic style push notification.")
                 return BasicNotificationBuilder.construct(
                     context,
                     BasicPushTemplate(intentData),
