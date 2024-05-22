@@ -14,7 +14,6 @@ package com.adobe.marketing.mobile.notificationbuilder.internal.util
 // Interface for abstracting the source of notification properties
 interface NotificationData {
 
-    val fromIntent: Boolean
     /**
      * Returns the string value for the given key.
      *

@@ -20,6 +20,7 @@ import com.adobe.marketing.mobile.notificationbuilder.internal.NotificationVisib
 import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateConstants.ActionType
 import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateConstants.PushPayloadKeys
 import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateType
+import com.adobe.marketing.mobile.notificationbuilder.internal.util.IntentData
 import com.adobe.marketing.mobile.notificationbuilder.internal.util.NotificationData
 
 /**
@@ -128,7 +129,7 @@ internal sealed class AEPPushTemplate(data: NotificationData) {
 
         // extract the template type
         templateType = PushTemplateType.fromString(data.getString(PushPayloadKeys.TEMPLATE_TYPE))
-        isFromIntent = data.fromIntent
+        isFromIntent = data is IntentData
 
         // extract the basic media information
         imageUrl = data.getString(PushPayloadKeys.IMAGE_URL)

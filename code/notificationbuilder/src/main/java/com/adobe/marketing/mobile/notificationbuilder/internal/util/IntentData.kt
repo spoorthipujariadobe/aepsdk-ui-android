@@ -17,7 +17,6 @@ import android.os.Bundle
  * Class responsible for extracting notification data from an intent.
  */
 class IntentData(private val extras: Bundle) : NotificationData {
-    override val fromIntent = true
     override fun getString(key: String): String? = extras.getString(key)
     override fun getInteger(key: String): Int? = extras.getString(key)?.toIntOrNull()
     override fun getBoolean(key: String): Boolean? = extras.getString(key)?.toBoolean()
