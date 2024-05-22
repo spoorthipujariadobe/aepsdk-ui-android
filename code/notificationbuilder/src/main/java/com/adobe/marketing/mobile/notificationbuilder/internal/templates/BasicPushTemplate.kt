@@ -23,8 +23,7 @@ import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 
-internal class BasicPushTemplate(data: NotificationData, fromIntent: Boolean = false) :
-    AEPPushTemplate(data, fromIntent) {
+internal class BasicPushTemplate(data: NotificationData) : AEPPushTemplate(data) {
 
     private val SELF_TAG = "BasicPushTemplate"
 

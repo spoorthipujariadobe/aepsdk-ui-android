@@ -26,7 +26,7 @@ import com.adobe.marketing.mobile.notificationbuilder.internal.util.Notification
  * This class is used to parse the push template data payload or an intent and provide the necessary information
  * to build a notification.
  */
-internal sealed class AEPPushTemplate(data: NotificationData, fromIntent: Boolean) {
+internal sealed class AEPPushTemplate(data: NotificationData) {
 
     // Message data payload for the push template
     internal lateinit var messageData: MutableMap<String, String>
@@ -128,7 +128,7 @@ internal sealed class AEPPushTemplate(data: NotificationData, fromIntent: Boolea
 
         // extract the template type
         templateType = PushTemplateType.fromString(data.getString(PushPayloadKeys.TEMPLATE_TYPE))
-        isFromIntent = fromIntent
+        isFromIntent = data.fromIntent
 
         // extract the basic media information
         imageUrl = data.getString(PushPayloadKeys.IMAGE_URL)

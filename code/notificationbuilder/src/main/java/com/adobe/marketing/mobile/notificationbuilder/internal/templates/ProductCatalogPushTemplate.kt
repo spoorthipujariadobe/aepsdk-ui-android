@@ -20,7 +20,7 @@ import com.adobe.marketing.mobile.services.Log
 import org.json.JSONArray
 import org.json.JSONException
 
-internal class ProductCatalogPushTemplate(data: NotificationData, fromIntent: Boolean = false) : AEPPushTemplate(data, fromIntent) {
+internal class ProductCatalogPushTemplate(data: NotificationData) : AEPPushTemplate(data) {
     // Required, Text to be shown on the CTA button
     internal val ctaButtonText: String
 

@@ -161,7 +161,7 @@ object NotificationBuilder {
                 )
                 return BasicNotificationBuilder.construct(
                     context,
-                    BasicPushTemplate(intentData, true),
+                    BasicPushTemplate(intentData),
                     trackerActivityClass,
                     broadcastReceiverClass
                 )
@@ -179,7 +179,7 @@ object NotificationBuilder {
             PushTemplateType.INPUT_BOX -> {
                 return InputBoxNotificationBuilder.construct(
                     context,
-                    InputBoxPushTemplate(intentData, true),
+                    InputBoxPushTemplate(intentData),
                     trackerActivityClass,
                     broadcastReceiverClass
                 )
@@ -188,7 +188,7 @@ object NotificationBuilder {
             PushTemplateType.UNKNOWN -> {
                 return LegacyNotificationBuilder.construct(
                     context,
-                    BasicPushTemplate(intentData, true),
+                    BasicPushTemplate(intentData),
                     trackerActivityClass
                 )
             }
@@ -197,7 +197,7 @@ object NotificationBuilder {
                 // default to legacy notification
                 return LegacyNotificationBuilder.construct(
                     context,
-                    BasicPushTemplate(intentData, true),
+                    BasicPushTemplate(intentData),
                     trackerActivityClass
                 )
             }

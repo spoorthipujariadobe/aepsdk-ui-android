@@ -14,7 +14,7 @@ package com.adobe.marketing.mobile.notificationbuilder.internal.templates
 import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateConstants.PushPayloadKeys
 import com.adobe.marketing.mobile.notificationbuilder.internal.util.NotificationData
 
-internal class ZeroBezelPushTemplate(data: NotificationData, fromIntent: Boolean = false) : AEPPushTemplate(data, fromIntent) {
+internal class ZeroBezelPushTemplate(data: NotificationData) : AEPPushTemplate(data) {
 
     internal enum class ZeroBezelStyle(val collapsedStyle: String) {
         IMAGE("img"),

@@ -18,6 +18,7 @@ import com.adobe.marketing.mobile.util.DataReader
  */
 class MapData(private val data: Map<String, String>) : NotificationData {
 
+    override val fromIntent = false
     override fun getString(key: String): String? = DataReader.optString(data, key, null)
     override fun getInteger(key: String): Int? = DataReader.optString(data, key, null)?.toIntOrNull()
     override fun getBoolean(key: String): Boolean? = DataReader.optString(data, key, null)?.toBoolean()
