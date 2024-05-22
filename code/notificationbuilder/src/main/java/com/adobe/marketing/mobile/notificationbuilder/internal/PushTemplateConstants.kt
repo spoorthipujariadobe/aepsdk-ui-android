@@ -79,6 +79,9 @@ internal object PushTemplateConstants {
         const val MANUAL_CAROUSEL_LEFT_CLICKED = "manual_left"
         const val MANUAL_CAROUSEL_RIGHT_CLICKED = "manual_right"
         const val INPUT_RECEIVED = "input_received"
+        const val CATALOG_THUMBNAIL_1_CLICKED = "thumbnail_1_clicked"
+        const val CATALOG_THUMBNAIL_2_CLICKED = "thumbnail_2_clicked"
+        const val CATALOG_THUMBNAIL_3_CLICKED = "thumbnail_3_clicked"
     }
 
     internal object IntentKeys {
@@ -137,6 +140,7 @@ internal object PushTemplateConstants {
         const val NOTIFICATION_BACKGROUND = "notification background"
         const val NOTIFICATION_TITLE = "notification title"
         const val NOTIFICATION_BODY_TEXT = "notification body text"
+        const val CTA_BUTTON = "product catalog cta button"
     }
 
     internal object PushPayloadKeys {
@@ -195,5 +199,10 @@ internal object PushTemplateConstants {
         const val IMAGE = "img"
         const val PRICE = "price"
         const val URI = "uri"
+    }
+
+    internal object CatalogActionIds {
+        const val CTA_BUTTON_CLICKED = "cta_button_clicked"
+        const val PRODUCT_IMAGE_CLICKED = "product_image_clicked"
     }
 }
