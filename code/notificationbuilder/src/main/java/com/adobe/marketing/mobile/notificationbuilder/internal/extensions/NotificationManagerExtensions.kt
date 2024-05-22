@@ -70,7 +70,8 @@ internal fun NotificationManager.createNotificationChannelIfRequired(
         channel.setSound(sound, null)
     }
 
-    Log.trace(LOG_TAG, SELF_TAG, "Creating a new notification channel with ID: ${template.channelId}. ${if (template.sound.isNullOrEmpty()) "and default sound." else "and custom sound: ${template.sound}."}"
+    Log.trace(
+        LOG_TAG, SELF_TAG, "Creating a new notification channel with ID: ${template.channelId}. ${if (template.sound.isNullOrEmpty()) "and default sound." else "and custom sound: ${template.sound}."}"
     )
     createNotificationChannel(channel)
     return channelIdToUse

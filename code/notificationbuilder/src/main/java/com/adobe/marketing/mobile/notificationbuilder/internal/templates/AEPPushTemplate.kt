@@ -153,7 +153,7 @@ internal sealed class AEPPushTemplate(data: NotificationData, fromIntent: Boolea
         visibilityString = data.getString(PushPayloadKeys.VISIBILITY)
     }
 
-  /**
+    /**
      * Creates an intent with the given action and adds the notification payload data to the intent.
      *
      * @param action the action to set on the intent

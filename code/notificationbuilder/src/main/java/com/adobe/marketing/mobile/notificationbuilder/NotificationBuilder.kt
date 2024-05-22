@@ -188,7 +188,7 @@ object NotificationBuilder {
             PushTemplateType.UNKNOWN -> {
                 return LegacyNotificationBuilder.construct(
                     context,
-                    BasicPushTemplate(intentData,true),
+                    BasicPushTemplate(intentData, true),
                     trackerActivityClass
                 )
             }
