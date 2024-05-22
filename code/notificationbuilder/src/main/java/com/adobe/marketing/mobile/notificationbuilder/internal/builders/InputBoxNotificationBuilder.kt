@@ -171,105 +171,13 @@ internal object InputBoxNotificationBuilder {
         if (broadcastReceiverClass == null) {
             return null
         }
-        Log.trace(
-            PushTemplateConstants.LOG_TAG,
-            SELF_TAG,
-            "Creating a text input received intent from a push template object."
-        )
+        Log.trace(LOG_TAG, SELF_TAG, "Creating a text input received intent from a push template object.")
 
-        val inputReceivedIntent = Intent(PushTemplateIntentConstants.IntentActions.INPUT_RECEIVED)
+        val inputReceivedIntent = pushTemplate.createIntentWithAction(PushTemplateIntentConstants.IntentActions.INPUT_RECEIVED)
+        inputReceivedIntent.putExtra(PushTemplateConstants.PushPayloadKeys.CHANNEL_ID, channelId)
         broadcastReceiverClass.let {
             inputReceivedIntent.setClass(context.applicationContext, broadcastReceiverClass)
         }
-
-        inputReceivedIntent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-        inputReceivedIntent.putExtra(
-            PushTemplateIntentConstants.IntentKeys.TEMPLATE_TYPE, pushTemplate.templateType?.value
-        )
-        inputReceivedIntent.putExtra(
-            PushTemplateIntentConstants.IntentKeys.IMAGE_URI, pushTemplate.imageUrl
-        )
-        inputReceivedIntent.putExtra(
-            PushTemplateIntentConstants.IntentKeys.ACTION_URI, pushTemplate.actionUri
-        )
-        inputReceivedIntent.putExtra(PushTemplateIntentConstants.IntentKeys.CHANNEL_ID, channelId)
-        inputReceivedIntent.putExtra(
-            PushTemplateIntentConstants.IntentKeys.CUSTOM_SOUND, pushTemplate.sound
-        )
-        inputReceivedIntent.putExtra(
-            PushTemplateIntentConstants.IntentKeys.TITLE_TEXT,
-            pushTemplate.title
-        )
-        inputReceivedIntent.putExtra(
-            PushTemplateIntentConstants.IntentKeys.BODY_TEXT,
-            pushTemplate.body
-        )
-        inputReceivedIntent.putExtra(
-            PushTemplateIntentConstants.IntentKeys.EXPANDED_BODY_TEXT,
-            pushTemplate.expandedBodyText
-        )
-        inputReceivedIntent.putExtra(
-            PushTemplateIntentConstants.IntentKeys.NOTIFICATION_BACKGROUND_COLOR,
-            pushTemplate.notificationBackgroundColor
-        )
-        inputReceivedIntent.putExtra(
-            PushTemplateIntentConstants.IntentKeys.TITLE_TEXT_COLOR,
-            pushTemplate.titleTextColor
-        )
-        inputReceivedIntent.putExtra(
-            PushTemplateIntentConstants.IntentKeys.EXPANDED_BODY_TEXT_COLOR,
-            pushTemplate.expandedBodyTextColor
-        )
-        inputReceivedIntent.putExtra(
-            PushTemplateIntentConstants.IntentKeys.SMALL_ICON, pushTemplate.smallIcon
-        )
-        inputReceivedIntent.putExtra(
-            PushTemplateIntentConstants.IntentKeys.SMALL_ICON_COLOR,
-            pushTemplate.smallIconColor
-        )
-        inputReceivedIntent.putExtra(
-            PushTemplateIntentConstants.IntentKeys.LARGE_ICON, pushTemplate.largeIcon
-        )
-        inputReceivedIntent.putExtra(
-            PushTemplateIntentConstants.IntentKeys.VISIBILITY,
-            pushTemplate.getNotificationVisibility()
-        )
-        inputReceivedIntent.putExtra(
-            PushTemplateIntentConstants.IntentKeys.IMPORTANCE,
-            pushTemplate.getNotificationImportance()
-        )
-        inputReceivedIntent.putExtra(
-            PushTemplateIntentConstants.IntentKeys.BADGE_COUNT, pushTemplate.badgeCount
-        )
-        inputReceivedIntent.putExtra(
-            PushTemplateIntentConstants.IntentKeys.INPUT_BOX_FEEDBACK_TEXT,
-            pushTemplate.feedbackText
-        )
-        inputReceivedIntent.putExtra(
-            PushTemplateIntentConstants.IntentKeys.INPUT_BOX_FEEDBACK_IMAGE,
-            pushTemplate.feedbackImage
-        )
-        inputReceivedIntent.putExtra(
-            PushTemplateIntentConstants.IntentKeys.INPUT_BOX_RECEIVER_NAME,
-            pushTemplate.inputBoxReceiverName
-        )
-        inputReceivedIntent.putExtra(
-            PushTemplateIntentConstants.IntentKeys.STICKY, pushTemplate.isNotificationSticky
-        )
-        inputReceivedIntent.putExtra(
-            PushTemplateIntentConstants.IntentKeys.TAG, pushTemplate.tag
-        )
-        inputReceivedIntent.putExtra(
-            PushTemplateIntentConstants.IntentKeys.TICKER, pushTemplate.ticker
-        )
-        inputReceivedIntent.putExtra(
-            PushTemplateIntentConstants.IntentKeys.PAYLOAD_VERSION, pushTemplate.payloadVersion
-        )
-        inputReceivedIntent.putExtra(
-            PushTemplateIntentConstants.IntentKeys.PRIORITY,
-            pushTemplate.notificationPriority
-        )
-
         return inputReceivedIntent
     }
 }

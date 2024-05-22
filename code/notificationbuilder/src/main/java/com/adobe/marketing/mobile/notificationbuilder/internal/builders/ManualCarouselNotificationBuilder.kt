@@ -496,98 +496,16 @@ internal object ManualCarouselNotificationBuilder {
         imageClickActions: List<String?>,
         channelId: String
     ): PendingIntent {
-        val clickIntent = Intent(intentAction).apply {
-            broadcastReceiverClass?.let {
-                setClass(context, broadcastReceiverClass)
-            }
 
-            flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-            putExtra(
-                PushTemplateIntentConstants.IntentKeys.TEMPLATE_TYPE,
-                pushTemplate.templateType?.value
-            )
-            putExtra(
-                PushTemplateIntentConstants.IntentKeys.CHANNEL_ID,
-                channelId
-            )
-            putExtra(
-                PushTemplateIntentConstants.IntentKeys.CUSTOM_SOUND, pushTemplate.sound
-            )
-            putExtra(
-                PushTemplateIntentConstants.IntentKeys.CENTER_IMAGE_INDEX,
-                pushTemplate.centerImageIndex
-            )
-            putExtra(
-                PushTemplateIntentConstants.IntentKeys.IMAGE_URLS,
-                downloadedImageUris.toTypedArray()
-            )
-            putExtra(
-                PushTemplateIntentConstants.IntentKeys.IMAGE_CAPTIONS,
-                imageCaptions.toTypedArray()
-            )
-            putExtra(
-                PushTemplateIntentConstants.IntentKeys.IMAGE_CLICK_ACTIONS,
-                imageClickActions.toTypedArray()
-            )
-            putExtra(PushTemplateIntentConstants.IntentKeys.TITLE_TEXT, pushTemplate.title)
-            putExtra(PushTemplateIntentConstants.IntentKeys.BODY_TEXT, pushTemplate.body)
-            putExtra(
-                PushTemplateIntentConstants.IntentKeys.EXPANDED_BODY_TEXT,
-                pushTemplate.expandedBodyText
-            )
-            putExtra(
-                PushTemplateIntentConstants.IntentKeys.NOTIFICATION_BACKGROUND_COLOR,
-                pushTemplate.notificationBackgroundColor
-            )
-            putExtra(
-                PushTemplateIntentConstants.IntentKeys.TITLE_TEXT_COLOR,
-                pushTemplate.titleTextColor
-            )
-            putExtra(
-                PushTemplateIntentConstants.IntentKeys.EXPANDED_BODY_TEXT_COLOR,
-                pushTemplate.expandedBodyTextColor
-            )
-            putExtra(
-                PushTemplateIntentConstants.IntentKeys.SMALL_ICON, pushTemplate.smallIcon
-            )
-            putExtra(
-                PushTemplateIntentConstants.IntentKeys.LARGE_ICON, pushTemplate.largeIcon
-            )
-            putExtra(
-                PushTemplateIntentConstants.IntentKeys.SMALL_ICON_COLOR,
-                pushTemplate.smallIconColor
-            )
-            putExtra(
-                PushTemplateIntentConstants.IntentKeys.VISIBILITY,
-                pushTemplate.getNotificationVisibility()
-            )
-            putExtra(
-                PushTemplateIntentConstants.IntentKeys.IMPORTANCE,
-                pushTemplate.getNotificationImportance()
-            )
-            putExtra(
-                PushTemplateIntentConstants.IntentKeys.TICKER, pushTemplate.ticker
-            )
-            putExtra(
-                PushTemplateIntentConstants.IntentKeys.TAG, pushTemplate.tag
-            )
-            putExtra(
-                PushTemplateIntentConstants.IntentKeys.STICKY, pushTemplate.isNotificationSticky
-            )
-            putExtra(PushTemplateIntentConstants.IntentKeys.ACTION_URI, pushTemplate.actionUri)
-            putExtra(
-                PushTemplateIntentConstants.IntentKeys.PAYLOAD_VERSION, pushTemplate.payloadVersion
-            )
-            putExtra(
-                PushTemplateIntentConstants.IntentKeys.CAROUSEL_ITEMS,
-                pushTemplate.rawCarouselItems
-            )
-            putExtra(
-                PushTemplateIntentConstants.IntentKeys.CAROUSEL_LAYOUT_TYPE,
-                pushTemplate.carouselLayoutType
-            )
+        val clickIntent = pushTemplate.createIntentWithAction(intentAction)
+        clickIntent.putExtra(PushTemplateConstants.PushPayloadKeys.CHANNEL_ID, channelId)
+        clickIntent.putExtra(PushTemplateIntentConstants.IntentKeys.CENTER_IMAGE_INDEX, pushTemplate.centerImageIndex)
+        clickIntent.putExtra(PushTemplateIntentConstants.IntentKeys.IMAGE_URLS, downloadedImageUris.toTypedArray())
+        clickIntent.putExtra(PushTemplateIntentConstants.IntentKeys.IMAGE_CAPTIONS, imageCaptions.toTypedArray())
+        clickIntent.putExtra(PushTemplateIntentConstants.IntentKeys.IMAGE_CLICK_ACTIONS, imageClickActions.toTypedArray())
+        broadcastReceiverClass?.let {
+            clickIntent.setClass(context, broadcastReceiverClass)
         }
-
         return PendingIntent.getBroadcast(
             context,
             0,
