@@ -78,11 +78,7 @@ internal object ZeroBezelNotificationBuilder {
         val notificationManager =
             context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         val channelIdToUse: String = notificationManager.createNotificationChannelIfRequired(
-            context,
-            pushTemplate.channelId,
-            pushTemplate.sound,
-            pushTemplate.getNotificationImportance(),
-            pushTemplate.isFromIntent
+            context, pushTemplate
         )
 
         // create the notification builder with the common settings applied

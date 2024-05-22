@@ -47,13 +47,7 @@ internal object LegacyNotificationBuilder {
         // create the notification channel
         val notificationManager =
             context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        val channelId = notificationManager.createNotificationChannelIfRequired(
-            context,
-            pushTemplate.channelId,
-            pushTemplate.sound,
-            pushTemplate.getNotificationImportance(),
-            pushTemplate.isFromIntent
-        )
+        val channelId = notificationManager.createNotificationChannelIfRequired(context, pushTemplate)
 
         // Create the notification builder object and set the ticker, title, body, and badge count
         val builder = NotificationCompat.Builder(context, channelId)

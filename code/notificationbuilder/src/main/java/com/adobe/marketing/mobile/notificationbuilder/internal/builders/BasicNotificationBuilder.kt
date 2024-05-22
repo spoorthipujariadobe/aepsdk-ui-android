@@ -54,13 +54,7 @@ internal object BasicNotificationBuilder {
 
         val notificationManager =
             context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        val channelIdToUse: String = notificationManager.createNotificationChannelIfRequired(
-            context,
-            pushTemplate.channelId,
-            pushTemplate.sound,
-            pushTemplate.getNotificationImportance(),
-            pushTemplate.isFromIntent
-        )
+        val channelIdToUse: String = notificationManager.createNotificationChannelIfRequired(context, pushTemplate)
 
         // create the notification builder with the common settings applied
         val notificationBuilder = AEPPushNotificationBuilder.construct(
@@ -102,8 +96,8 @@ internal object BasicNotificationBuilder {
 
         // add a remind later button if we have a label and an epoch or delay timestamp
         pushTemplate.remindLaterText?.let { remindLaterText ->
-            if (pushTemplate.remindLaterEpochTimestamp != null ||
-                pushTemplate.remindLaterDelaySeconds != null
+            if (pushTemplate.remindLaterTimestamp != null ||
+                pushTemplate.remindLaterDuration != null
             ) {
                 val remindIntent = createRemindPendingIntent(
                     context,

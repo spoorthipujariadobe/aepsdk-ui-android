@@ -87,13 +87,7 @@ internal object AutoCarouselNotificationBuilder {
             context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
         // Create the notification channel if needed
-        val channelIdToUse = notificationManager.createNotificationChannelIfRequired(
-            context,
-            pushTemplate.channelId,
-            pushTemplate.sound,
-            pushTemplate.getNotificationImportance(),
-            pushTemplate.isFromIntent
-        )
+        val channelIdToUse = notificationManager.createNotificationChannelIfRequired(context, pushTemplate)
 
         // create the notification builder with the common settings applied
         return AEPPushNotificationBuilder.construct(

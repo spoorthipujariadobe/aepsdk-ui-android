@@ -25,6 +25,7 @@ import com.adobe.marketing.mobile.notificationbuilder.NotificationConstructionFa
 import com.adobe.marketing.mobile.notificationbuilder.PushTemplateIntentConstants
 import com.adobe.marketing.mobile.notificationbuilder.R
 import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateConstants
+import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateConstants.LOG_TAG
 import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateImageUtils
 import com.adobe.marketing.mobile.notificationbuilder.internal.extensions.createNotificationChannelIfRequired
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.InputBoxPushTemplate
@@ -44,8 +45,7 @@ internal object InputBoxNotificationBuilder {
         broadcastReceiverClass: Class<out BroadcastReceiver>?
     ): NotificationCompat.Builder {
         Log.trace(
-            PushTemplateConstants.LOG_TAG,
-            SELF_TAG,
+            LOG_TAG, SELF_TAG,
             "Building an input box template push notification."
         )
         val packageName = context.packageName
@@ -54,13 +54,7 @@ internal object InputBoxNotificationBuilder {
 
         val notificationManager =
             context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        val channelIdToUse: String = notificationManager.createNotificationChannelIfRequired(
-            context,
-            pushTemplate.channelId,
-            pushTemplate.sound,
-            pushTemplate.getNotificationImportance(),
-            pushTemplate.isFromIntent
-        )
+        val channelIdToUse: String = notificationManager.createNotificationChannelIfRequired(context, pushTemplate)
 
         // create the notification builder with the common settings applied
         val notificationBuilder = AEPPushNotificationBuilder.construct(
@@ -83,8 +77,7 @@ internal object InputBoxNotificationBuilder {
             expandedLayout.setImageViewBitmap(R.id.expanded_template_image, pushImage)
         } else {
             Log.trace(
-                PushTemplateConstants.LOG_TAG,
-                SELF_TAG,
+                LOG_TAG, SELF_TAG,
                 "No image found for input box push template."
             )
             expandedLayout.setViewVisibility(R.id.expanded_template_image, View.GONE)
@@ -107,8 +100,7 @@ internal object InputBoxNotificationBuilder {
             return notificationBuilder
         }
         Log.trace(
-            PushTemplateConstants.LOG_TAG,
-            SELF_TAG,
+            LOG_TAG, SELF_TAG,
             "Adding an input box to capture text input. The input box receiver name is ${pushTemplate.inputBoxReceiverName}."
         )
         addInputTextAction(
