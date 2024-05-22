@@ -12,30 +12,28 @@
 package com.adobe.marketing.mobile.notificationbuilder.internal.templates
 
 import android.content.Intent
-import com.adobe.marketing.mobile.notificationbuilder.PushTemplateIntentConstants
-import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateConstants
+import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateConstants.CarouselItemKeys
+import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateConstants.DefaultValues
+import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateConstants.LOG_TAG
+import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateConstants.PushPayloadKeys
+import com.adobe.marketing.mobile.notificationbuilder.internal.util.NotificationData
 import com.adobe.marketing.mobile.services.Log
-import com.adobe.marketing.mobile.util.DataReader
 import org.json.JSONArray
 import org.json.JSONException
 
-internal open class CarouselPushTemplate : AEPPushTemplate {
+internal open class CarouselPushTemplate(data: NotificationData, fromIntent: Boolean) : AEPPushTemplate(data, fromIntent) {
     // Optional, Determines how the carousel will be operated. Valid values are "auto" or "manual".
     // Default is "auto".
-    internal var carouselOperationMode: String
-        private set
+    internal val carouselMode: String
 
     // Required, One or more Items in the carousel defined by the CarouselItem class
-    internal var carouselItems = mutableListOf<CarouselItem>()
-        private set
+    internal val carouselItems: MutableList<CarouselItem>
 
     // Required, "default" or "filmstrip"
-    internal var carouselLayoutType: String
-        private set
+    internal val carouselLayout: String
 
     // Contains the carousel items as a string
-    internal var rawCarouselItems: String
-        private set
+    internal val rawCarouselItems: String
 
     data class CarouselItem(
         // Required, URI to an image to be shown for the carousel item
@@ -46,60 +44,45 @@ internal open class CarouselPushTemplate : AEPPushTemplate {
         val interactionUri: String?
     )
 
-    protected constructor(data: Map<String, String>) : super(data) {
-        carouselLayoutType = DataReader.optString(
-            data, PushTemplateConstants.PushPayloadKeys.CAROUSEL_LAYOUT, null
-        )
-            ?: throw IllegalArgumentException("Required field \"${PushTemplateConstants.PushPayloadKeys.CAROUSEL_LAYOUT}\" not found.")
-
-        rawCarouselItems = DataReader.optString(
-            data, PushTemplateConstants.PushPayloadKeys.CAROUSEL_ITEMS, null
-        )
-            ?: throw IllegalArgumentException("Required field \"${PushTemplateConstants.PushPayloadKeys.CAROUSEL_ITEMS}\" not found.")
-
-        carouselOperationMode = DataReader.optString(
-            data,
-            PushTemplateConstants.PushPayloadKeys.CAROUSEL_OPERATION_MODE,
-            PushTemplateConstants.DefaultValues.AUTO_CAROUSEL_MODE
-        )
+    init {
+        carouselLayout = data.getString(PushPayloadKeys.CAROUSEL_LAYOUT)
+            ?: throw IllegalArgumentException("Required field \"${PushPayloadKeys.CAROUSEL_LAYOUT}\" not found.")
+        rawCarouselItems = data.getString(PushPayloadKeys.CAROUSEL_ITEMS)
+            ?: throw IllegalArgumentException("Required field \"${PushPayloadKeys.CAROUSEL_ITEMS}\" not found.")
+        carouselMode = data.getString(PushPayloadKeys.CAROUSEL_OPERATION_MODE)
+            ?: DefaultValues.AUTO_CAROUSEL_MODE
         carouselItems = parseCarouselItemsFromString(rawCarouselItems)
     }
 
-    constructor(intent: Intent) : super(intent) {
-        val intentExtras =
-            intent.extras ?: throw IllegalArgumentException("Intent extras are null")
-        carouselOperationMode =
-            intentExtras.getString(PushTemplateIntentConstants.IntentKeys.CAROUSEL_OPERATION_MODE)
-                ?: PushTemplateConstants.DefaultValues.AUTO_CAROUSEL_MODE
-        carouselLayoutType =
-            intentExtras.getString(PushTemplateIntentConstants.IntentKeys.CAROUSEL_LAYOUT_TYPE)
-                ?: PushTemplateConstants.DefaultValues.DEFAULT_MANUAL_CAROUSEL_MODE
-        rawCarouselItems =
-            intentExtras.getString(PushTemplateIntentConstants.IntentKeys.CAROUSEL_ITEMS) ?: ""
-        carouselItems = parseCarouselItemsFromString(rawCarouselItems)
+    /**
+     * Creates an intent with the given action and adds the carousel layout, items and operation mode as extras.
+     *
+     * @param action the action to set on the intent
+     * @return the intent with the action and extras set
+     */
+    override fun createIntentWithAction(action: String): Intent {
+        return super.createIntentWithAction(action)
+            .putExtra(PushPayloadKeys.CAROUSEL_LAYOUT, carouselLayout)
+            .putExtra(PushPayloadKeys.CAROUSEL_ITEMS, rawCarouselItems)
+            .putExtra(PushPayloadKeys.CAROUSEL_OPERATION_MODE, carouselMode)
     }
 
     companion object {
         private const val SELF_TAG = "CarouselPushTemplate"
 
-        fun createCarouselPushTemplate(data: Map<String, String>): CarouselPushTemplate {
-            val carouselOperationMode = DataReader.optString(
-                data,
-                PushTemplateConstants.PushPayloadKeys.CAROUSEL_OPERATION_MODE,
-                PushTemplateConstants.DefaultValues.AUTO_CAROUSEL_MODE
-            )
-            return if (carouselOperationMode == PushTemplateConstants.DefaultValues.AUTO_CAROUSEL_MODE) {
+        fun createCarouselPushTemplate(data: NotificationData): CarouselPushTemplate {
+            val carouselMode = data.getString(PushPayloadKeys.CAROUSEL_OPERATION_MODE) ?: DefaultValues.AUTO_CAROUSEL_MODE
+            return if (carouselMode == DefaultValues.AUTO_CAROUSEL_MODE) {
                 AutoCarouselPushTemplate(data)
             } else
-                ManualCarouselPushTemplate(data)
+                ManualCarouselPushTemplate(data, null)
         }
 
         private fun parseCarouselItemsFromString(carouselItemsString: String?): MutableList<CarouselItem> {
             val carouselItems = mutableListOf<CarouselItem>()
             if (carouselItemsString.isNullOrEmpty()) {
                 Log.debug(
-                    PushTemplateConstants.LOG_TAG,
-                    SELF_TAG,
+                    LOG_TAG, SELF_TAG,
                     "No carousel items found in the push template."
                 )
                 return carouselItems
@@ -108,23 +91,16 @@ internal open class CarouselPushTemplate : AEPPushTemplate {
                 val jsonArray = JSONArray(carouselItemsString)
                 for (i in 0 until jsonArray.length()) {
                     val item = jsonArray.getJSONObject(i)
-                    val imageUri = item.getString(PushTemplateConstants.CarouselItemKeys.IMAGE)
-                    val captionText =
-                        item.optString(PushTemplateConstants.CarouselItemKeys.TEXT, "")
-                    val interactionUri =
-                        item.optString(PushTemplateConstants.CarouselItemKeys.URI, "")
+                    val imageUri = item.getString(CarouselItemKeys.IMAGE)
+                    val captionText = item.optString(CarouselItemKeys.TEXT, "")
+                    val interactionUri = item.optString(CarouselItemKeys.URI, "")
                     carouselItems.add(
-                        CarouselItem(
-                            imageUri,
-                            captionText,
-                            interactionUri
-                        )
+                        CarouselItem(imageUri, captionText, interactionUri)
                     )
                 }
             } catch (e: JSONException) {
                 Log.debug(
-                    PushTemplateConstants.LOG_TAG,
-                    SELF_TAG,
+                    LOG_TAG, SELF_TAG,
                     "Failed to parse carousel items from the push template: ${e.localizedMessage}"
                 )
             }

@@ -11,9 +11,6 @@
 
 package com.adobe.marketing.mobile.notificationbuilder.internal.templates
 
-import android.content.Intent
+import com.adobe.marketing.mobile.notificationbuilder.internal.util.NotificationData
 
-internal class AutoCarouselPushTemplate : CarouselPushTemplate {
-    constructor(data: Map<String, String>) : super(data)
-    constructor(intent: Intent) : super(intent)
-}
+internal class AutoCarouselPushTemplate(data: NotificationData, fromIntent: Boolean = false) : CarouselPushTemplate(data, fromIntent)
