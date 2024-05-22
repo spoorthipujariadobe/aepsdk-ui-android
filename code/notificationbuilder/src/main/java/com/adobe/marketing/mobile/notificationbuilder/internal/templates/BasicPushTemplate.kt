@@ -151,8 +151,7 @@ internal class BasicPushTemplate : AEPPushTemplate {
     internal fun getActionButtonsFromString(actionButtons: String?): List<ActionButton>? {
         if (actionButtons == null) {
             Log.debug(
-                PushTemplateConstants.LOG_TAG,
-                SELF_TAG,
+                LOG_TAG, SELF_TAG,
                 "Exception in converting actionButtons json string to json object, Error :" +
                     " actionButtons is null"
             )
@@ -168,8 +167,7 @@ internal class BasicPushTemplate : AEPPushTemplate {
             }
         } catch (e: JSONException) {
             Log.warning(
-                PushTemplateConstants.LOG_TAG,
-                SELF_TAG,
+                LOG_TAG, SELF_TAG,
                 "Exception in converting actionButtons json string to json object, Error : ${e.localizedMessage}"
             )
             return null

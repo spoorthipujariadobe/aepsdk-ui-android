@@ -125,8 +125,7 @@ internal class ProductCatalogPushTemplate : AEPPushTemplate {
                 jsonArray = JSONArray(catalogItemsString)
             } catch (e: JSONException) {
                 Log.error(
-                    PushTemplateConstants.LOG_TAG,
-                    SELF_TAG,
+                    LOG_TAG, SELF_TAG,
                     "Exception occurred when creating json array from the catalog items string: ${e.localizedMessage}"
                 )
                 throw IllegalArgumentException("Catalog items string containing a valid json array was not found.")
@@ -162,7 +161,7 @@ internal class ProductCatalogPushTemplate : AEPPushTemplate {
                     )
                 } catch (e: JSONException) {
                     Log.error(
-                        PushTemplateConstants.LOG_TAG,
+                        LOG_TAG,
                         SELF_TAG,
                         "Failed to parse catalog item at index $i: ${e.localizedMessage}"
                     )
