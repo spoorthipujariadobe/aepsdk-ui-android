@@ -83,7 +83,7 @@ internal object ManualCarouselNotificationBuilder {
         val packageName = context.packageName
         val smallLayout = RemoteViews(packageName, R.layout.push_template_collapsed)
         val expandedLayout =
-            if (pushTemplate.carouselLayoutType == PushTemplateConstants.DefaultValues.FILMSTRIP_CAROUSEL_MODE)
+            if (pushTemplate.carouselLayout == PushTemplateConstants.DefaultValues.FILMSTRIP_CAROUSEL_MODE)
                 RemoteViews(
                     packageName,
                     R.layout.push_template_filmstrip_carousel
@@ -193,7 +193,7 @@ internal object ManualCarouselNotificationBuilder {
                 }
         } else { // setup default indices if not building the notification from an intent
             carouselIndices =
-                if (pushTemplate.carouselLayoutType == PushTemplateConstants.DefaultValues.FILMSTRIP_CAROUSEL_MODE) {
+                if (pushTemplate.carouselLayout == PushTemplateConstants.DefaultValues.FILMSTRIP_CAROUSEL_MODE) {
                     Triple(
                         PushTemplateConstants.DefaultValues.FILMSTRIP_CAROUSEL_CENTER_INDEX - 1,
                         PushTemplateConstants.DefaultValues.FILMSTRIP_CAROUSEL_CENTER_INDEX,
@@ -223,7 +223,7 @@ internal object ManualCarouselNotificationBuilder {
         packageName: String?,
         fallbackActionUri: String?
     ) {
-        if (pushTemplate.carouselLayoutType == PushTemplateConstants.DefaultValues.FILMSTRIP_CAROUSEL_MODE) {
+        if (pushTemplate.carouselLayout == PushTemplateConstants.DefaultValues.FILMSTRIP_CAROUSEL_MODE) {
             populateFilmstripCarouselImages(
                 context,
                 captions,
@@ -259,7 +259,7 @@ internal object ManualCarouselNotificationBuilder {
         channelId: String
     ) {
         val clickPair =
-            if (pushTemplate.carouselLayoutType == PushTemplateConstants.DefaultValues.DEFAULT_MANUAL_CAROUSEL_MODE) {
+            if (pushTemplate.carouselLayout == PushTemplateConstants.DefaultValues.DEFAULT_MANUAL_CAROUSEL_MODE) {
                 Pair(
                     PushTemplateIntentConstants.IntentActions.MANUAL_CAROUSEL_LEFT_CLICKED,
                     PushTemplateIntentConstants.IntentActions.MANUAL_CAROUSEL_RIGHT_CLICKED

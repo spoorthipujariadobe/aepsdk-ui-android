@@ -55,12 +55,12 @@ internal object AEPPushNotificationBuilder {
 
         // set custom colors on the notification background, title text, and body text
         smallLayout.setNotificationBackgroundColor(
-            pushTemplate.notificationBackgroundColor,
+            pushTemplate.backgroundColor,
             R.id.basic_small_layout
         )
 
         expandedLayout.setNotificationBackgroundColor(
-            pushTemplate.notificationBackgroundColor,
+            pushTemplate.backgroundColor,
             containerLayoutViewId
         )
 
@@ -75,12 +75,12 @@ internal object AEPPushNotificationBuilder {
         )
 
         smallLayout.setNotificationBodyTextColor(
-            pushTemplate.expandedBodyTextColor,
+            pushTemplate.bodyTextColor,
             R.id.notification_body
         )
 
         expandedLayout.setNotificationBodyTextColor(
-            pushTemplate.expandedBodyTextColor,
+            pushTemplate.bodyTextColor,
             R.id.notification_body_expanded
         )
 
