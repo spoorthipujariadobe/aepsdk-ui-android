@@ -44,7 +44,7 @@ internal fun NotificationManager.createNotificationChannelIfRequired(
     // if not from intent and channel id is not provided, use the default channel id
     val channelIdToUse =
         if (isFromIntent) PushTemplateConstants.DefaultValues.SILENT_NOTIFICATION_CHANNEL_ID
-        else channelId ?: PushTemplateConstants.DEFAULT_CHANNEL_ID
+        else channelId ?: PushTemplateConstants.DefaultValues.DEFAULT_CHANNEL_ID
 
     // No channel creation required.
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
@@ -64,7 +64,7 @@ internal fun NotificationManager.createNotificationChannelIfRequired(
     // Create a channel
     val channel = NotificationChannel(
         channelIdToUse,
-        if (isFromIntent) PushTemplateConstants.SILENT_CHANNEL_NAME else PushTemplateConstants.DEFAULT_CHANNEL_NAME,
+        if (isFromIntent) PushTemplateConstants.DefaultValues.SILENT_CHANNEL_NAME else PushTemplateConstants.DefaultValues.DEFAULT_CHANNEL_NAME,
         importance
     )
 

@@ -158,7 +158,7 @@ object NotificationBuilder {
         val context = ServiceProvider.getInstance().appContextService.applicationContext
             ?: throw NotificationConstructionFailedException("Application context is null, cannot build a notification.")
         val pushTemplateType =
-            PushTemplateType.fromString(intent.getStringExtra(PushTemplateConstants.IntentKeys.TEMPLATE_TYPE))
+            PushTemplateType.fromString(intent.getStringExtra(PushTemplateIntentConstants.IntentKeys.TEMPLATE_TYPE))
 
         when (pushTemplateType) {
             PushTemplateType.BASIC -> {

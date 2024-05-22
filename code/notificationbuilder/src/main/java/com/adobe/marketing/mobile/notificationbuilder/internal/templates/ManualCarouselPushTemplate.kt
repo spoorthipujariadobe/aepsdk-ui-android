@@ -12,6 +12,7 @@
 package com.adobe.marketing.mobile.notificationbuilder.internal.templates
 
 import android.content.Intent
+import com.adobe.marketing.mobile.notificationbuilder.PushTemplateIntentConstants
 import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateConstants
 
 internal class ManualCarouselPushTemplate : CarouselPushTemplate {
@@ -26,7 +27,7 @@ internal class ManualCarouselPushTemplate : CarouselPushTemplate {
     constructor(intent: Intent) : super(intent) {
         intentAction = intent.action
         centerImageIndex = intent.getIntExtra(
-            PushTemplateConstants.IntentKeys.CENTER_IMAGE_INDEX,
+            PushTemplateIntentConstants.IntentKeys.CENTER_IMAGE_INDEX,
             getDefaultCarouselIndex(carouselLayoutType)
         )
     }

@@ -26,7 +26,7 @@ import com.adobe.marketing.mobile.notificationbuilder.internal.templates.ZeroBez
 import com.adobe.marketing.mobile.services.Log
 
 internal object ZeroBezelNotificationBuilder {
-    private const val SELF_TAG = "BasicTemplateNotificationBuilder"
+    private const val SELF_TAG = "ZeroBezelNotificationBuilder"
 
     @Throws(NotificationConstructionFailedException::class)
     fun construct(

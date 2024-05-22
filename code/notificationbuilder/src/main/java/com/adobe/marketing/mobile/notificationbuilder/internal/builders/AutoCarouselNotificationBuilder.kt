@@ -31,7 +31,7 @@ import com.adobe.marketing.mobile.services.Log
  * Object responsible for constructing a [NotificationCompat.Builder] object containing a auto carousel push template notification.
  */
 internal object AutoCarouselNotificationBuilder {
-    private const val SELF_TAG = "AutoCarouselTemplateNotificationBuilder"
+    private const val SELF_TAG = "AutoCarouselNotificationBuilder"
 
     fun construct(
         context: Context,

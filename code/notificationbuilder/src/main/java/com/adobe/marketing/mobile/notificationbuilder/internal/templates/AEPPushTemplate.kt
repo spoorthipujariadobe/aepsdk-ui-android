@@ -16,6 +16,7 @@ import android.content.Intent
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
+import com.adobe.marketing.mobile.notificationbuilder.PushTemplateIntentConstants
 import com.adobe.marketing.mobile.notificationbuilder.internal.NotificationPriority
 import com.adobe.marketing.mobile.notificationbuilder.internal.NotificationVisibility
 import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateConstants
@@ -256,43 +257,48 @@ internal sealed class AEPPushTemplate {
         val intentExtras =
             intent.extras ?: throw IllegalArgumentException("Intent extras are null.")
         // required values
-        title = intentExtras.getString(PushTemplateConstants.IntentKeys.TITLE_TEXT)
-            ?: throw IllegalArgumentException("Required field \"${PushTemplateConstants.IntentKeys.TITLE_TEXT}\" not found.")
-        body = intentExtras.getString(PushTemplateConstants.IntentKeys.BODY_TEXT)
-            ?: throw IllegalArgumentException("Required field \"${PushTemplateConstants.IntentKeys.BODY_TEXT}\" not found.")
-        payloadVersion = intentExtras.getInt(PushTemplateConstants.IntentKeys.PAYLOAD_VERSION)
+        title = intentExtras.getString(PushTemplateIntentConstants.IntentKeys.TITLE_TEXT)
+            ?: throw IllegalArgumentException("Required field \"${PushTemplateIntentConstants.IntentKeys.TITLE_TEXT}\" not found.")
+        body = intentExtras.getString(PushTemplateIntentConstants.IntentKeys.BODY_TEXT)
+            ?: throw IllegalArgumentException("Required field \"${PushTemplateIntentConstants.IntentKeys.BODY_TEXT}\" not found.")
+        payloadVersion = intentExtras.getInt(PushTemplateIntentConstants.IntentKeys.PAYLOAD_VERSION)
         payloadVersion?.let {
-            if (it < 1) throw IllegalArgumentException("Invalid \"${PushTemplateConstants.IntentKeys.PAYLOAD_VERSION}\" found.")
+            if (it < 1) throw IllegalArgumentException("Invalid \"${PushTemplateIntentConstants.IntentKeys.PAYLOAD_VERSION}\" found.")
         }
 
         // optional values
-        sound = intentExtras.getString(PushTemplateConstants.IntentKeys.CUSTOM_SOUND)
-        imageUrl = intentExtras.getString(PushTemplateConstants.IntentKeys.IMAGE_URI)
-        actionUri = intentExtras.getString(PushTemplateConstants.IntentKeys.ACTION_URI)
+        sound = intentExtras.getString(PushTemplateIntentConstants.IntentKeys.CUSTOM_SOUND)
+        imageUrl = intentExtras.getString(PushTemplateIntentConstants.IntentKeys.IMAGE_URI)
+        actionUri = intentExtras.getString(PushTemplateIntentConstants.IntentKeys.ACTION_URI)
         actionType = PushTemplateConstants.ActionType.valueOf(
-            intentExtras.getString(PushTemplateConstants.IntentKeys.ACTION_TYPE)
+            intentExtras.getString(PushTemplateIntentConstants.IntentKeys.ACTION_TYPE)
                 ?: PushTemplateConstants.ActionType.NONE.name
         )
-        smallIcon = intentExtras.getString(PushTemplateConstants.IntentKeys.SMALL_ICON)
-        largeIcon = intentExtras.getString(PushTemplateConstants.IntentKeys.LARGE_ICON)
-        badgeCount = intentExtras.getInt(PushTemplateConstants.IntentKeys.BADGE_COUNT)
-        notificationPriority = intentExtras.getInt(PushTemplateConstants.IntentKeys.PRIORITY)
-        notificationImportance = intentExtras.getInt(PushTemplateConstants.IntentKeys.IMPORTANCE)
-        notificationVisibility = intentExtras.getInt(PushTemplateConstants.IntentKeys.VISIBILITY)
-        channelId = intentExtras.getString(PushTemplateConstants.IntentKeys.CHANNEL_ID)
+        smallIcon = intentExtras.getString(PushTemplateIntentConstants.IntentKeys.SMALL_ICON)
+        largeIcon = intentExtras.getString(PushTemplateIntentConstants.IntentKeys.LARGE_ICON)
+        badgeCount = intentExtras.getInt(PushTemplateIntentConstants.IntentKeys.BADGE_COUNT)
+        notificationPriority = intentExtras.getInt(PushTemplateIntentConstants.IntentKeys.PRIORITY)
+        notificationImportance =
+            intentExtras.getInt(PushTemplateIntentConstants.IntentKeys.IMPORTANCE)
+        notificationVisibility =
+            intentExtras.getInt(PushTemplateIntentConstants.IntentKeys.VISIBILITY)
+        channelId = intentExtras.getString(PushTemplateIntentConstants.IntentKeys.CHANNEL_ID)
         templateType =
-            PushTemplateType.fromString(intentExtras.getString(PushTemplateConstants.IntentKeys.TEMPLATE_TYPE))
-        tag = intentExtras.getString(PushTemplateConstants.IntentKeys.TAG)
-        isNotificationSticky = intentExtras.getBoolean(PushTemplateConstants.IntentKeys.STICKY)
-        ticker = intentExtras.getString(PushTemplateConstants.IntentKeys.TICKER)
+            PushTemplateType.fromString(intentExtras.getString(PushTemplateIntentConstants.IntentKeys.TEMPLATE_TYPE))
+        tag = intentExtras.getString(PushTemplateIntentConstants.IntentKeys.TAG)
+        isNotificationSticky =
+            intentExtras.getBoolean(PushTemplateIntentConstants.IntentKeys.STICKY)
+        ticker = intentExtras.getString(PushTemplateIntentConstants.IntentKeys.TICKER)
         expandedBodyText =
-            intentExtras.getString(PushTemplateConstants.IntentKeys.EXPANDED_BODY_TEXT)
+            intentExtras.getString(PushTemplateIntentConstants.IntentKeys.EXPANDED_BODY_TEXT)
         expandedBodyTextColor =
-            intentExtras.getString(PushTemplateConstants.IntentKeys.EXPANDED_BODY_TEXT_COLOR)
-        titleTextColor = intentExtras.getString(PushTemplateConstants.IntentKeys.TITLE_TEXT_COLOR)
-        smallIconColor = intentExtras.getString(PushTemplateConstants.IntentKeys.SMALL_ICON_COLOR)
+            intentExtras.getString(PushTemplateIntentConstants.IntentKeys.EXPANDED_BODY_TEXT_COLOR)
+        titleTextColor =
+            intentExtras.getString(PushTemplateIntentConstants.IntentKeys.TITLE_TEXT_COLOR)
+        smallIconColor =
+            intentExtras.getString(PushTemplateIntentConstants.IntentKeys.SMALL_ICON_COLOR)
         notificationBackgroundColor =
-            intentExtras.getString(PushTemplateConstants.IntentKeys.NOTIFICATION_BACKGROUND_COLOR)
+            intentExtras.getString(PushTemplateIntentConstants.IntentKeys.NOTIFICATION_BACKGROUND_COLOR)
         isFromIntent = true
     }
 
