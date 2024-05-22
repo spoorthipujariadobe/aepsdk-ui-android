@@ -21,7 +21,7 @@ import com.adobe.marketing.mobile.services.Log
 import org.json.JSONArray
 import org.json.JSONException
 
-internal open class CarouselPushTemplate(data: NotificationData) : AEPPushTemplate(data) {
+internal open class CarouselPushTemplate protected constructor(data: NotificationData) : AEPPushTemplate(data) {
     // Optional, Determines how the carousel will be operated. Valid values are "auto" or "manual".
     // Default is "auto".
     internal val carouselMode: String
@@ -51,10 +51,8 @@ internal open class CarouselPushTemplate(data: NotificationData) : AEPPushTempla
      * @param fromIntent flag to denote if the push template was built from an intent
      */
     init {
-        carouselLayout = data.getString(PushPayloadKeys.CAROUSEL_LAYOUT)
-            ?: throw IllegalArgumentException("Required field \"${PushPayloadKeys.CAROUSEL_LAYOUT}\" not found.")
-        rawCarouselItems = data.getString(PushPayloadKeys.CAROUSEL_ITEMS)
-            ?: throw IllegalArgumentException("Required field \"${PushPayloadKeys.CAROUSEL_ITEMS}\" not found.")
+        carouselLayout = data.getRequiredString(PushPayloadKeys.CAROUSEL_LAYOUT)
+        rawCarouselItems = data.getRequiredString(PushPayloadKeys.CAROUSEL_ITEMS)
         carouselMode = data.getString(PushPayloadKeys.CAROUSEL_OPERATION_MODE)
             ?: DefaultValues.AUTO_CAROUSEL_MODE
         carouselItems = parseCarouselItemsFromString(rawCarouselItems)
@@ -81,7 +79,7 @@ internal open class CarouselPushTemplate(data: NotificationData) : AEPPushTempla
             return if (carouselMode == DefaultValues.AUTO_CAROUSEL_MODE) {
                 AutoCarouselPushTemplate(data)
             } else
-                ManualCarouselPushTemplate(data, null)
+                ManualCarouselPushTemplate(data)
         }
 
         private fun parseCarouselItemsFromString(carouselItemsString: String?): MutableList<CarouselItem> {

@@ -19,7 +19,7 @@ import com.adobe.marketing.mobile.notificationbuilder.internal.util.Notification
  * This class is used to parse the push template data payload or an intent and provide the necessary information
  * to build a notification containing an input box.
  */
-internal class InputBoxPushTemplate(data: NotificationData, fromIntent: Boolean = false) : AEPPushTemplate(data, fromIntent) {
+internal class InputBoxPushTemplate(data: NotificationData) : AEPPushTemplate(data) {
     // Required, the intent action name to be used when the user submits the feedback.
     internal val inputBoxReceiverName: String
 
@@ -40,8 +40,7 @@ internal class InputBoxPushTemplate(data: NotificationData, fromIntent: Boolean 
      * @throws IllegalArgumentException if the required fields are not found in the data
      */
     init {
-        inputBoxReceiverName = data.getString(PushPayloadKeys.INPUT_BOX_RECEIVER_NAME)
-            ?: throw IllegalArgumentException("Required field \"${PushPayloadKeys.INPUT_BOX_RECEIVER_NAME}\" not found.")
+        inputBoxReceiverName = data.getRequiredString(PushPayloadKeys.INPUT_BOX_RECEIVER_NAME)
         inputTextHint = data.getString(PushPayloadKeys.INPUT_BOX_HINT)
         feedbackText = data.getString(PushPayloadKeys.INPUT_BOX_FEEDBACK_TEXT)
         feedbackImage = data.getString(PushPayloadKeys.INPUT_BOX_FEEDBACK_IMAGE)

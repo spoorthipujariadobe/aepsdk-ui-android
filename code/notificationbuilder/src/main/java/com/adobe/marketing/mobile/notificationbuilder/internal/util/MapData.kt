@@ -16,7 +16,7 @@ import com.adobe.marketing.mobile.util.DataReader
 /**
  * Class responsible for extracting notification data from Remote Message Map.
  */
-class MapData(private val data: Map<String, String>) : NotificationData {
+internal class MapData(private val data: Map<String, String>) : NotificationData {
     override fun getString(key: String): String? = DataReader.optString(data, key, null)
     override fun getInteger(key: String): Int? = DataReader.optString(data, key, null)?.toIntOrNull()
     override fun getBoolean(key: String): Boolean? = DataReader.optString(data, key, null)?.toBoolean()

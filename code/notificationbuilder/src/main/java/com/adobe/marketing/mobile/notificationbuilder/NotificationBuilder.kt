@@ -163,7 +163,7 @@ object NotificationBuilder {
             PushTemplateType.CAROUSEL -> {
                 return ManualCarouselNotificationBuilder.construct(
                     context,
-                    ManualCarouselPushTemplate(intentData, intent.action),
+                    ManualCarouselPushTemplate(intentData),
                     trackerActivityClass,
                     broadcastReceiverClass
                 )

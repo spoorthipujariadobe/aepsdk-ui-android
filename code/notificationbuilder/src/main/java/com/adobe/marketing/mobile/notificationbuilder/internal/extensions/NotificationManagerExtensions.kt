@@ -57,7 +57,7 @@ internal fun NotificationManager.createNotificationChannelIfRequired(
     val channel = NotificationChannel(
         channelIdToUse,
         if (template.isFromIntent) PushTemplateConstants.DefaultValues.SILENT_CHANNEL_NAME else PushTemplateConstants.DefaultValues.DEFAULT_CHANNEL_NAME,
-        importance
+        template.getNotificationImportance()
     )
 
     // Add a sound if required.

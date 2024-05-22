@@ -68,16 +68,11 @@ internal class ProductCatalogPushTemplate(data: NotificationData) : AEPPushTempl
      * @throws IllegalArgumentException if any required fields for building the Product Catalog push template are missing
      */
     init {
-        ctaButtonText = data.getString(PushPayloadKeys.CATALOG_CTA_BUTTON_TEXT)
-            ?: throw IllegalArgumentException("Required field \"${PushPayloadKeys.CATALOG_CTA_BUTTON_TEXT}\" not found.")
-        ctaButtonColor = data.getString(PushPayloadKeys.CATALOG_CTA_BUTTON_COLOR)
-            ?: throw IllegalArgumentException("Required field \"${PushPayloadKeys.CATALOG_CTA_BUTTON_COLOR}\" not found.")
-        ctaButtonUri = data.getString(PushPayloadKeys.CATALOG_CTA_BUTTON_URI)
-            ?: throw IllegalArgumentException("Required field \"${PushPayloadKeys.CATALOG_CTA_BUTTON_URI}\" not found.")
-        displayLayout = data.getString(PushPayloadKeys.CATALOG_LAYOUT)
-            ?: throw IllegalArgumentException("Required field \"${PushPayloadKeys.CATALOG_LAYOUT}\" not found.")
-        rawCatalogItems = data.getString(PushPayloadKeys.CATALOG_ITEMS)
-            ?: throw IllegalArgumentException("Required field \"${PushPayloadKeys.CATALOG_ITEMS}\" not found.")
+        ctaButtonText = data.getRequiredString(PushPayloadKeys.CATALOG_CTA_BUTTON_TEXT)
+        ctaButtonColor = data.getRequiredString(PushPayloadKeys.CATALOG_CTA_BUTTON_COLOR)
+        ctaButtonUri = data.getRequiredString(PushPayloadKeys.CATALOG_CTA_BUTTON_URI)
+        displayLayout = data.getRequiredString(PushPayloadKeys.CATALOG_LAYOUT)
+        rawCatalogItems = data.getRequiredString(PushPayloadKeys.CATALOG_ITEMS)
         catalogItems = parseCatalogItemsFromString(rawCatalogItems)
     }
 

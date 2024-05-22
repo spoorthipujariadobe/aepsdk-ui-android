@@ -40,7 +40,7 @@ internal sealed class AEPPushTemplate(data: NotificationData) {
     internal val body: String
 
     // Required, Version of the payload assigned by the authoring UI.
-    internal val payloadVersion: Int?
+    internal val payloadVersion: String
 
     // begin optional values
     // Optional, sound to play when the notification is shown
@@ -116,14 +116,11 @@ internal sealed class AEPPushTemplate(data: NotificationData) {
      */
     init {
         // extract the notification payload version
-        payloadVersion = data.getString(PushPayloadKeys.VERSION)?.toInt()
-            ?: throw IllegalArgumentException("Required field \"${PushPayloadKeys.VERSION}\" not found.")
+        payloadVersion = data.getRequiredString(PushPayloadKeys.VERSION)
 
         // extract the text information
-        title = data.getString(PushPayloadKeys.TITLE)
-            ?: throw IllegalArgumentException("Required field \"${PushPayloadKeys.TITLE}\" not found.")
-        body = data.getString(PushPayloadKeys.BODY)
-            ?: throw IllegalArgumentException("Required field \"${PushPayloadKeys.BODY}\" not found.")
+        title = data.getRequiredString(PushPayloadKeys.TITLE)
+        body = data.getRequiredString(PushPayloadKeys.BODY)
         expandedBodyText = data.getString(PushPayloadKeys.EXPANDED_BODY_TEXT)
         ticker = data.getString(PushPayloadKeys.TICKER)
 
@@ -221,9 +218,12 @@ internal sealed class AEPPushTemplate(data: NotificationData) {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    private fun getNotificationImportanceFromString(priority: String?): Int {
-        return if (priority.isNullOrEmpty()) NotificationManager.IMPORTANCE_DEFAULT else notificationImportanceMap[priority]
-            ?: return NotificationManager.IMPORTANCE_DEFAULT
+    fun getNotificationImportance(): Int {
+        return if (priorityString.isNullOrEmpty()) {
+            NotificationManager.IMPORTANCE_DEFAULT
+        } else {
+            notificationImportanceMap[priorityString] ?: NotificationManager.IMPORTANCE_DEFAULT
+        }
     }
 
     companion object {

@@ -13,9 +13,10 @@ package com.adobe.marketing.mobile.notificationbuilder.internal.templates
 
 import com.adobe.marketing.mobile.notificationbuilder.PushTemplateIntentConstants
 import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateConstants
+import com.adobe.marketing.mobile.notificationbuilder.internal.util.IntentData
 import com.adobe.marketing.mobile.notificationbuilder.internal.util.NotificationData
 
-internal class ManualCarouselPushTemplate(data: NotificationData, intentAction: String?) : CarouselPushTemplate(data) {
+internal class ManualCarouselPushTemplate(data: NotificationData) : CarouselPushTemplate(data) {
     internal var intentAction: String? = null
         private set
     internal var centerImageIndex: Int = PushTemplateConstants.DefaultValues.NO_CENTER_INDEX_SET
@@ -29,8 +30,8 @@ internal class ManualCarouselPushTemplate(data: NotificationData, intentAction: 
      */
     init {
         centerImageIndex = getDefaultCarouselIndex(carouselLayout)
-        if (intentAction != null) {
-            this.intentAction = intentAction
+        if (data is IntentData && data.actionName != null) {
+            this.intentAction = data.actionName
             centerImageIndex = data.getInteger(PushTemplateIntentConstants.IntentKeys.CENTER_IMAGE_INDEX) ?: getDefaultCarouselIndex(carouselLayout)
         }
     }

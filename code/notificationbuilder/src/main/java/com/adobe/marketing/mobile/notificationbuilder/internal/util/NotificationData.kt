@@ -14,6 +14,10 @@ package com.adobe.marketing.mobile.notificationbuilder.internal.util
 // Interface for abstracting the source of notification properties
 interface NotificationData {
 
+    fun getRequiredString(key: String): String {
+        return getString(key) ?: throw IllegalArgumentException("Required push template key $key not found or null")
+    }
+
     /**
      * Returns the string value for the given key.
      *
