@@ -173,7 +173,7 @@ internal object InputBoxNotificationBuilder {
         }
         Log.trace(LOG_TAG, SELF_TAG, "Creating a text input received intent from a push template object.")
 
-        val inputReceivedIntent = pushTemplate.createIntentWithAction(PushTemplateIntentConstants.IntentActions.INPUT_RECEIVED)
+        val inputReceivedIntent = pushTemplate.createIntent(PushTemplateIntentConstants.IntentActions.INPUT_RECEIVED)
         inputReceivedIntent.putExtra(PushTemplateConstants.PushPayloadKeys.CHANNEL_ID, channelId)
         broadcastReceiverClass.let {
             inputReceivedIntent.setClass(context.applicationContext, broadcastReceiverClass)

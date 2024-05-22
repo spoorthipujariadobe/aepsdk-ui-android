@@ -21,7 +21,7 @@ import com.adobe.marketing.mobile.services.Log
 import org.json.JSONArray
 import org.json.JSONException
 
-internal open class CarouselPushTemplate(data: NotificationData, fromIntent: Boolean) : AEPPushTemplate(data, fromIntent) {
+internal open class CarouselPushTemplate(data: NotificationData) : AEPPushTemplate(data) {
     // Optional, Determines how the carousel will be operated. Valid values are "auto" or "manual".
     // Default is "auto".
     internal val carouselMode: String
@@ -66,8 +66,8 @@ internal open class CarouselPushTemplate(data: NotificationData, fromIntent: Boo
      * @param action the action to set on the intent
      * @return the intent with the action and extras set
      */
-    override fun createIntentWithAction(action: String): Intent {
-        return super.createIntentWithAction(action)
+    override fun createIntent(action: String): Intent {
+        return super.createIntent(action)
             .putExtra(PushPayloadKeys.CAROUSEL_LAYOUT, carouselLayout)
             .putExtra(PushPayloadKeys.CAROUSEL_ITEMS, rawCarouselItems)
             .putExtra(PushPayloadKeys.CAROUSEL_OPERATION_MODE, carouselMode)

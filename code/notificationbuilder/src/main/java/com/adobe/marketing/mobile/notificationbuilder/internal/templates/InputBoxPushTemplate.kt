@@ -47,8 +47,8 @@ internal class InputBoxPushTemplate(data: NotificationData, fromIntent: Boolean 
         feedbackImage = data.getString(PushPayloadKeys.INPUT_BOX_FEEDBACK_IMAGE)
     }
 
-    override fun createIntentWithAction(action: String): Intent {
-        return super.createIntentWithAction(action)
+    override fun createIntent(action: String): Intent {
+        return super.createIntent(action)
             .putExtra(PushPayloadKeys.INPUT_BOX_RECEIVER_NAME, inputBoxReceiverName)
             .putExtra(PushPayloadKeys.INPUT_BOX_HINT, inputTextHint)
             .putExtra(PushPayloadKeys.INPUT_BOX_FEEDBACK_TEXT, feedbackText)

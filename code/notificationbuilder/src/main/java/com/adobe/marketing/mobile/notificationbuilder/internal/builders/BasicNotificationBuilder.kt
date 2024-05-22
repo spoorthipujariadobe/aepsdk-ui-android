@@ -152,7 +152,7 @@ internal object BasicNotificationBuilder {
             "Creating a remind later pending intent from a push template object."
         )
 
-        val remindIntent = pushTemplate.createIntentWithAction(PushTemplateIntentConstants.IntentActions.REMIND_LATER_CLICKED)
+        val remindIntent = pushTemplate.createIntent(PushTemplateIntentConstants.IntentActions.REMIND_LATER_CLICKED)
         remindIntent.putExtra(PushTemplateConstants.PushPayloadKeys.CHANNEL_ID, channelId)
         broadcastReceiverClass.let {
             remindIntent.setClass(context.applicationContext, broadcastReceiverClass)

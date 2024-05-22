@@ -165,7 +165,7 @@ internal sealed class AEPPushTemplate(data: NotificationData, fromIntent: Boolea
      * @param action the action to set on the intent
      * @return the intent with the notification payload data
      */
-    internal open fun createIntentWithAction(action: String): Intent {
+    internal open fun createIntent(action: String): Intent {
         val intent = Intent(action)
         intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
 

@@ -497,7 +497,7 @@ internal object ManualCarouselNotificationBuilder {
         channelId: String
     ): PendingIntent {
 
-        val clickIntent = pushTemplate.createIntentWithAction(intentAction)
+        val clickIntent = pushTemplate.createIntent(intentAction)
         clickIntent.putExtra(PushTemplateConstants.PushPayloadKeys.CHANNEL_ID, channelId)
         clickIntent.putExtra(PushTemplateIntentConstants.IntentKeys.CENTER_IMAGE_INDEX, pushTemplate.centerImageIndex)
         clickIntent.putExtra(PushTemplateIntentConstants.IntentKeys.IMAGE_URLS, downloadedImageUris.toTypedArray())

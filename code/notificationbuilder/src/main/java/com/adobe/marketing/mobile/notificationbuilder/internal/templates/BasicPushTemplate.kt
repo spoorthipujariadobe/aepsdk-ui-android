@@ -122,8 +122,8 @@ internal class BasicPushTemplate(data: NotificationData, fromIntent: Boolean = f
      * @param action [String] containing the action to be added to the intent
      * @return an [Intent] with the provided action and additional data
      */
-    override fun createIntentWithAction(action: String): Intent {
-        val intent = super.createIntentWithAction(action)
+    override fun createIntent(action: String): Intent {
+        val intent = super.createIntent(action)
         intent.putExtra(PushPayloadKeys.REMIND_LATER_TEXT, remindLaterText)
         intent.putExtra(PushPayloadKeys.REMIND_LATER_TIMESTAMP, remindLaterTimestamp)
         intent.putExtra(PushPayloadKeys.REMIND_LATER_DURATION, remindLaterDuration)
