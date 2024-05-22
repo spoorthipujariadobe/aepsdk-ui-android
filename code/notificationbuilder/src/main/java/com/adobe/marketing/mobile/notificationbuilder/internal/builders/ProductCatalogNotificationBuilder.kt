@@ -20,6 +20,7 @@ import android.content.Intent
 import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
 import com.adobe.marketing.mobile.notificationbuilder.NotificationConstructionFailedException
+import com.adobe.marketing.mobile.notificationbuilder.PushTemplateIntentConstants
 import com.adobe.marketing.mobile.notificationbuilder.R
 import com.adobe.marketing.mobile.notificationbuilder.internal.PendingIntentUtils
 import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateConstants
@@ -312,9 +313,9 @@ internal object ProductCatalogNotificationBuilder {
         )
 
         val intentActionList = listOf(
-            PushTemplateConstants.IntentActions.CATALOG_THUMBNAIL_1_CLICKED,
-            PushTemplateConstants.IntentActions.CATALOG_THUMBNAIL_2_CLICKED,
-            PushTemplateConstants.IntentActions.CATALOG_THUMBNAIL_3_CLICKED
+            PushTemplateIntentConstants.IntentActions.CATALOG_THUMBNAIL_1_CLICKED,
+            PushTemplateIntentConstants.IntentActions.CATALOG_THUMBNAIL_2_CLICKED,
+            PushTemplateIntentConstants.IntentActions.CATALOG_THUMBNAIL_3_CLICKED
         )
 
         val thumbnailClickIntent = Intent(intentActionList[currentIndex]).apply {
@@ -322,100 +323,100 @@ internal object ProductCatalogNotificationBuilder {
 
             flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
             putExtra(
-                PushTemplateConstants.IntentKeys.TEMPLATE_TYPE, pushTemplate.templateType?.value
+                PushTemplateIntentConstants.IntentKeys.TEMPLATE_TYPE, pushTemplate.templateType?.value
             )
             putExtra(
-                PushTemplateConstants.IntentKeys.IMAGE_URI, pushTemplate.imageUrl
+                PushTemplateIntentConstants.IntentKeys.IMAGE_URI, pushTemplate.imageUrl
             )
             putExtra(
-                PushTemplateConstants.IntentKeys.ACTION_URI, pushTemplate.actionUri
+                PushTemplateIntentConstants.IntentKeys.ACTION_URI, pushTemplate.actionUri
             )
-            putExtra(PushTemplateConstants.IntentKeys.CHANNEL_ID, channelId)
+            putExtra(PushTemplateIntentConstants.IntentKeys.CHANNEL_ID, channelId)
             putExtra(
-                PushTemplateConstants.IntentKeys.CUSTOM_SOUND, pushTemplate.sound
+                PushTemplateIntentConstants.IntentKeys.CUSTOM_SOUND, pushTemplate.sound
             )
             putExtra(
-                PushTemplateConstants.IntentKeys.TITLE_TEXT,
+                PushTemplateIntentConstants.IntentKeys.TITLE_TEXT,
                 pushTemplate.title
             )
             putExtra(
-                PushTemplateConstants.IntentKeys.BODY_TEXT,
+                PushTemplateIntentConstants.IntentKeys.BODY_TEXT,
                 pushTemplate.body
             )
             putExtra(
-                PushTemplateConstants.IntentKeys.EXPANDED_BODY_TEXT,
+                PushTemplateIntentConstants.IntentKeys.EXPANDED_BODY_TEXT,
                 pushTemplate.expandedBodyText
             )
             putExtra(
-                PushTemplateConstants.IntentKeys.NOTIFICATION_BACKGROUND_COLOR,
+                PushTemplateIntentConstants.IntentKeys.NOTIFICATION_BACKGROUND_COLOR,
                 pushTemplate.notificationBackgroundColor
             )
             putExtra(
-                PushTemplateConstants.IntentKeys.TITLE_TEXT_COLOR,
+                PushTemplateIntentConstants.IntentKeys.TITLE_TEXT_COLOR,
                 pushTemplate.titleTextColor
             )
             putExtra(
-                PushTemplateConstants.IntentKeys.EXPANDED_BODY_TEXT_COLOR,
+                PushTemplateIntentConstants.IntentKeys.EXPANDED_BODY_TEXT_COLOR,
                 pushTemplate.expandedBodyTextColor
             )
             putExtra(
-                PushTemplateConstants.IntentKeys.SMALL_ICON, pushTemplate.smallIcon
+                PushTemplateIntentConstants.IntentKeys.SMALL_ICON, pushTemplate.smallIcon
             )
             putExtra(
-                PushTemplateConstants.IntentKeys.SMALL_ICON_COLOR,
+                PushTemplateIntentConstants.IntentKeys.SMALL_ICON_COLOR,
                 pushTemplate.smallIconColor
             )
             putExtra(
-                PushTemplateConstants.IntentKeys.LARGE_ICON, pushTemplate.largeIcon
+                PushTemplateIntentConstants.IntentKeys.LARGE_ICON, pushTemplate.largeIcon
             )
             putExtra(
-                PushTemplateConstants.IntentKeys.VISIBILITY,
+                PushTemplateIntentConstants.IntentKeys.VISIBILITY,
                 pushTemplate.getNotificationVisibility()
             )
             putExtra(
-                PushTemplateConstants.IntentKeys.IMPORTANCE,
+                PushTemplateIntentConstants.IntentKeys.IMPORTANCE,
                 pushTemplate.getNotificationImportance()
             )
             putExtra(
-                PushTemplateConstants.IntentKeys.BADGE_COUNT, pushTemplate.badgeCount
+                PushTemplateIntentConstants.IntentKeys.BADGE_COUNT, pushTemplate.badgeCount
             )
             putExtra(
-                PushTemplateConstants.IntentKeys.CATALOG_CTA_BUTTON_TEXT,
+                PushTemplateIntentConstants.IntentKeys.CATALOG_CTA_BUTTON_TEXT,
                 pushTemplate.ctaButtonText
             )
             putExtra(
-                PushTemplateConstants.IntentKeys.CATALOG_CTA_BUTTON_COLOR,
+                PushTemplateIntentConstants.IntentKeys.CATALOG_CTA_BUTTON_COLOR,
                 pushTemplate.ctaButtonColor
             )
             putExtra(
-                PushTemplateConstants.IntentKeys.CATALOG_CTA_BUTTON_URI, pushTemplate.ctaButtonUri
+                PushTemplateIntentConstants.IntentKeys.CATALOG_CTA_BUTTON_URI, pushTemplate.ctaButtonUri
             )
             putExtra(
-                PushTemplateConstants.IntentKeys.CATALOG_LAYOUT,
+                PushTemplateIntentConstants.IntentKeys.CATALOG_LAYOUT,
                 pushTemplate.displayLayout
             )
             putExtra(
-                PushTemplateConstants.IntentKeys.CATALOG_ITEMS,
+                PushTemplateIntentConstants.IntentKeys.CATALOG_ITEMS,
                 pushTemplate.rawCatalogItems
             )
             putExtra(
-                PushTemplateConstants.IntentKeys.CATALOG_ITEM_INDEX,
+                PushTemplateIntentConstants.IntentKeys.CATALOG_ITEM_INDEX,
                 currentIndex
             )
             putExtra(
-                PushTemplateConstants.IntentKeys.STICKY, pushTemplate.isNotificationSticky
+                PushTemplateIntentConstants.IntentKeys.STICKY, pushTemplate.isNotificationSticky
             )
             putExtra(
-                PushTemplateConstants.IntentKeys.TAG, pushTemplate.tag
+                PushTemplateIntentConstants.IntentKeys.TAG, pushTemplate.tag
             )
             putExtra(
-                PushTemplateConstants.IntentKeys.TICKER, pushTemplate.ticker
+                PushTemplateIntentConstants.IntentKeys.TICKER, pushTemplate.ticker
             )
             putExtra(
-                PushTemplateConstants.IntentKeys.PAYLOAD_VERSION, pushTemplate.payloadVersion
+                PushTemplateIntentConstants.IntentKeys.PAYLOAD_VERSION, pushTemplate.payloadVersion
             )
             putExtra(
-                PushTemplateConstants.IntentKeys.PRIORITY,
+                PushTemplateIntentConstants.IntentKeys.PRIORITY,
                 pushTemplate.notificationPriority
             )
         }
