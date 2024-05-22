@@ -102,6 +102,12 @@ internal class BasicPushTemplate(data: NotificationData, fromIntent: Boolean = f
     // Optional, If present, schedule this notification to be re-delivered after this provided time (in seconds).
     internal val remindLaterDuration: Int?
 
+    /**
+     * Initializes the push template with the given NotificationData.
+     *
+     * @param data the data to initialize the push template with
+     * @param fromIntent flag to denote if the push template was built from an intent
+     */
     init {
         actionButtonsString = data.getString(PushPayloadKeys.ACTION_BUTTONS)
         actionButtonsList = getActionButtonsFromString(actionButtonsString)

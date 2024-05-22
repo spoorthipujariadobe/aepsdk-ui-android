@@ -32,6 +32,13 @@ internal class InputBoxPushTemplate(data: NotificationData, fromIntent: Boolean 
     // Optional, once feedback has been submitted, use this as the notification's image
     internal val feedbackImage: String?
 
+    /**
+     * Initializes the input box push template with the provided data.
+     *
+     * @param data the notification data payload or an intent
+     * @param fromIntent `true` if the data is from an intent, `false` otherwise
+     * @throws IllegalArgumentException if the required fields are not found in the data
+     */
     init {
         inputBoxReceiverName = data.getString(PushPayloadKeys.INPUT_BOX_RECEIVER_NAME)
             ?: throw IllegalArgumentException("Required field \"${PushPayloadKeys.INPUT_BOX_RECEIVER_NAME}\" not found.")

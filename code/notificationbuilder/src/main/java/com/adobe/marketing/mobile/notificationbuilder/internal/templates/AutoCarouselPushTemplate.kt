@@ -13,4 +13,10 @@ package com.adobe.marketing.mobile.notificationbuilder.internal.templates
 
 import com.adobe.marketing.mobile.notificationbuilder.internal.util.NotificationData
 
+/**
+ * Auto Carousel Push Template
+ *
+ * @param data Notification data
+ * @param fromIntent `true` if the data is from an intent, `false` otherwise
+ */
 internal class AutoCarouselPushTemplate(data: NotificationData, fromIntent: Boolean = false) : CarouselPushTemplate(data, fromIntent)

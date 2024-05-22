@@ -60,6 +60,13 @@ internal class ProductCatalogPushTemplate(data: NotificationData, fromIntent: Bo
         val uri: String
     )
 
+    /**
+     * Constructs a Product Catalog push template with the given NotificationData.
+     *
+     * @param data the data to initialize the push template with
+     * @param fromIntent flag to denote if the push template was built from an intent
+     * @throws IllegalArgumentException if any required fields for building the Product Catalog push template are missing
+     */
     init {
         ctaButtonText = data.getString(PushPayloadKeys.CATALOG_CTA_BUTTON_TEXT)
             ?: throw IllegalArgumentException("Required field \"${PushPayloadKeys.CATALOG_CTA_BUTTON_TEXT}\" not found.")

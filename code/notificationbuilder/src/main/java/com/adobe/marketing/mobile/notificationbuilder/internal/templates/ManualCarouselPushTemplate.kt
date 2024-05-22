@@ -21,7 +21,8 @@ internal class ManualCarouselPushTemplate(data: NotificationData, intentAction: 
     internal var centerImageIndex: Int = PushTemplateConstants.DefaultValues.NO_CENTER_INDEX_SET
 
     /**
-     * Constructor for Manual Carousel Push Template
+     * Constructs a Manual Carousel Push Template from the provided data.
+     * If the intent action is not null, then the data is from an intent.
      *
      * @param data Notification data
      * @param intentAction Intent action

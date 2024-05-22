@@ -107,6 +107,12 @@ internal sealed class AEPPushTemplate(data: NotificationData, fromIntent: Boolea
     // flag to denote if the PushTemplate was built from an intent
     internal val isFromIntent: Boolean
 
+    /**
+     * Initializes the push template with the given NotificationData.
+     *
+     * @param data the data to initialize the push template with
+     * @param fromIntent flag to denote if the push template was built from an intent
+     */
     init {
         // extract the notification payload version
         payloadVersion = data.getString(PushPayloadKeys.VERSION)?.toInt()
@@ -154,7 +160,7 @@ internal sealed class AEPPushTemplate(data: NotificationData, fromIntent: Boolea
     }
 
     /**
-     * Creates an intent with the given action and adds the notification payload data to the intent.
+     * Creates an intent for the given action and adds the notification payload data to the intent.
      *
      * @param action the action to set on the intent
      * @return the intent with the notification payload data

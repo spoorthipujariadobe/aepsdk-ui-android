@@ -44,6 +44,12 @@ internal open class CarouselPushTemplate(data: NotificationData, fromIntent: Boo
         val interactionUri: String?
     )
 
+    /**
+     * Initializes the push template with the given NotificationData.
+     *
+     * @param data the data to initialize the push template with
+     * @param fromIntent flag to denote if the push template was built from an intent
+     */
     init {
         carouselLayout = data.getString(PushPayloadKeys.CAROUSEL_LAYOUT)
             ?: throw IllegalArgumentException("Required field \"${PushPayloadKeys.CAROUSEL_LAYOUT}\" not found.")
