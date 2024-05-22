@@ -26,6 +26,5 @@ object PushTemplateIntentConstants {
         const val IMAGE_URLS = "imageUrls"
         const val IMAGE_CAPTIONS = "imageCaptions"
         const val IMAGE_CLICK_ACTIONS = "imageClickActions"
-        const val TEMPLATE_TYPE = "templateType"
     }
 }

@@ -147,9 +147,9 @@ object NotificationBuilder {
     ): NotificationCompat.Builder {
         val context = ServiceProvider.getInstance().appContextService.applicationContext
             ?: throw NotificationConstructionFailedException("Application context is null, cannot build a notification.")
-        val pushTemplateType =
-            PushTemplateType.fromString(intent.getStringExtra(PushTemplateIntentConstants.IntentKeys.TEMPLATE_TYPE))
         val extras = intent.extras ?: throw NotificationConstructionFailedException("Intent extras are null, cannot re-build the notification.")
+        val pushTemplateType =
+            PushTemplateType.fromString(intent.getStringExtra(PushTemplateConstants.PushPayloadKeys.TEMPLATE_TYPE))
         val intentData = IntentData(extras)
 
         when (pushTemplateType) {

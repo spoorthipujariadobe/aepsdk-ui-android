@@ -165,7 +165,7 @@ internal sealed class AEPPushTemplate(data: NotificationData, fromIntent: Boolea
      * @param action the action to set on the intent
      * @return the intent with the notification payload data
      */
-    open fun createIntentWithAction(action: String): Intent {
+    internal open fun createIntentWithAction(action: String): Intent {
         val intent = Intent(action)
         intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
 
@@ -179,7 +179,7 @@ internal sealed class AEPPushTemplate(data: NotificationData, fromIntent: Boolea
         intent.putExtra(PushPayloadKeys.TICKER, ticker)
 
         // add the template type
-        intent.putExtra(PushPayloadKeys.TEMPLATE_TYPE, templateType?.name)
+        intent.putExtra(PushPayloadKeys.TEMPLATE_TYPE, templateType?.value)
 
         // add the basic media information
         intent.putExtra(PushPayloadKeys.IMAGE_URL, imageUrl)
@@ -202,7 +202,7 @@ internal sealed class AEPPushTemplate(data: NotificationData, fromIntent: Boolea
         intent.putExtra(PushPayloadKeys.TAG, tag)
         intent.putExtra(PushPayloadKeys.SOUND, sound)
         intent.putExtra(PushPayloadKeys.BADGE_COUNT, badgeCount.toString())
-        intent.putExtra(PushPayloadKeys.STICKY, isNotificationSticky)
+        intent.putExtra(PushPayloadKeys.STICKY, isNotificationSticky.toString())
 
         // add notification priority and visibility
         intent.putExtra(PushPayloadKeys.PRIORITY, priorityString)
