@@ -242,7 +242,10 @@ internal object ProductCatalogNotificationBuilder {
         pushTemplate: ProductCatalogPushTemplate
     ) {
         // apply the color to the cta button
-        expandedLayout.setCtaButtonColor(pushTemplate.ctaButtonColor, R.id.cta_button)
+        expandedLayout.setCtaButtonColor(R.id.cta_button, pushTemplate.ctaButtonColor)
+
+        // apply text to the cta button
+        expandedLayout.setTextViewText(R.id.cta_button, pushTemplate.ctaButtonText)
 
         // apply the open uri action to the cta button
         expandedLayout.setOnClickPendingIntent(
@@ -261,12 +264,12 @@ internal object ProductCatalogNotificationBuilder {
     /**
      * Sets custom colors to the product catalog CTA button.
      *
-     * @param buttonColor [String] containing the hex color code for the cta button
      * @param containerViewId [Int] containing the resource id of the push template notification RemoteViews
+     * @param buttonColor [String] containing the hex color code for the cta button
      */
     private fun RemoteViews.setCtaButtonColor(
-        buttonColor: String?,
-        containerViewId: Int
+        containerViewId: Int,
+        buttonColor: String?
     ) {
         // get custom color from hex string and set it the cta button
         if (buttonColor.isNullOrEmpty()) {

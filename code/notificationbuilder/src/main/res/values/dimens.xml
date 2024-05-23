@@ -35,6 +35,7 @@
     <dimen name="product_catalog_horizontal_mid_row_margin_top">5dp</dimen>
     <dimen name="product_catalog_horizontal_mid_row_height">32dp</dimen>
     <dimen name="product_catalog_horizontal_mid_row_width">0dp</dimen>
+    <dimen name="product_catalog_horizontal_mid_row_text_padding">7dp</dimen>
     <dimen name="product_catalog_horizontal_bottom_row_height">33dp</dimen>
     <dimen name="product_catalog_horizontal_bottom_row_width">0dp</dimen>
     <dimen name="product_catalog_horizontal_bottom_row_margin_top">10dp</dimen>

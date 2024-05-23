@@ -5,7 +5,8 @@
     android:layout_height="match_parent"
     android:clipToPadding="false"
     android:clipChildren="false"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:theme="@style/DayNightTheme">
 
     <ImageView
         android:id="@+id/product_image"
@@ -31,6 +32,7 @@
             android:layout_gravity="start"
             android:layout_width="@dimen/product_catalog_horizontal_mid_row_width"
             android:layout_height="@dimen/product_catalog_horizontal_mid_row_height"
+            android:paddingTop="@dimen/product_catalog_horizontal_mid_row_text_padding"
             android:textAlignment="center"
             android:textSize="14sp" />
 
