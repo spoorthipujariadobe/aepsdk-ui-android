@@ -11,7 +11,6 @@
 
 package com.adobe.marketing.mobile.notificationbuilder.internal.templates
 
-import android.content.Intent
 import androidx.annotation.VisibleForTesting
 import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateConstants.ActionButtons
 import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateConstants.ActionType
@@ -104,7 +103,6 @@ internal class BasicPushTemplate(data: NotificationData) : AEPPushTemplate(data)
      * Initializes the push template with the given NotificationData.
      *
      * @param data the data to initialize the push template with
-     * @param fromIntent flag to denote if the push template was built from an intent
      */
     init {
         actionButtonsString = data.getString(PushPayloadKeys.ACTION_BUTTONS)
@@ -112,21 +110,6 @@ internal class BasicPushTemplate(data: NotificationData) : AEPPushTemplate(data)
         remindLaterText = data.getString(PushPayloadKeys.REMIND_LATER_TEXT)
         remindLaterTimestamp = data.getLong(PushPayloadKeys.REMIND_LATER_TIMESTAMP)
         remindLaterDuration = data.getInteger(PushPayloadKeys.REMIND_LATER_DURATION)
-    }
-
-    /**
-     * Creates an intent with the provided action and adds the remind later text, timestamp, duration and action buttons.
-     *
-     * @param action [String] containing the action to be added to the intent
-     * @return an [Intent] with the provided action and additional data
-     */
-    override fun createIntent(action: String): Intent {
-        val intent = super.createIntent(action)
-        intent.putExtra(PushPayloadKeys.REMIND_LATER_TEXT, remindLaterText)
-        intent.putExtra(PushPayloadKeys.REMIND_LATER_TIMESTAMP, remindLaterTimestamp)
-        intent.putExtra(PushPayloadKeys.REMIND_LATER_DURATION, remindLaterDuration)
-        intent.putExtra(PushPayloadKeys.ACTION_BUTTONS, actionButtonsString)
-        return intent
     }
 
     /**

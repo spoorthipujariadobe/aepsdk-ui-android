@@ -25,6 +25,7 @@ import com.adobe.marketing.mobile.notificationbuilder.PushTemplateIntentConstant
 import com.adobe.marketing.mobile.notificationbuilder.R
 import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateConstants
 import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateConstants.LOG_TAG
+import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateConstants.PushPayloadKeys
 import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateImageUtils
 import com.adobe.marketing.mobile.notificationbuilder.internal.extensions.createNotificationChannelIfRequired
 import com.adobe.marketing.mobile.notificationbuilder.internal.extensions.setRemoteViewClickAction
@@ -488,8 +489,11 @@ internal object ManualCarouselNotificationBuilder {
         channelId: String
     ): PendingIntent {
 
-        val clickIntent = pushTemplate.createIntent(intentAction)
-        clickIntent.putExtra(PushTemplateConstants.PushPayloadKeys.CHANNEL_ID, channelId)
+        val clickIntent = AEPPushNotificationBuilder.createIntent(intentAction, pushTemplate)
+        clickIntent.putExtra(PushPayloadKeys.CHANNEL_ID, pushTemplate.channelId)
+        clickIntent.putExtra(PushPayloadKeys.CAROUSEL_LAYOUT, pushTemplate.carouselLayout)
+        clickIntent.putExtra(PushPayloadKeys.CAROUSEL_ITEMS, pushTemplate.rawCarouselItems)
+        clickIntent.putExtra(PushPayloadKeys.CAROUSEL_OPERATION_MODE, pushTemplate.carouselMode)
         clickIntent.putExtra(PushTemplateIntentConstants.IntentKeys.CENTER_IMAGE_INDEX, pushTemplate.centerImageIndex)
         clickIntent.putExtra(PushTemplateIntentConstants.IntentKeys.IMAGE_URLS, downloadedImageUris.toTypedArray())
         clickIntent.putExtra(PushTemplateIntentConstants.IntentKeys.IMAGE_CAPTIONS, imageCaptions.toTypedArray())

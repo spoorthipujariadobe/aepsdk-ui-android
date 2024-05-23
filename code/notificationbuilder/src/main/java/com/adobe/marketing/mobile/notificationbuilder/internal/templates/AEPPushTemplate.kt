@@ -12,7 +12,6 @@
 package com.adobe.marketing.mobile.notificationbuilder.internal.templates
 
 import android.app.NotificationManager
-import android.content.Intent
 import android.os.Build
 import androidx.annotation.RequiresApi
 import com.adobe.marketing.mobile.notificationbuilder.internal.NotificationPriority
@@ -68,7 +67,7 @@ internal sealed class AEPPushTemplate(data: NotificationData) {
     internal val imageUrl: String?
 
     // Optional, action type for the notification
-    private val actionType: ActionType?
+    internal val actionType: ActionType?
 
     // Optional, action uri for the notification
     internal val actionUri: String?
@@ -112,7 +111,6 @@ internal sealed class AEPPushTemplate(data: NotificationData) {
      * Initializes the push template with the given NotificationData.
      *
      * @param data the data to initialize the push template with
-     * @param fromIntent flag to denote if the push template was built from an intent
      */
     init {
         // extract the notification payload version
@@ -155,58 +153,6 @@ internal sealed class AEPPushTemplate(data: NotificationData) {
         // extract notification priority and visibility
         priorityString = data.getString(PushPayloadKeys.PRIORITY)
         visibilityString = data.getString(PushPayloadKeys.VISIBILITY)
-    }
-
-    /**
-     * Creates an intent for the given action and adds the notification payload data to the intent.
-     *
-     * @param action the action to set on the intent
-     * @return the intent with the notification payload data
-     */
-    internal open fun createIntent(action: String): Intent {
-        val intent = Intent(action)
-        intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-
-        // add the notification payload version
-        intent.putExtra(PushPayloadKeys.VERSION, payloadVersion)
-
-        // add the notification text information
-        intent.putExtra(PushPayloadKeys.TITLE, title)
-        intent.putExtra(PushPayloadKeys.BODY, body)
-        intent.putExtra(PushPayloadKeys.EXPANDED_BODY_TEXT, expandedBodyText)
-        intent.putExtra(PushPayloadKeys.TICKER, ticker)
-
-        // add the template type
-        intent.putExtra(PushPayloadKeys.TEMPLATE_TYPE, templateType?.value)
-
-        // add the basic media information
-        intent.putExtra(PushPayloadKeys.IMAGE_URL, imageUrl)
-
-        // add the notification action information
-        intent.putExtra(PushPayloadKeys.ACTION_URI, actionUri)
-        intent.putExtra(PushPayloadKeys.ACTION_TYPE, actionType?.name)
-
-        // add the notification icon information
-        intent.putExtra(PushPayloadKeys.SMALL_ICON, smallIcon)
-        intent.putExtra(PushPayloadKeys.LARGE_ICON, largeIcon)
-
-        // add the notification color data
-        intent.putExtra(PushPayloadKeys.TITLE_TEXT_COLOR, titleTextColor)
-        intent.putExtra(PushPayloadKeys.BODY_TEXT_COLOR, bodyTextColor)
-        intent.putExtra(PushPayloadKeys.BACKGROUND_COLOR, backgroundColor)
-        intent.putExtra(PushPayloadKeys.SMALL_ICON_COLOR, smallIconColor)
-
-        // add other notification properties
-        intent.putExtra(PushPayloadKeys.TAG, tag)
-        intent.putExtra(PushPayloadKeys.SOUND, sound)
-        intent.putExtra(PushPayloadKeys.BADGE_COUNT, badgeCount.toString())
-        intent.putExtra(PushPayloadKeys.STICKY, isNotificationSticky.toString())
-
-        // add notification priority and visibility
-        intent.putExtra(PushPayloadKeys.PRIORITY, priorityString)
-        intent.putExtra(PushPayloadKeys.VISIBILITY, visibilityString)
-
-        return intent
     }
 
     fun getNotificationVisibility(): Int {

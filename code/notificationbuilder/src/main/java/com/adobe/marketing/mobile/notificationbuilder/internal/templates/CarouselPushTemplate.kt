@@ -11,7 +11,6 @@
 
 package com.adobe.marketing.mobile.notificationbuilder.internal.templates
 
-import android.content.Intent
 import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateConstants.CarouselItemKeys
 import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateConstants.DefaultValues
 import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateConstants.LOG_TAG
@@ -48,7 +47,6 @@ internal open class CarouselPushTemplate protected constructor(data: Notificatio
      * Initializes the push template with the given NotificationData.
      *
      * @param data the data to initialize the push template with
-     * @param fromIntent flag to denote if the push template was built from an intent
      */
     init {
         carouselLayout = data.getRequiredString(PushPayloadKeys.CAROUSEL_LAYOUT)
@@ -56,19 +54,6 @@ internal open class CarouselPushTemplate protected constructor(data: Notificatio
         carouselMode = data.getString(PushPayloadKeys.CAROUSEL_OPERATION_MODE)
             ?: DefaultValues.AUTO_CAROUSEL_MODE
         carouselItems = parseCarouselItemsFromString(rawCarouselItems)
-    }
-
-    /**
-     * Creates an intent with the given action and adds the carousel layout, items and operation mode as extras.
-     *
-     * @param action the action to set on the intent
-     * @return the intent with the action and extras set
-     */
-    override fun createIntent(action: String): Intent {
-        return super.createIntent(action)
-            .putExtra(PushPayloadKeys.CAROUSEL_LAYOUT, carouselLayout)
-            .putExtra(PushPayloadKeys.CAROUSEL_ITEMS, rawCarouselItems)
-            .putExtra(PushPayloadKeys.CAROUSEL_OPERATION_MODE, carouselMode)
     }
 
     companion object {

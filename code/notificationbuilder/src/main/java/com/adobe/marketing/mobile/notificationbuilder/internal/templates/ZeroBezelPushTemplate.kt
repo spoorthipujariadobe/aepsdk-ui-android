@@ -35,7 +35,6 @@ internal class ZeroBezelPushTemplate(data: NotificationData) : AEPPushTemplate(d
      * Constructs a Zero Bezel Push Template from the provided data.
      *
      * @param data Notification data
-     * @param fromIntent `true` if the data is from an intent, `false` otherwise
      */
     init {
         collapsedStyle = ZeroBezelStyle

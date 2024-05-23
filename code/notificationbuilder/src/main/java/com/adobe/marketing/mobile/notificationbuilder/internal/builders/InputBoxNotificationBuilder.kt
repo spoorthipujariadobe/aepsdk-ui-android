@@ -26,6 +26,7 @@ import com.adobe.marketing.mobile.notificationbuilder.PushTemplateIntentConstant
 import com.adobe.marketing.mobile.notificationbuilder.R
 import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateConstants
 import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateConstants.LOG_TAG
+import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateConstants.PushPayloadKeys
 import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateImageUtils
 import com.adobe.marketing.mobile.notificationbuilder.internal.extensions.createNotificationChannelIfRequired
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.InputBoxPushTemplate
@@ -167,8 +168,12 @@ internal object InputBoxNotificationBuilder {
         }
         Log.trace(LOG_TAG, SELF_TAG, "Creating a text input received intent from a push template object.")
 
-        val inputReceivedIntent = pushTemplate.createIntent(PushTemplateIntentConstants.IntentActions.INPUT_RECEIVED)
-        inputReceivedIntent.putExtra(PushTemplateConstants.PushPayloadKeys.CHANNEL_ID, channelId)
+        val inputReceivedIntent = AEPPushNotificationBuilder.createIntent(PushTemplateIntentConstants.IntentActions.INPUT_RECEIVED, pushTemplate)
+        inputReceivedIntent.putExtra(PushPayloadKeys.CHANNEL_ID, channelId)
+        inputReceivedIntent.putExtra(PushPayloadKeys.INPUT_BOX_RECEIVER_NAME, pushTemplate.inputBoxReceiverName)
+        inputReceivedIntent.putExtra(PushPayloadKeys.INPUT_BOX_HINT, pushTemplate.inputTextHint)
+        inputReceivedIntent.putExtra(PushPayloadKeys.INPUT_BOX_FEEDBACK_TEXT, pushTemplate.feedbackText)
+        inputReceivedIntent.putExtra(PushPayloadKeys.INPUT_BOX_FEEDBACK_IMAGE, pushTemplate.feedbackImage)
         broadcastReceiverClass.let {
             inputReceivedIntent.setClass(context.applicationContext, broadcastReceiverClass)
         }

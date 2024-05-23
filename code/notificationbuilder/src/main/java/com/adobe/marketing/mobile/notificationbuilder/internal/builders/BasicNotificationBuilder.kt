@@ -22,8 +22,8 @@ import androidx.core.app.NotificationCompat
 import com.adobe.marketing.mobile.notificationbuilder.NotificationConstructionFailedException
 import com.adobe.marketing.mobile.notificationbuilder.PushTemplateIntentConstants
 import com.adobe.marketing.mobile.notificationbuilder.R
-import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateConstants
 import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateConstants.LOG_TAG
+import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateConstants.PushPayloadKeys
 import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateImageUtils
 import com.adobe.marketing.mobile.notificationbuilder.internal.extensions.addActionButtons
 import com.adobe.marketing.mobile.notificationbuilder.internal.extensions.createNotificationChannelIfRequired
@@ -141,8 +141,13 @@ internal object BasicNotificationBuilder {
         }
         Log.trace(LOG_TAG, SELF_TAG, "Creating a remind later pending intent from a push template object.")
 
-        val remindIntent = pushTemplate.createIntent(PushTemplateIntentConstants.IntentActions.REMIND_LATER_CLICKED)
-        remindIntent.putExtra(PushTemplateConstants.PushPayloadKeys.CHANNEL_ID, channelId)
+        val remindIntent = AEPPushNotificationBuilder.createIntent(PushTemplateIntentConstants.IntentActions.REMIND_LATER_CLICKED, pushTemplate)
+        remindIntent.putExtra(PushPayloadKeys.REMIND_LATER_TEXT, pushTemplate.remindLaterText)
+        remindIntent.putExtra(PushPayloadKeys.REMIND_LATER_TIMESTAMP, pushTemplate.remindLaterTimestamp)
+        remindIntent.putExtra(PushPayloadKeys.REMIND_LATER_DURATION, pushTemplate.remindLaterDuration)
+        remindIntent.putExtra(PushPayloadKeys.ACTION_BUTTONS, pushTemplate.actionButtonsString)
+        remindIntent.putExtra(PushPayloadKeys.CHANNEL_ID, channelId)
+
         broadcastReceiverClass.let {
             remindIntent.setClass(context.applicationContext, broadcastReceiverClass)
         }

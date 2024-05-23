@@ -26,7 +26,6 @@ internal class ManualCarouselPushTemplate(data: NotificationData) : CarouselPush
      * If the intent action is not null, then the data is from an intent.
      *
      * @param data Notification data
-     * @param intentAction Intent action
      */
     init {
         centerImageIndex = getDefaultCarouselIndex(carouselLayout)

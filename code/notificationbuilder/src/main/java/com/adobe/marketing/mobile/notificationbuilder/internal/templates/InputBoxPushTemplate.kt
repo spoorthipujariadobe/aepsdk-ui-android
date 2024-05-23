@@ -11,7 +11,6 @@
 
 package com.adobe.marketing.mobile.notificationbuilder.internal.templates
 
-import android.content.Intent
 import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateConstants.PushPayloadKeys
 import com.adobe.marketing.mobile.notificationbuilder.internal.util.NotificationData
 
@@ -36,7 +35,6 @@ internal class InputBoxPushTemplate(data: NotificationData) : AEPPushTemplate(da
      * Initializes the input box push template with the provided data.
      *
      * @param data the notification data payload or an intent
-     * @param fromIntent `true` if the data is from an intent, `false` otherwise
      * @throws IllegalArgumentException if the required fields are not found in the data
      */
     init {
@@ -44,13 +42,5 @@ internal class InputBoxPushTemplate(data: NotificationData) : AEPPushTemplate(da
         inputTextHint = data.getString(PushPayloadKeys.INPUT_BOX_HINT)
         feedbackText = data.getString(PushPayloadKeys.INPUT_BOX_FEEDBACK_TEXT)
         feedbackImage = data.getString(PushPayloadKeys.INPUT_BOX_FEEDBACK_IMAGE)
-    }
-
-    override fun createIntent(action: String): Intent {
-        return super.createIntent(action)
-            .putExtra(PushPayloadKeys.INPUT_BOX_RECEIVER_NAME, inputBoxReceiverName)
-            .putExtra(PushPayloadKeys.INPUT_BOX_HINT, inputTextHint)
-            .putExtra(PushPayloadKeys.INPUT_BOX_FEEDBACK_TEXT, feedbackText)
-            .putExtra(PushPayloadKeys.INPUT_BOX_FEEDBACK_IMAGE, feedbackImage)
     }
 }

@@ -64,7 +64,6 @@ internal class ProductCatalogPushTemplate(data: NotificationData) : AEPPushTempl
      * Constructs a Product Catalog push template with the given NotificationData.
      *
      * @param data the data to initialize the push template with
-     * @param fromIntent flag to denote if the push template was built from an intent
      * @throws IllegalArgumentException if any required fields for building the Product Catalog push template are missing
      */
     init {
