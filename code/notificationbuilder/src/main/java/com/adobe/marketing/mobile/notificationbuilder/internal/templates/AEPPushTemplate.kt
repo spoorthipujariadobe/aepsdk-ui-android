@@ -168,7 +168,7 @@ internal sealed class AEPPushTemplate(data: NotificationData) {
         intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
 
         // add the notification payload version
-        intent.putExtra(PushPayloadKeys.VERSION, payloadVersion?.toString())
+        intent.putExtra(PushPayloadKeys.VERSION, payloadVersion)
 
         // add the notification text information
         intent.putExtra(PushPayloadKeys.TITLE, title)
