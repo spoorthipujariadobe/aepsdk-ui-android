@@ -26,12 +26,6 @@ functional-test:
 functional-test-coverage:
 		(./code/gradlew -p code/notificationbuilder createPhoneDebugAndroidTestCoverageReport)
 
-acc-test: assemble-phone copy-to-acc
-
-copy-to-acc:
-	(cp /Users/rymorale/Desktop/git/aepsdk-ui-android/code/notificationbuilder/build/outputs/aar/notificationbuilder-phone-release.aar /Users/rymorale/Desktop/git/aepsdk-campaignclassic-android/code/testapp/libs/)
-	(cp /Users/rymorale/Desktop/git/aepsdk-ui-android/code/notificationbuilder/build/outputs/aar/notificationbuilder-phone-release.aar /Users/rymorale/Desktop/git/aepsdk-campaignclassic-android/code/campaignclassic/libs)
-
 assemble-phone:
 		(./code/gradlew -p code/notificationbuilder  assemblePhone)
 
