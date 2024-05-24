@@ -128,8 +128,8 @@ internal object PushTemplateConstants {
         const val CATALOG_CTA_BUTTON_URI = "adb_cta_uri"
         const val CATALOG_LAYOUT = "adb_display"
         const val CATALOG_ITEMS = "adb_items"
-        const val RATING_ICON_UNSELECTED = "adb_rate_unselected_icon"
-        const val RATING_ICON_SELECTED = "adb_rate_selected_icon"
+        const val RATING_UNSELECTED_ICON = "adb_rate_unselected_icon"
+        const val RATING_SELECTED_ICON = "adb_rate_selected_icon"
         const val RATING_ACTIONS = "adb_rate_act"
     }
 

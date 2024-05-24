@@ -92,11 +92,11 @@ internal object RatingNotificationBuilder {
             val ratingIconLayout = RemoteViews(packageName, R.layout.push_template_rating_icon_layout)
             val ratingIconImageView = R.id.rating_icon_image
             if (i <= pushTemplate.ratingSelected) {
-                if (!ratingIconLayout.setRemoteViewImage(pushTemplate.ratingIconSelected, ratingIconImageView)) {
+                if (!ratingIconLayout.setRemoteViewImage(pushTemplate.ratingSelectedIcon, ratingIconImageView)) {
                     throw NotificationConstructionFailedException("Image for selected rating icon is invalid.")
                 }
             } else {
-                if (!ratingIconLayout.setRemoteViewImage(pushTemplate.ratingIconUnselected, ratingIconImageView)) {
+                if (!ratingIconLayout.setRemoteViewImage(pushTemplate.ratingUnselectedIcon, ratingIconImageView)) {
                     throw NotificationConstructionFailedException("Image for unselected rating icon is invalid.")
                 }
             }
@@ -162,7 +162,7 @@ internal object RatingNotificationBuilder {
         }
         Log.trace(LOG_TAG, SELF_TAG, "Creating a rating click pending intent from a push template object.")
 
-        val ratingButtonClickIntent = AEPPushNotificationBuilder.createIntent(PushTemplateIntentConstants.IntentActions.RATING_BUTTON_CLICKED, pushTemplate)
+        val ratingButtonClickIntent = AEPPushNotificationBuilder.createIntent(PushTemplateIntentConstants.IntentActions.RATING_ICON_CLICKED, pushTemplate)
         broadcastReceiverClass.let {
             ratingButtonClickIntent.setClass(context.applicationContext, broadcastReceiverClass)
         }
@@ -176,12 +176,12 @@ internal object RatingNotificationBuilder {
             ratingButtonSelection.toString()
         )
         ratingButtonClickIntent.putExtra(
-            PushTemplateConstants.PushPayloadKeys.RATING_ICON_UNSELECTED,
-            pushTemplate.ratingIconUnselected
+            PushTemplateConstants.PushPayloadKeys.RATING_UNSELECTED_ICON,
+            pushTemplate.ratingUnselectedIcon
         )
         ratingButtonClickIntent.putExtra(
-            PushTemplateConstants.PushPayloadKeys.RATING_ICON_SELECTED,
-            pushTemplate.ratingIconSelected
+            PushTemplateConstants.PushPayloadKeys.RATING_SELECTED_ICON,
+            pushTemplate.ratingSelectedIcon
         )
 
         ratingButtonClickIntent.putExtra(

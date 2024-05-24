@@ -163,7 +163,7 @@ internal fun RemoteViews.setRemoteViewImage(
         Log.trace(
             PushTemplateConstants.LOG_TAG,
             SELF_TAG,
-            "Null or empty large image string found, large image will not be applied."
+            "Null or empty image string found, image will not be applied."
         )
         setViewVisibility(containerViewId, View.GONE)
         return false

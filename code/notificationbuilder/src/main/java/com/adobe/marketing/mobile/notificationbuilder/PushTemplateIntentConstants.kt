@@ -19,7 +19,7 @@ object PushTemplateIntentConstants {
         const val MANUAL_CAROUSEL_LEFT_CLICKED = "manual_left"
         const val MANUAL_CAROUSEL_RIGHT_CLICKED = "manual_right"
         const val INPUT_RECEIVED = "input_received"
-        const val RATING_BUTTON_CLICKED = "rating_button_clicked"
+        const val RATING_ICON_CLICKED = "rating_icon_clicked"
     }
 
     object IntentKeys {

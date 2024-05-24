@@ -68,10 +68,10 @@ internal class RatingPushTemplate(data: NotificationData) : AEPPushTemplate(data
         }
     }
 
-    internal var ratingIconUnselected: String
+    internal var ratingUnselectedIcon: String
         private set
 
-    internal var ratingIconSelected: String
+    internal var ratingSelectedIcon: String
         private set
     internal var ratingActionString: String
         private set
@@ -83,8 +83,8 @@ internal class RatingPushTemplate(data: NotificationData) : AEPPushTemplate(data
         private set
 
     init {
-        ratingIconUnselected = data.getRequiredString(PushTemplateConstants.PushPayloadKeys.RATING_ICON_UNSELECTED)
-        ratingIconSelected = data.getRequiredString(PushTemplateConstants.PushPayloadKeys.RATING_ICON_SELECTED)
+        ratingUnselectedIcon = data.getRequiredString(PushTemplateConstants.PushPayloadKeys.RATING_UNSELECTED_ICON)
+        ratingSelectedIcon = data.getRequiredString(PushTemplateConstants.PushPayloadKeys.RATING_SELECTED_ICON)
         ratingActionString = data.getRequiredString(PushTemplateConstants.PushPayloadKeys.RATING_ACTIONS)
         ratingActionList = getRatingActionsFromString(ratingActionString)
             ?: throw IllegalArgumentException("Required field \"${PushTemplateConstants.PushPayloadKeys.RATING_ACTIONS}\" is invalid.")
