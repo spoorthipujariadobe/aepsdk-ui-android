@@ -21,6 +21,7 @@ import androidx.core.app.NotificationCompat
 import com.adobe.marketing.mobile.notificationbuilder.R
 import com.adobe.marketing.mobile.notificationbuilder.internal.PendingIntentUtils
 import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateConstants
+import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateConstants.LOG_TAG
 import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateImageUtils
 import com.adobe.marketing.mobile.services.Log
 import com.adobe.marketing.mobile.services.ServiceProvider
@@ -47,7 +48,7 @@ internal fun RemoteViews.setElementColor(
 ) {
     if (colorHex.isEmpty()) {
         Log.trace(
-            PushTemplateConstants.LOG_TAG,
+            LOG_TAG,
             SELF_TAG,
             "Empty color hex string found, custom color will not be applied to $viewFriendlyName."
         )
@@ -58,7 +59,7 @@ internal fun RemoteViews.setElementColor(
         setInt(elementId, methodName, Color.parseColor(colorHex))
     } catch (exception: IllegalArgumentException) {
         Log.trace(
-            PushTemplateConstants.LOG_TAG,
+            LOG_TAG,
             SELF_TAG,
             "Unrecognized hex string passed to Color.parseColor(), custom color will not be applied to $viewFriendlyName."
         )
@@ -78,7 +79,7 @@ internal fun RemoteViews.setNotificationBackgroundColor(
     // get custom color from hex string and set it the notification background
     if (backgroundColor.isNullOrEmpty()) {
         Log.trace(
-            PushTemplateConstants.LOG_TAG,
+            LOG_TAG,
             SELF_TAG,
             "Empty background color hex string found, custom color will not be applied to the notification background."
         )
@@ -105,7 +106,7 @@ internal fun RemoteViews.setNotificationTitleTextColor(
     // get custom color from hex string and set it the notification title
     if (titleTextColor.isNullOrEmpty()) {
         Log.trace(
-            PushTemplateConstants.LOG_TAG,
+            LOG_TAG,
             SELF_TAG,
             "Empty title text color hex string found, custom color will not be applied to the notification title text."
         )
@@ -133,7 +134,7 @@ internal fun RemoteViews.setNotificationBodyTextColor(
     // get custom color from hex string and set it the notification body text
     if (expandedBodyTextColor.isNullOrEmpty()) {
         Log.trace(
-            PushTemplateConstants.LOG_TAG,
+            LOG_TAG,
             SELF_TAG,
             "Empty expanded body text color hex string found, custom color will not be applied to the notification body text."
         )
@@ -157,7 +158,7 @@ internal fun RemoteViews.setNotificationBodyTextColor(
 internal fun RemoteViews.setRemoteViewLargeIcon(largeIcon: String?) {
     if (largeIcon.isNullOrEmpty()) {
         Log.trace(
-            PushTemplateConstants.LOG_TAG,
+            LOG_TAG,
             SELF_TAG,
             "Null or empty large icon string found, large icon will not be applied."
         )
@@ -193,14 +194,14 @@ internal fun RemoteViews.setRemoteViewClickAction(
 ) {
     if (actionUri.isNullOrEmpty()) {
         Log.trace(
-            PushTemplateConstants.LOG_TAG,
+            LOG_TAG,
             SELF_TAG,
             "No valid action uri found for the clicked view with id $targetViewResourceId. No click action will be assigned."
         )
         return
     }
     Log.trace(
-        PushTemplateConstants.LOG_TAG,
+        LOG_TAG,
         SELF_TAG,
         "Setting remote view click action uri: $actionUri."
     )
@@ -230,7 +231,7 @@ internal fun RemoteViews.setRemoteLargeIcon(largeIcon: String?) {
     val downloadedIconCount = PushTemplateImageUtils.cacheImages(listOf(largeIcon))
     if (downloadedIconCount == 0) {
         Log.trace(
-            PushTemplateConstants.LOG_TAG,
+            LOG_TAG,
             SELF_TAG,
             "Unable to download an image from $largeIcon, large icon will not be applied."
         )
@@ -254,7 +255,7 @@ internal fun RemoteViews.setBundledLargeIcon(largeIcon: String?) {
         .appContextService.applicationContext?.getIconWithResourceName(largeIcon)
     if (bundledIconId == null || bundledIconId == 0) {
         Log.trace(
-            PushTemplateConstants.LOG_TAG,
+            LOG_TAG,
             SELF_TAG,
             "Unable to find a bundled image with name $largeIcon, large icon will not be applied."
         )

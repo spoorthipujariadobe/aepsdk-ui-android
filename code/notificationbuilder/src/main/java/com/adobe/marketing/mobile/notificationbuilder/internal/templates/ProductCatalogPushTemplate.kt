@@ -11,6 +11,7 @@
 
 package com.adobe.marketing.mobile.notificationbuilder.internal.templates
 
+import com.adobe.marketing.mobile.notificationbuilder.PushTemplateIntentConstants
 import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateConstants.CatalogItemKeys
 import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateConstants.DefaultValues
 import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateConstants.LOG_TAG
@@ -41,7 +42,7 @@ internal class ProductCatalogPushTemplate(data: NotificationData) : AEPPushTempl
     // Required, One or more items in the product catalog defined by the CatalogItem class
     internal val catalogItems: MutableList<CatalogItem>
 
-    internal var currentIndex: Int = DefaultValues.PRODUCT_CATALOG_START_INDEX
+    internal var currentIndex: Int
 
     data class CatalogItem(
         // Required, Text to use in the title if this product is selected
@@ -73,6 +74,7 @@ internal class ProductCatalogPushTemplate(data: NotificationData) : AEPPushTempl
         displayLayout = data.getRequiredString(PushPayloadKeys.CATALOG_LAYOUT)
         rawCatalogItems = data.getRequiredString(PushPayloadKeys.CATALOG_ITEMS)
         catalogItems = parseCatalogItemsFromString(rawCatalogItems)
+        currentIndex = data.getInteger(PushTemplateIntentConstants.IntentKeys.CATALOG_ITEM_INDEX) ?: DefaultValues.PRODUCT_CATALOG_START_INDEX
     }
 
     companion object {

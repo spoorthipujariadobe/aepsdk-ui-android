@@ -313,7 +313,7 @@ internal object ManualCarouselNotificationBuilder {
             val pushImage: Bitmap? = PushTemplateImageUtils.getCachedImage(imageUri)
             if (pushImage == null) {
                 Log.trace(
-                    PushTemplateConstants.LOG_TAG,
+                    LOG_TAG,
                     SELF_TAG,
                     "Failed to retrieve an image from $imageUri, will not create a new carousel item."
                 )
@@ -381,7 +381,7 @@ internal object ManualCarouselNotificationBuilder {
         val assetCacheLocation = PushTemplateImageUtils.getAssetCacheLocation()
         if (assetCacheLocation.isNullOrEmpty()) {
             Log.trace(
-                PushTemplateConstants.LOG_TAG,
+                LOG_TAG,
                 SELF_TAG,
                 "Asset cache location is null or empty, unable to retrieve filmstrip carousel images."
             )
@@ -458,7 +458,7 @@ internal object ManualCarouselNotificationBuilder {
         val newCenterIndex = (centerIndex + 1) % listSize
         val newRightIndex = (newCenterIndex + 1) % listSize
         Log.trace(
-            PushTemplateConstants.LOG_TAG,
+            LOG_TAG,
             SELF_TAG,
             "Calculated new indices. New center index is $newCenterIndex, new left index is $centerIndex, and new right index is $newRightIndex."
         )

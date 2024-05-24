@@ -134,7 +134,7 @@ object NotificationBuilder {
             PushTemplateType.PRODUCT_CATALOG -> {
                 return ProductCatalogNotificationBuilder.construct(
                     context,
-                    ProductCatalogPushTemplate(messageData),
+                    ProductCatalogPushTemplate(notificationData),
                     trackerActivityClass,
                     broadcastReceiverClass
                 )
@@ -196,7 +196,7 @@ object NotificationBuilder {
             PushTemplateType.PRODUCT_CATALOG -> {
                 return ProductCatalogNotificationBuilder.construct(
                     context,
-                    ProductCatalogPushTemplate(intent),
+                    ProductCatalogPushTemplate(intentData),
                     trackerActivityClass,
                     broadcastReceiverClass
                 )

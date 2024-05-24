@@ -16,7 +16,6 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
-import android.content.Intent
 import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
 import com.adobe.marketing.mobile.notificationbuilder.NotificationConstructionFailedException
@@ -24,6 +23,7 @@ import com.adobe.marketing.mobile.notificationbuilder.PushTemplateIntentConstant
 import com.adobe.marketing.mobile.notificationbuilder.R
 import com.adobe.marketing.mobile.notificationbuilder.internal.PendingIntentUtils
 import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateConstants
+import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateConstants.LOG_TAG
 import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateImageUtils
 import com.adobe.marketing.mobile.notificationbuilder.internal.extensions.createNotificationChannelIfRequired
 import com.adobe.marketing.mobile.notificationbuilder.internal.extensions.setElementColor
@@ -35,6 +35,11 @@ import com.adobe.marketing.mobile.services.Log
  */
 internal object ProductCatalogNotificationBuilder {
     private const val SELF_TAG = "ProductCatalogNotificationBuilder"
+    private val intentActionList = listOf(
+        PushTemplateIntentConstants.IntentActions.CATALOG_THUMBNAIL_1_CLICKED,
+        PushTemplateIntentConstants.IntentActions.CATALOG_THUMBNAIL_2_CLICKED,
+        PushTemplateIntentConstants.IntentActions.CATALOG_THUMBNAIL_3_CLICKED
+    )
 
     @Throws(NotificationConstructionFailedException::class)
     fun construct(
@@ -44,7 +49,7 @@ internal object ProductCatalogNotificationBuilder {
         broadcastReceiverClass: Class<out BroadcastReceiver>?
     ): NotificationCompat.Builder {
         Log.trace(
-            PushTemplateConstants.LOG_TAG,
+            LOG_TAG,
             SELF_TAG,
             "Building a product catalog push notification."
         )
@@ -58,13 +63,7 @@ internal object ProductCatalogNotificationBuilder {
 
         val notificationManager =
             context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        val channelIdToUse: String = notificationManager.createNotificationChannelIfRequired(
-            context,
-            pushTemplate.channelId,
-            pushTemplate.sound,
-            pushTemplate.getNotificationImportance(),
-            pushTemplate.isFromIntent
-        )
+        val channelIdToUse: String = notificationManager.createNotificationChannelIfRequired(context, pushTemplate)
 
         // create the notification builder with the common settings applied
         val notificationBuilder = AEPPushNotificationBuilder.construct(
@@ -89,7 +88,7 @@ internal object ProductCatalogNotificationBuilder {
         )
         if (downloadedImageCount != catalogItems.size) {
             Log.error(
-                PushTemplateConstants.LOG_TAG,
+                LOG_TAG,
                 SELF_TAG,
                 "Failed to download all images for the product catalog notification."
             )
@@ -144,7 +143,7 @@ internal object ProductCatalogNotificationBuilder {
         catalogItems: List<ProductCatalogPushTemplate.CatalogItem>
     ): Int {
         Log.trace(
-            PushTemplateConstants.LOG_TAG,
+            LOG_TAG,
             SELF_TAG,
             "Populating center image for product catalog notification."
         )
@@ -189,7 +188,7 @@ internal object ProductCatalogNotificationBuilder {
         pushTemplate: ProductCatalogPushTemplate
     ) {
         Log.trace(
-            PushTemplateConstants.LOG_TAG,
+            LOG_TAG,
             SELF_TAG,
             "Populating product catalog thumbnails."
         )
@@ -204,7 +203,7 @@ internal object ProductCatalogNotificationBuilder {
 
             if (thumbImage == null) {
                 Log.trace(
-                    PushTemplateConstants.LOG_TAG,
+                    LOG_TAG,
                     SELF_TAG,
                     "No image found for catalog item thumbnail."
                 )
@@ -274,7 +273,7 @@ internal object ProductCatalogNotificationBuilder {
         // get custom color from hex string and set it the cta button
         if (buttonColor.isNullOrEmpty()) {
             Log.trace(
-                PushTemplateConstants.LOG_TAG,
+                LOG_TAG,
                 SELF_TAG,
                 "Empty cta button color hex string found, custom color will not be applied to the cta button."
             )
@@ -310,118 +309,20 @@ internal object ProductCatalogNotificationBuilder {
         }
 
         Log.trace(
-            PushTemplateConstants.LOG_TAG,
+            LOG_TAG,
             SELF_TAG,
             "Creating a thumbnail interaction pending intent for thumbnail at index $currentIndex"
         )
 
-        val intentActionList = listOf(
-            PushTemplateIntentConstants.IntentActions.CATALOG_THUMBNAIL_1_CLICKED,
-            PushTemplateIntentConstants.IntentActions.CATALOG_THUMBNAIL_2_CLICKED,
-            PushTemplateIntentConstants.IntentActions.CATALOG_THUMBNAIL_3_CLICKED
-        )
-
-        val thumbnailClickIntent = Intent(intentActionList[currentIndex]).apply {
+        val thumbnailClickIntent = AEPPushNotificationBuilder.createIntent(intentActionList[currentIndex], pushTemplate).apply {
             setClass(context.applicationContext, broadcastReceiverClass)
-
-            flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-            putExtra(
-                PushTemplateIntentConstants.IntentKeys.TEMPLATE_TYPE, pushTemplate.templateType?.value
-            )
-            putExtra(
-                PushTemplateIntentConstants.IntentKeys.IMAGE_URI, pushTemplate.imageUrl
-            )
-            putExtra(
-                PushTemplateIntentConstants.IntentKeys.ACTION_URI, pushTemplate.actionUri
-            )
-            putExtra(PushTemplateIntentConstants.IntentKeys.CHANNEL_ID, channelId)
-            putExtra(
-                PushTemplateIntentConstants.IntentKeys.CUSTOM_SOUND, pushTemplate.sound
-            )
-            putExtra(
-                PushTemplateIntentConstants.IntentKeys.TITLE_TEXT,
-                pushTemplate.title
-            )
-            putExtra(
-                PushTemplateIntentConstants.IntentKeys.BODY_TEXT,
-                pushTemplate.body
-            )
-            putExtra(
-                PushTemplateIntentConstants.IntentKeys.EXPANDED_BODY_TEXT,
-                pushTemplate.expandedBodyText
-            )
-            putExtra(
-                PushTemplateIntentConstants.IntentKeys.NOTIFICATION_BACKGROUND_COLOR,
-                pushTemplate.notificationBackgroundColor
-            )
-            putExtra(
-                PushTemplateIntentConstants.IntentKeys.TITLE_TEXT_COLOR,
-                pushTemplate.titleTextColor
-            )
-            putExtra(
-                PushTemplateIntentConstants.IntentKeys.EXPANDED_BODY_TEXT_COLOR,
-                pushTemplate.expandedBodyTextColor
-            )
-            putExtra(
-                PushTemplateIntentConstants.IntentKeys.SMALL_ICON, pushTemplate.smallIcon
-            )
-            putExtra(
-                PushTemplateIntentConstants.IntentKeys.SMALL_ICON_COLOR,
-                pushTemplate.smallIconColor
-            )
-            putExtra(
-                PushTemplateIntentConstants.IntentKeys.LARGE_ICON, pushTemplate.largeIcon
-            )
-            putExtra(
-                PushTemplateIntentConstants.IntentKeys.VISIBILITY,
-                pushTemplate.getNotificationVisibility()
-            )
-            putExtra(
-                PushTemplateIntentConstants.IntentKeys.IMPORTANCE,
-                pushTemplate.getNotificationImportance()
-            )
-            putExtra(
-                PushTemplateIntentConstants.IntentKeys.BADGE_COUNT, pushTemplate.badgeCount
-            )
-            putExtra(
-                PushTemplateIntentConstants.IntentKeys.CATALOG_CTA_BUTTON_TEXT,
-                pushTemplate.ctaButtonText
-            )
-            putExtra(
-                PushTemplateIntentConstants.IntentKeys.CATALOG_CTA_BUTTON_COLOR,
-                pushTemplate.ctaButtonColor
-            )
-            putExtra(
-                PushTemplateIntentConstants.IntentKeys.CATALOG_CTA_BUTTON_URI, pushTemplate.ctaButtonUri
-            )
-            putExtra(
-                PushTemplateIntentConstants.IntentKeys.CATALOG_LAYOUT,
-                pushTemplate.displayLayout
-            )
-            putExtra(
-                PushTemplateIntentConstants.IntentKeys.CATALOG_ITEMS,
-                pushTemplate.rawCatalogItems
-            )
-            putExtra(
-                PushTemplateIntentConstants.IntentKeys.CATALOG_ITEM_INDEX,
-                currentIndex
-            )
-            putExtra(
-                PushTemplateIntentConstants.IntentKeys.STICKY, pushTemplate.isNotificationSticky
-            )
-            putExtra(
-                PushTemplateIntentConstants.IntentKeys.TAG, pushTemplate.tag
-            )
-            putExtra(
-                PushTemplateIntentConstants.IntentKeys.TICKER, pushTemplate.ticker
-            )
-            putExtra(
-                PushTemplateIntentConstants.IntentKeys.PAYLOAD_VERSION, pushTemplate.payloadVersion
-            )
-            putExtra(
-                PushTemplateIntentConstants.IntentKeys.PRIORITY,
-                pushTemplate.notificationPriority
-            )
+            putExtra(PushTemplateConstants.PushPayloadKeys.CHANNEL_ID, channelId)
+            putExtra(PushTemplateConstants.PushPayloadKeys.CATALOG_CTA_BUTTON_TEXT, pushTemplate.ctaButtonText)
+            putExtra(PushTemplateConstants.PushPayloadKeys.CATALOG_CTA_BUTTON_COLOR, pushTemplate.ctaButtonColor)
+            putExtra(PushTemplateConstants.PushPayloadKeys.CATALOG_CTA_BUTTON_URI, pushTemplate.ctaButtonUri)
+            putExtra(PushTemplateConstants.PushPayloadKeys.CATALOG_LAYOUT, pushTemplate.displayLayout)
+            putExtra(PushTemplateConstants.PushPayloadKeys.CATALOG_ITEMS, pushTemplate.rawCatalogItems)
+            putExtra(PushTemplateIntentConstants.IntentKeys.CATALOG_ITEM_INDEX, currentIndex.toString())
         }
 
         return PendingIntent.getBroadcast(
