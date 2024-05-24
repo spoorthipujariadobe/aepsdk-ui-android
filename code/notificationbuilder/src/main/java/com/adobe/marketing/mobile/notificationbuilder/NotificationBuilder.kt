@@ -59,6 +59,9 @@ object NotificationBuilder {
     ): NotificationCompat.Builder {
         val context = ServiceProvider.getInstance().appContextService.applicationContext
             ?: throw NotificationConstructionFailedException("Application context is null, cannot build a notification.")
+        if (messageData.isEmpty()) {
+            throw NotificationConstructionFailedException("Message data is empty, cannot build a notification.")
+        }
         val pushTemplateType =
             PushTemplateType.fromString(messageData[PushTemplateConstants.PushPayloadKeys.TEMPLATE_TYPE])
         val notificationData = MapData(messageData)
