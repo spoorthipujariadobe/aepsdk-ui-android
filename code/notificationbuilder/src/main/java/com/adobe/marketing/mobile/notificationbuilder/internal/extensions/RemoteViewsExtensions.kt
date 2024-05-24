@@ -18,7 +18,6 @@ import android.graphics.Color
 import android.view.View
 import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
-import com.adobe.marketing.mobile.notificationbuilder.R
 import com.adobe.marketing.mobile.notificationbuilder.internal.PendingIntentUtils
 import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateConstants
 import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateImageUtils
@@ -148,27 +147,32 @@ internal fun RemoteViews.setNotificationBodyTextColor(
 }
 
 /**
- * Sets the large icon for the provided [RemoteViews]. If a large icon contains a filename
- * only then the large icon is set from a bundle image resource. If a large icon contains a URL,
- * the large icon is downloaded then set.
+ * Sets the image for the provided [RemoteViews]. If a image contains a filename
+ * only then the image is set from a bundle image resource. If the image contains a URL,
+ * the image is downloaded then set.
  *
- * @param largeIcon `String` containing the large icon to use
+ * @param image `String` containing the image to use
+ *
+ * @return `Boolean` true if the image was set, false otherwise
  */
-internal fun RemoteViews.setRemoteViewLargeIcon(largeIcon: String?) {
-    if (largeIcon.isNullOrEmpty()) {
+internal fun RemoteViews.setRemoteViewImage(
+    image: String?,
+    containerViewId: Int
+): Boolean {
+    if (image.isNullOrEmpty()) {
         Log.trace(
             PushTemplateConstants.LOG_TAG,
             SELF_TAG,
-            "Null or empty large icon string found, large icon will not be applied."
+            "Null or empty large image string found, large image will not be applied."
         )
-        setViewVisibility(R.id.large_icon, View.GONE)
-        return
+        setViewVisibility(containerViewId, View.GONE)
+        return false
     }
 
-    if (UrlUtils.isValidUrl(largeIcon)) {
-        setRemoteLargeIcon(largeIcon)
+    return if (UrlUtils.isValidUrl(image)) {
+        setRemoteImage(image, containerViewId)
     } else {
-        setBundledLargeIcon(largeIcon)
+        setBundledImage(image, containerViewId)
     }
 }
 
@@ -180,6 +184,7 @@ internal fun RemoteViews.setRemoteViewLargeIcon(largeIcon: String?) {
  * template notification
  * @param targetViewResourceId [Int] containing the resource id of the view to attach the click action
  * @param actionUri `String` containing the action uri defined for the push template image
+ * @param actionType the [PushTemplateConstants.ActionType] of the action to be performed
  * @param tag `String` containing the tag to use when scheduling the notification
  * @param stickyNotification [Boolean] if false, remove the [NotificationCompat] after the `RemoteViews` is pressed
  */
@@ -188,17 +193,10 @@ internal fun RemoteViews.setRemoteViewClickAction(
     trackerActivityClass: Class<out Activity>?,
     targetViewResourceId: Int,
     actionUri: String?,
+    actionType: PushTemplateConstants.ActionType?,
     tag: String?,
     stickyNotification: Boolean
 ) {
-    if (actionUri.isNullOrEmpty()) {
-        Log.trace(
-            PushTemplateConstants.LOG_TAG,
-            SELF_TAG,
-            "No valid action uri found for the clicked view with id $targetViewResourceId. No click action will be assigned."
-        )
-        return
-    }
     Log.trace(
         PushTemplateConstants.LOG_TAG,
         SELF_TAG,
@@ -206,60 +204,100 @@ internal fun RemoteViews.setRemoteViewClickAction(
     )
 
     val pendingIntent: PendingIntent? =
-        PendingIntentUtils.createPendingIntent(
-            context,
-            trackerActivityClass,
-            actionUri,
-            null,
-            tag,
-            stickyNotification
-        )
+        if (actionType != null &&
+            (
+                actionType === PushTemplateConstants.ActionType.DISMISS ||
+                    actionType === PushTemplateConstants.ActionType.OPENAPP
+                )
+        ) {
+            PendingIntentUtils.createPendingIntent(
+                context,
+                trackerActivityClass,
+                null,
+                null,
+                tag,
+                stickyNotification
+            )
+        } else {
+            if (actionUri.isNullOrEmpty()) {
+                Log.trace(
+                    PushTemplateConstants.LOG_TAG,
+                    SELF_TAG,
+                    "No valid action uri found for the clicked view with id" +
+                        "$targetViewResourceId and action type $actionType." +
+                        "No click action will be assigned."
+                )
+                return
+            }
+            PendingIntentUtils.createPendingIntent(
+                context,
+                trackerActivityClass,
+                actionUri,
+                null,
+                tag,
+                stickyNotification
+            )
+        }
     setOnClickPendingIntent(targetViewResourceId, pendingIntent)
 }
 
 /**
- * Sets the large icon for the provided [RemoteViews] by downloading the image from the provided URL.
- * If the image cannot be downloaded, the large icon visibility is set to [View.GONE].
+ * Sets the image for the provided [RemoteViews] by downloading the image from the provided URL.
+ * If the image cannot be downloaded, the image visibility is set to [View.GONE].
  *
- * @param largeIcon `String` containing the large icon URL to download and use
+ * @param image `String` containing the image URL to download and use
+ * @param containerViewId [Int] containing the resource id of the view to attach the image to
+ *
+ * @return `Boolean` true if the image was set, false otherwise
  */
-internal fun RemoteViews.setRemoteLargeIcon(largeIcon: String?) {
-    if (!UrlUtils.isValidUrl(largeIcon)) {
-        return
+internal fun RemoteViews.setRemoteImage(
+    image: String?,
+    containerViewId: Int
+): Boolean {
+    if (!UrlUtils.isValidUrl(image)) {
+        return false
     }
-    val downloadedIconCount = PushTemplateImageUtils.cacheImages(listOf(largeIcon))
+    val downloadedIconCount = PushTemplateImageUtils.cacheImages(listOf(image))
     if (downloadedIconCount == 0) {
         Log.trace(
             PushTemplateConstants.LOG_TAG,
             SELF_TAG,
-            "Unable to download an image from $largeIcon, large icon will not be applied."
+            "Unable to download an image from $image, image will not be applied."
         )
-        setViewVisibility(R.id.large_icon, View.GONE)
-        return
+        setViewVisibility(containerViewId, View.GONE)
+        return false
     }
     setImageViewBitmap(
-        R.id.large_icon,
-        PushTemplateImageUtils.getCachedImage(largeIcon)
+        containerViewId,
+        PushTemplateImageUtils.getCachedImage(image)
     )
+    return true
 }
 
 /**
- * Sets the large icon resource bundled with the app for the provided [RemoteViews].
+ * Sets the image resource bundled with the app for the provided [RemoteViews].
  * If the resource does not exist, the [RemoteViews] visibility is set to [View.GONE].
  *
- * @param largeIcon `String` containing the large icon to use
+ * @param image `String` containing the image to use
+ * @param containerViewId [Int] containing the resource id of the view to attach the image to
+ *
+ * @return `Boolean` true if the image was set, false otherwise
  */
-internal fun RemoteViews.setBundledLargeIcon(largeIcon: String?) {
+internal fun RemoteViews.setBundledImage(
+    image: String?,
+    containerViewId: Int
+): Boolean {
     val bundledIconId: Int? = ServiceProvider.getInstance()
-        .appContextService.applicationContext?.getIconWithResourceName(largeIcon)
+        .appContextService.applicationContext?.getIconWithResourceName(image)
     if (bundledIconId == null || bundledIconId == 0) {
         Log.trace(
             PushTemplateConstants.LOG_TAG,
             SELF_TAG,
-            "Unable to find a bundled image with name $largeIcon, large icon will not be applied."
+            "Unable to find a bundled image with name $image, large image will not be applied."
         )
-        setViewVisibility(R.id.large_icon, View.GONE)
-        return
+        setViewVisibility(containerViewId, View.GONE)
+        return false
     }
-    setImageViewResource(R.id.large_icon, bundledIconId)
+    setImageViewResource(containerViewId, bundledIconId)
+    return true
 }
