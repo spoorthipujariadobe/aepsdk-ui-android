@@ -28,10 +28,6 @@ import com.adobe.marketing.mobile.notificationbuilder.internal.util.Notification
  */
 internal sealed class AEPPushTemplate(data: NotificationData) {
 
-    // Message data payload for the push template
-    internal lateinit var messageData: MutableMap<String, String>
-        private set
-
     // Required, title of the message shown in the collapsed and expanded push template layouts
     internal val title: String
 
@@ -49,10 +45,10 @@ internal sealed class AEPPushTemplate(data: NotificationData) {
     internal val badgeCount: Int
 
     // Optional, priority of the notification
-    internal val priorityString: String?
+    internal val priority: NotificationPriority
 
     // Optional, visibility of the notification
-    internal val visibilityString: String?
+    internal val visibility: NotificationVisibility
 
     // Optional, notification channel to use when displaying the notification. Only used on Android O and above.
     internal val channelId: String?
@@ -151,30 +147,15 @@ internal sealed class AEPPushTemplate(data: NotificationData) {
         isNotificationSticky = data.getBoolean(PushPayloadKeys.STICKY)
 
         // extract notification priority and visibility
-        priorityString = data.getString(PushPayloadKeys.PRIORITY)
-        visibilityString = data.getString(PushPayloadKeys.VISIBILITY)
-    }
-
-    fun getNotificationVisibility(): Int {
-        return NotificationVisibility.getNotificationCompatVisibilityFromString(visibilityString)
-    }
-
-    fun getNotificationPriority(): Int {
-        return NotificationPriority.getNotificationCompatPriorityFromString(priorityString)
+        priority = NotificationPriority.fromString(data.getString(PushPayloadKeys.PRIORITY))
+        visibility = NotificationVisibility.fromString(data.getString(PushPayloadKeys.VISIBILITY))
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    fun getNotificationImportance(): Int {
-        return if (priorityString.isNullOrEmpty()) {
-            NotificationManager.IMPORTANCE_DEFAULT
-        } else {
-            notificationImportanceMap[priorityString] ?: NotificationManager.IMPORTANCE_DEFAULT
-        }
-    }
+    fun getNotificationImportance(): Int =
+        notificationImportanceMap[priority.string] ?: NotificationManager.IMPORTANCE_DEFAULT
 
     companion object {
-        private const val SELF_TAG = "AEPPushTemplate"
-
         @RequiresApi(api = Build.VERSION_CODES.N)
         internal val notificationImportanceMap: Map<String, Int> = mapOf(
             NotificationPriority.PRIORITY_MIN.toString() to NotificationManager.IMPORTANCE_MIN,
