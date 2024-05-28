@@ -83,7 +83,8 @@ internal object AutoCarouselNotificationBuilder {
             context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
         // Create the notification channel if needed
-        val channelIdToUse = notificationManager.createNotificationChannelIfRequired(context, pushTemplate)
+        val channelIdToUse =
+            notificationManager.createNotificationChannelIfRequired(context, pushTemplate)
 
         // create the notification builder with the common settings applied
         return AEPPushNotificationBuilder.construct(
@@ -121,7 +122,11 @@ internal object AutoCarouselNotificationBuilder {
             val imageUri: String = item.imageUri
             val pushImage: Bitmap? = PushTemplateImageUtils.getCachedImage(imageUri)
             if (pushImage == null) {
-                Log.trace(LOG_TAG, SELF_TAG, "Failed to retrieve an image from $imageUri, will not create a new carousel item.")
+                Log.trace(
+                    LOG_TAG,
+                    SELF_TAG,
+                    "Failed to retrieve an image from $imageUri, will not create a new carousel item."
+                )
                 continue
             }
             val carouselItem = RemoteViews(packageName, R.layout.push_template_carousel_item)

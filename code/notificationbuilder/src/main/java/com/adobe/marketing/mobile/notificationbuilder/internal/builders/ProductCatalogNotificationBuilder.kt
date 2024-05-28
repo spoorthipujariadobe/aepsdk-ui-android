@@ -35,11 +35,7 @@ import com.adobe.marketing.mobile.services.Log
  */
 internal object ProductCatalogNotificationBuilder {
     private const val SELF_TAG = "ProductCatalogNotificationBuilder"
-    private val intentActionList = listOf(
-        PushTemplateIntentConstants.IntentActions.CATALOG_THUMBNAIL_1_CLICKED,
-        PushTemplateIntentConstants.IntentActions.CATALOG_THUMBNAIL_2_CLICKED,
-        PushTemplateIntentConstants.IntentActions.CATALOG_THUMBNAIL_3_CLICKED
-    )
+    private var downloadedImageCount: Int = 0
 
     @Throws(NotificationConstructionFailedException::class)
     fun construct(
@@ -53,17 +49,32 @@ internal object ProductCatalogNotificationBuilder {
             SELF_TAG,
             "Building a product catalog push notification."
         )
+
+        // fast fail if we can't download a catalog item image
+        val catalogImageUris = pushTemplate.catalogItems.map { it.img }
+        downloadedImageCount = PushTemplateImageUtils.cacheImages(catalogImageUris)
+        if (downloadedImageCount != catalogImageUris.size) {
+            Log.error(
+                LOG_TAG,
+                SELF_TAG,
+                "Failed to download all images for the product catalog notification."
+            )
+            throw NotificationConstructionFailedException("Failed to download all images for the product catalog notification.")
+        }
+
         val packageName = context.packageName
         val smallLayout = RemoteViews(packageName, R.layout.push_template_collapsed)
-        val expandedLayout = if (pushTemplate.displayLayout == "vertical") {
-            RemoteViews(packageName, R.layout.push_tempate_vertical_catalog)
-        } else {
-            RemoteViews(packageName, R.layout.push_template_horizontal_catalog)
-        }
+        val expandedLayout =
+            if (pushTemplate.displayLayout == PushTemplateConstants.DefaultValues.PRODUCT_CATALOG_VERTICAL_LAYOUT) {
+                RemoteViews(packageName, R.layout.push_tempate_vertical_catalog)
+            } else {
+                RemoteViews(packageName, R.layout.push_template_horizontal_catalog)
+            }
 
         val notificationManager =
             context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        val channelIdToUse: String = notificationManager.createNotificationChannelIfRequired(context, pushTemplate)
+        val channelIdToUse: String =
+            notificationManager.createNotificationChannelIfRequired(context, pushTemplate)
 
         // create the notification builder with the common settings applied
         val notificationBuilder = AEPPushNotificationBuilder.construct(
@@ -77,23 +88,13 @@ internal object ProductCatalogNotificationBuilder {
         )
 
         val catalogItems = pushTemplate.catalogItems
-        // downloads all the catalog item images then sets the currently selected product
-        // within the main product catalog image view
-        val downloadedImageCount = populateCenterImage(
+        // set the currently selected product within the main product catalog image view
+        populateCenterImage(
             context,
             trackerActivityClass,
             expandedLayout,
-            pushTemplate,
-            catalogItems
+            pushTemplate
         )
-        if (downloadedImageCount != catalogItems.size) {
-            Log.error(
-                LOG_TAG,
-                SELF_TAG,
-                "Failed to download all images for the product catalog notification."
-            )
-            throw NotificationConstructionFailedException("Failed to download all images for the product catalog notification.")
-        }
 
         // set the product title, description, and price
         expandedLayout.setTextViewText(
@@ -132,41 +133,33 @@ internal object ProductCatalogNotificationBuilder {
      * @param trackerActivityClass the [Class] of the activity to set in the created pending intent for tracking purposes
      * @param expandedLayout the [RemoteViews] object containing the expanded layout of the push template notification
      * @param pushTemplate the [ProductCatalogPushTemplate] object containing the product catalog push template data
-     * @param catalogItems the list of [ProductCatalogPushTemplate.CatalogItem] objects containing the product catalog items
-     * @return the number of images downloaded
      */
     private fun populateCenterImage(
         context: Context,
         trackerActivityClass: Class<out Activity>?,
         expandedLayout: RemoteViews,
-        pushTemplate: ProductCatalogPushTemplate,
-        catalogItems: List<ProductCatalogPushTemplate.CatalogItem>
-    ): Int {
+        pushTemplate: ProductCatalogPushTemplate
+    ) {
         Log.trace(
             LOG_TAG,
             SELF_TAG,
             "Populating center image for product catalog notification."
         )
 
-        val catalogImageUris = catalogItems.map { it.img }
-        val downloadedImageCount = PushTemplateImageUtils.cacheImages(catalogImageUris)
-        if (downloadedImageCount == catalogImageUris.size) {
-            val pushImage =
-                PushTemplateImageUtils.getCachedImage(catalogItems[pushTemplate.currentIndex].img)
-            expandedLayout.setImageViewBitmap(R.id.product_image, pushImage)
-            expandedLayout.setOnClickPendingIntent(
-                R.id.product_image,
-                PendingIntentUtils.createPendingIntent(
-                    context,
-                    trackerActivityClass,
-                    catalogItems[pushTemplate.currentIndex].uri,
-                    PushTemplateConstants.CatalogActionIds.PRODUCT_IMAGE_CLICKED,
-                    pushTemplate.tag,
-                    pushTemplate.isNotificationSticky ?: false
-                )
+        val pushImage =
+            PushTemplateImageUtils.getCachedImage(pushTemplate.catalogItems[pushTemplate.currentIndex].img)
+        expandedLayout.setImageViewBitmap(R.id.product_image, pushImage)
+        expandedLayout.setOnClickPendingIntent(
+            R.id.product_image,
+            PendingIntentUtils.createPendingIntent(
+                context,
+                trackerActivityClass,
+                pushTemplate.catalogItems[pushTemplate.currentIndex].uri,
+                PushTemplateConstants.CatalogActionIds.PRODUCT_IMAGE_CLICKED,
+                pushTemplate.tag,
+                pushTemplate.isNotificationSticky ?: false
             )
-        }
-        return downloadedImageCount
+        )
     }
 
     /**
@@ -200,13 +193,13 @@ internal object ProductCatalogNotificationBuilder {
         )
         for (index in catalogItems.indices) {
             val thumbImage = PushTemplateImageUtils.getCachedImage(catalogItems[index].img)
-
             if (thumbImage == null) {
-                Log.trace(
+                Log.warning(
                     LOG_TAG,
                     SELF_TAG,
                     "No image found for catalog item thumbnail."
                 )
+                throw NotificationConstructionFailedException("No image found for catalog item thumbnail.")
             } else {
                 expandedLayout.setImageViewBitmap(thumbIds[index], thumbImage)
             }
@@ -245,6 +238,9 @@ internal object ProductCatalogNotificationBuilder {
 
         // apply text to the cta button
         expandedLayout.setTextViewText(R.id.cta_button, pushTemplate.ctaButtonText)
+
+        // apple the text color to the cta button
+        expandedLayout.setCtaButtonTextColor(R.id.cta_button, pushTemplate.ctaButtonTextColor)
 
         // apply the open uri action to the cta button
         expandedLayout.setOnClickPendingIntent(
@@ -288,6 +284,33 @@ internal object ProductCatalogNotificationBuilder {
     }
 
     /**
+     * Sets custom colors to the product catalog CTA button text.
+     *
+     * @param containerViewId [Int] containing the resource id of the push template notification RemoteViews
+     * @param buttonColor [String] containing the hex color code for the cta button text
+     */
+    private fun RemoteViews.setCtaButtonTextColor(
+        containerViewId: Int,
+        buttonTextColor: String?
+    ) {
+        // get custom color from hex string and set it the cta button
+        if (buttonTextColor.isNullOrEmpty()) {
+            Log.trace(
+                LOG_TAG,
+                SELF_TAG,
+                "Empty cta button text color hex string found, custom color will not be applied to the cta button."
+            )
+            return
+        }
+        setElementColor(
+            containerViewId,
+            "#$buttonTextColor",
+            PushTemplateConstants.MethodNames.SET_TEXT_COLOR,
+            PushTemplateConstants.FriendlyViewNames.CTA_BUTTON
+        )
+    }
+
+    /**
      * Creates a pending intent for a thumbnail interaction in a product catalog notification.
      *
      * @param context the application [Context]
@@ -314,20 +337,45 @@ internal object ProductCatalogNotificationBuilder {
             "Creating a thumbnail interaction pending intent for thumbnail at index $currentIndex"
         )
 
-        val thumbnailClickIntent = AEPPushNotificationBuilder.createIntent(intentActionList[currentIndex], pushTemplate).apply {
+        val thumbnailClickIntent = AEPPushNotificationBuilder.createIntent(
+            PushTemplateIntentConstants.IntentActions.CATALOG_THUMBNAIL_CLICKED,
+            pushTemplate
+        ).apply {
             setClass(context.applicationContext, broadcastReceiverClass)
             putExtra(PushTemplateConstants.PushPayloadKeys.CHANNEL_ID, channelId)
-            putExtra(PushTemplateConstants.PushPayloadKeys.CATALOG_CTA_BUTTON_TEXT, pushTemplate.ctaButtonText)
-            putExtra(PushTemplateConstants.PushPayloadKeys.CATALOG_CTA_BUTTON_COLOR, pushTemplate.ctaButtonColor)
-            putExtra(PushTemplateConstants.PushPayloadKeys.CATALOG_CTA_BUTTON_URI, pushTemplate.ctaButtonUri)
-            putExtra(PushTemplateConstants.PushPayloadKeys.CATALOG_LAYOUT, pushTemplate.displayLayout)
-            putExtra(PushTemplateConstants.PushPayloadKeys.CATALOG_ITEMS, pushTemplate.rawCatalogItems)
-            putExtra(PushTemplateIntentConstants.IntentKeys.CATALOG_ITEM_INDEX, currentIndex.toString())
+            putExtra(
+                PushTemplateConstants.PushPayloadKeys.CATALOG_CTA_BUTTON_TEXT,
+                pushTemplate.ctaButtonText
+            )
+            putExtra(
+                PushTemplateConstants.PushPayloadKeys.CATALOG_CTA_BUTTON_COLOR,
+                pushTemplate.ctaButtonColor
+            )
+            putExtra(
+                PushTemplateConstants.PushPayloadKeys.CATALOG_CTA_BUTTON_TEXT_COLOR,
+                pushTemplate.ctaButtonTextColor
+            )
+            putExtra(
+                PushTemplateConstants.PushPayloadKeys.CATALOG_CTA_BUTTON_URI,
+                pushTemplate.ctaButtonUri
+            )
+            putExtra(
+                PushTemplateConstants.PushPayloadKeys.CATALOG_LAYOUT,
+                pushTemplate.displayLayout
+            )
+            putExtra(
+                PushTemplateConstants.PushPayloadKeys.CATALOG_ITEMS,
+                pushTemplate.rawCatalogItems
+            )
+            putExtra(
+                PushTemplateIntentConstants.IntentKeys.CATALOG_ITEM_INDEX,
+                currentIndex.toString()
+            )
         }
 
         return PendingIntent.getBroadcast(
             context,
-            0,
+            pushTemplate.tag.hashCode() + currentIndex,
             thumbnailClickIntent,
             PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
         )

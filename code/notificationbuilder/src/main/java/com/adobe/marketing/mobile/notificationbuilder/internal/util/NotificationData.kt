@@ -15,7 +15,8 @@ package com.adobe.marketing.mobile.notificationbuilder.internal.util
 interface NotificationData {
 
     fun getRequiredString(key: String): String {
-        return getString(key) ?: throw IllegalArgumentException("Required push template key $key not found or null")
+        return getString(key)
+            ?: throw IllegalArgumentException("Required push template key $key not found or null")
     }
 
     /**

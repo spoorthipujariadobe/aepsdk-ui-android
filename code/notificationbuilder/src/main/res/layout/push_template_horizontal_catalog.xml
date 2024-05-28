@@ -10,7 +10,7 @@
 
     <ImageView
         android:id="@+id/product_image"
-        android:scaleType="fitXY"
+        android:scaleType="fitCenter"
         android:adjustViewBounds="true"
         android:layout_width="match_parent"
         android:layout_height="@dimen/product_catalog_image_height"
@@ -58,7 +58,7 @@
             android:id="@+id/product_thumbnail_1"
             android:layout_weight="1"
             android:layout_gravity="start"
-            android:scaleType="centerCrop"
+            android:scaleType="center"
             android:layout_height="@dimen/product_catalog_horizontal_bottom_row_height"
             android:layout_width="@dimen/product_catalog_horizontal_bottom_row_width"
             android:contentDescription="@string/product_thumbnail_1"/>
@@ -66,7 +66,7 @@
         <ImageView
             android:id="@+id/product_thumbnail_2"
             android:layout_weight="1"
-            android:scaleType="centerCrop"
+            android:scaleType="center"
             android:layout_height="@dimen/product_catalog_horizontal_bottom_row_height"
             android:layout_width="@dimen/product_catalog_horizontal_bottom_row_width"
             android:layout_marginLeft="@dimen/product_catalog_horizontal_bottom_row_margin_left"
@@ -75,7 +75,7 @@
         <ImageView
             android:id="@+id/product_thumbnail_3"
             android:layout_weight="1"
-            android:scaleType="centerCrop"
+            android:scaleType="center"
             android:layout_height="@dimen/product_catalog_horizontal_bottom_row_height"
             android:layout_width="@dimen/product_catalog_horizontal_bottom_row_width"
             android:layout_marginLeft="@dimen/product_catalog_horizontal_bottom_row_margin_left"

@@ -28,6 +28,9 @@ internal class ProductCatalogPushTemplate(data: NotificationData) : AEPPushTempl
     // Required, Color for the CTA button. Represented as six character hex, e.g. 00FF00
     internal val ctaButtonColor: String
 
+    // Required, Color for the CTA button text. Represented as six character hex, e.g. 00FF00
+    internal val ctaButtonTextColor: String
+
     // Required, URI to be handled when the user clicks the CTA button
     internal val ctaButtonUri: String
 
@@ -70,11 +73,13 @@ internal class ProductCatalogPushTemplate(data: NotificationData) : AEPPushTempl
     init {
         ctaButtonText = data.getRequiredString(PushPayloadKeys.CATALOG_CTA_BUTTON_TEXT)
         ctaButtonColor = data.getRequiredString(PushPayloadKeys.CATALOG_CTA_BUTTON_COLOR)
+        ctaButtonTextColor = data.getRequiredString(PushPayloadKeys.CATALOG_CTA_BUTTON_TEXT_COLOR)
         ctaButtonUri = data.getRequiredString(PushPayloadKeys.CATALOG_CTA_BUTTON_URI)
         displayLayout = data.getRequiredString(PushPayloadKeys.CATALOG_LAYOUT)
         rawCatalogItems = data.getRequiredString(PushPayloadKeys.CATALOG_ITEMS)
         catalogItems = parseCatalogItemsFromString(rawCatalogItems)
-        currentIndex = data.getInteger(PushTemplateIntentConstants.IntentKeys.CATALOG_ITEM_INDEX) ?: DefaultValues.PRODUCT_CATALOG_START_INDEX
+        currentIndex = data.getInteger(PushTemplateIntentConstants.IntentKeys.CATALOG_ITEM_INDEX)
+            ?: DefaultValues.PRODUCT_CATALOG_START_INDEX
     }
 
     companion object {

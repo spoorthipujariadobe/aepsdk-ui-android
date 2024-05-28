@@ -31,7 +31,9 @@ internal class ManualCarouselPushTemplate(data: NotificationData) : CarouselPush
         centerImageIndex = getDefaultCarouselIndex(carouselLayout)
         if (data is IntentData && data.actionName != null) {
             this.intentAction = data.actionName
-            centerImageIndex = data.getInteger(PushTemplateIntentConstants.IntentKeys.CENTER_IMAGE_INDEX) ?: getDefaultCarouselIndex(carouselLayout)
+            centerImageIndex =
+                data.getInteger(PushTemplateIntentConstants.IntentKeys.CENTER_IMAGE_INDEX)
+                    ?: getDefaultCarouselIndex(carouselLayout)
         }
     }
 
