@@ -29,16 +29,16 @@ import com.adobe.marketing.mobile.notificationbuilder.internal.extensions.create
 import com.adobe.marketing.mobile.notificationbuilder.internal.extensions.setNotificationTitleTextColor
 import com.adobe.marketing.mobile.notificationbuilder.internal.extensions.setRemoteViewClickAction
 import com.adobe.marketing.mobile.notificationbuilder.internal.extensions.setRemoteViewImage
-import com.adobe.marketing.mobile.notificationbuilder.internal.templates.RatingPushTemplate
+import com.adobe.marketing.mobile.notificationbuilder.internal.templates.ProductRatingPushTemplate
 import com.adobe.marketing.mobile.services.Log
 
-internal object RatingNotificationBuilder {
+internal object ProductRatingNotificationBuilder {
     private const val SELF_TAG = "RatingNotificationBuilder"
 
     @Throws(NotificationConstructionFailedException::class)
     fun construct(
         context: Context,
-        pushTemplate: RatingPushTemplate,
+        pushTemplate: ProductRatingPushTemplate,
         trackerActivityClass: Class<out Activity>?,
         broadcastReceiverClass: Class<out BroadcastReceiver>?
     ): NotificationCompat.Builder {
@@ -49,7 +49,7 @@ internal object RatingNotificationBuilder {
         )
         val packageName = context.packageName
         val smallLayout = RemoteViews(packageName, R.layout.push_template_collapsed)
-        val expandedLayout = RemoteViews(packageName, R.layout.push_template_rating_expanded)
+        val expandedLayout = RemoteViews(packageName, R.layout.push_template_product_rating_expanded)
 
         val notificationManager =
             context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
@@ -89,7 +89,7 @@ internal object RatingNotificationBuilder {
 
         // set the rating icons in the notification
         for (i in 0 until pushTemplate.ratingActionList.size) {
-            val ratingIconLayout = RemoteViews(packageName, R.layout.push_template_rating_icon_layout)
+            val ratingIconLayout = RemoteViews(packageName, R.layout.push_template_product_rating_icon_layout)
             val ratingIconImageView = R.id.rating_icon_image
             if (i <= pushTemplate.ratingSelected) {
                 if (!ratingIconLayout.setRemoteViewImage(pushTemplate.ratingSelectedIcon, ratingIconImageView)) {
@@ -147,14 +147,14 @@ internal object RatingNotificationBuilder {
      * @param context the application [Context]
      * @param broadcastReceiverClass the [Class] of the broadcast receiver to set in the created pending intent
      * @param channelId [String] containing the notification channel ID
-     * @param pushTemplate the [RatingPushTemplate] object containing the basic push template data
+     * @param pushTemplate the [ProductRatingPushTemplate] object containing the basic push template data
      * @return the created remind later [PendingIntent]
      */
     private fun createRatingButtonPendingIntent(
         context: Context,
         broadcastReceiverClass: Class<out BroadcastReceiver>?,
         channelId: String,
-        pushTemplate: RatingPushTemplate,
+        pushTemplate: ProductRatingPushTemplate,
         ratingButtonSelection: Int,
     ): PendingIntent? {
         if (broadcastReceiverClass == null) {

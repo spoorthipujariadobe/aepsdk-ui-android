@@ -19,7 +19,7 @@ import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 
-internal class RatingPushTemplate(data: NotificationData) : AEPPushTemplate(data) {
+internal class ProductRatingPushTemplate(data: NotificationData) : AEPPushTemplate(data) {
 
     private val SELF_TAG = "RatingPushTemplate"
 

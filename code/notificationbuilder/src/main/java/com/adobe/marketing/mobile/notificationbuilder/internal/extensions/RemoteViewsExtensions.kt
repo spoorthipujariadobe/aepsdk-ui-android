@@ -134,7 +134,7 @@ internal fun RemoteViews.setNotificationBodyTextColor(
         Log.trace(
             PushTemplateConstants.LOG_TAG,
             SELF_TAG,
-            "Empty expanded body text color hex string found, custom color will not be applied to the notification body text."
+            "Empty body text color hex string found, custom color will not be applied to the notification body text."
         )
         return
     }
