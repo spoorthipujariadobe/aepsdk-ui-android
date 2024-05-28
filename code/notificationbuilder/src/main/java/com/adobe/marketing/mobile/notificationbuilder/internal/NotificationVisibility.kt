@@ -20,8 +20,8 @@ enum class NotificationVisibility(val value: Int, val string: String) {
 
     companion object {
 
-        private val mapString = NotificationVisibility.values().associateBy{it.string}
-        private val mapValue = NotificationVisibility.values().associateBy{it.value}
+        private val mapString = NotificationVisibility.values().associateBy { it.string }
+        private val mapValue = NotificationVisibility.values().associateBy { it.value }
 
         @JvmStatic
         fun fromString(visibilityString: String?): NotificationVisibility {

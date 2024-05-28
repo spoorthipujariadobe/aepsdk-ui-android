@@ -21,8 +21,8 @@ enum class NotificationPriority(val value: Int, val string: String) {
     PRIORITY_MAX(NotificationCompat.PRIORITY_MAX, "PRIORITY_MAX");
 
     companion object {
-        private val mapByString = values().associateBy{it.string}
-        private val mapByValue = values().associateBy{it.value}
+        private val mapByString = values().associateBy { it.string }
+        private val mapByValue = values().associateBy { it.value }
 
         @JvmStatic
         fun fromString(priorityString: String?): NotificationPriority =

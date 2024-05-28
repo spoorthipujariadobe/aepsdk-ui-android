@@ -16,6 +16,7 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
+import android.content.Intent
 import android.view.View
 import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
@@ -28,7 +29,7 @@ import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateImage
 import com.adobe.marketing.mobile.notificationbuilder.internal.extensions.addActionButtons
 import com.adobe.marketing.mobile.notificationbuilder.internal.extensions.createNotificationChannelIfRequired
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.BasicPushTemplate
-import com.adobe.marketing.mobile.notificationbuilder.internal.util.MapData
+import com.adobe.marketing.mobile.notificationbuilder.internal.util.IntentData
 import com.adobe.marketing.mobile.services.Log
 
 /**
@@ -110,9 +111,11 @@ internal object BasicNotificationBuilder {
         context: Context,
         trackerActivityClass: Class<out Activity>?,
         broadcastReceiverClass: Class<out BroadcastReceiver>?,
-        dataMap: MutableMap<String, String>
+        intent: Intent
     ): NotificationCompat.Builder {
-        val basicPushTemplate = BasicPushTemplate(MapData(dataMap))
+        val extras = intent.extras
+            ?: throw NotificationConstructionFailedException("Intent extras are null, cannot fallback to basic notification.")
+        val basicPushTemplate = BasicPushTemplate(IntentData(extras, intent.action))
         return construct(
             context,
             basicPushTemplate,
