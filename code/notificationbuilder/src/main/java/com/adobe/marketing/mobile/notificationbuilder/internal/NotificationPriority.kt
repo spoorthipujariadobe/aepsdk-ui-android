@@ -24,10 +24,18 @@ enum class NotificationPriority(val value: Int, val string: String) {
         private val mapByString = values().associateBy { it.string }
         private val mapByValue = values().associateBy { it.value }
 
+        /**
+         * Returns the [NotificationPriority] enum for the given [priorityString].
+         * If the [priorityString] is null or not found, returns [PRIORITY_DEFAULT].
+         */
         @JvmStatic
         fun fromString(priorityString: String?): NotificationPriority =
             priorityString?.let { mapByString[it] } ?: PRIORITY_DEFAULT
 
+        /**
+         * Returns the [NotificationPriority] enum for the given [value].
+         * If the [value] is null or not found, returns [PRIORITY_DEFAULT].
+         */
         @JvmStatic
         fun fromValue(value: Int?): NotificationPriority =
             value?.let { mapByValue[it] } ?: PRIORITY_DEFAULT

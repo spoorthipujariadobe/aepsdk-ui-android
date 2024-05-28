@@ -23,11 +23,19 @@ enum class NotificationVisibility(val value: Int, val string: String) {
         private val mapString = NotificationVisibility.values().associateBy { it.string }
         private val mapValue = NotificationVisibility.values().associateBy { it.value }
 
+        /**
+         * Returns the [NotificationVisibility] enum for the given [visibilityString].
+         * If the [visibilityString] is null or not found, returns [VISIBILITY_PRIVATE].
+         */
         @JvmStatic
         fun fromString(visibilityString: String?): NotificationVisibility {
             return visibilityString?.let { mapString[it] } ?: VISIBILITY_PRIVATE
         }
 
+        /**
+         * Returns the [NotificationVisibility] enum for the given [visibilityValue].
+         * If the [visibilityValue] is null or not found, returns [VISIBILITY_PRIVATE].
+         */
         @JvmStatic
         fun fromValue(visibilityValue: Int?): NotificationVisibility {
             return visibilityValue?.let { mapValue[it] } ?: VISIBILITY_PRIVATE
