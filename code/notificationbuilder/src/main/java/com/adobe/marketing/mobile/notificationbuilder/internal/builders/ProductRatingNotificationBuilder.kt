@@ -87,31 +87,15 @@ internal object ProductRatingNotificationBuilder {
             )
         }
 
-        // set the rating icons in the notification
-        for (i in 0 until pushTemplate.ratingActionList.size) {
-            val ratingIconLayout = RemoteViews(packageName, R.layout.push_template_product_rating_icon_layout)
-            val ratingIconImageView = R.id.rating_icon_image
-            if (i <= pushTemplate.ratingSelected) {
-                if (!ratingIconLayout.setRemoteViewImage(pushTemplate.ratingSelectedIcon, ratingIconImageView)) {
-                    throw NotificationConstructionFailedException("Image for selected rating icon is invalid.")
-                }
-            } else {
-                if (!ratingIconLayout.setRemoteViewImage(pushTemplate.ratingUnselectedIcon, ratingIconImageView)) {
-                    throw NotificationConstructionFailedException("Image for unselected rating icon is invalid.")
-                }
-            }
-            expandedLayout.addView(R.id.rating_icons_container, ratingIconLayout)
-
-            // add pending intent for rating icon click
-            val ratingButtonPendingIntent = createRatingButtonPendingIntent(
-                context,
-                broadcastReceiverClass,
-                channelIdToUse,
-                pushTemplate,
-                i
-            )
-            ratingIconLayout.setOnClickPendingIntent(ratingIconImageView, ratingButtonPendingIntent)
-        }
+        // populate the rating icons
+        populateRatingIcons(
+            context,
+            broadcastReceiverClass,
+            expandedLayout,
+            pushTemplate,
+            packageName,
+            channelIdToUse
+        )
 
         // check if confirm button needs to be shown
         if (pushTemplate.ratingSelected >= 0) {
@@ -139,6 +123,51 @@ internal object ProductRatingNotificationBuilder {
         }
 
         return notificationBuilder
+    }
+
+    /**
+     * Populates the rating icons in the notification.
+     *
+     * @param context the current [Context] of the application
+     * @param broadcastReceiverClass the [Class] of the broadcast receiver to set in the created pending intent
+     * @param expandedLayout the [RemoteViews] containing the expanded layout of the notification
+     * @param pushTemplate the [ProductRatingPushTemplate] object containing the product rating push template data
+     * @param packageName the `String` name of the application package used to locate the layout resources
+     * @param channelIdToUse the `String` containing the channel ID to use for the notification
+     */
+    private fun populateRatingIcons(
+        context: Context,
+        broadcastReceiverClass: Class<out BroadcastReceiver>?,
+        expandedLayout: RemoteViews,
+        pushTemplate: ProductRatingPushTemplate,
+        packageName: String?,
+        channelIdToUse: String
+    ) {
+        // set the rating icons in the notification based on the rating selected
+        for (i in 0 until pushTemplate.ratingActionList.size) {
+            val ratingIconLayout = RemoteViews(packageName, R.layout.push_template_product_rating_icon_layout)
+            val ratingIconImageView = R.id.rating_icon_image
+            if (i <= pushTemplate.ratingSelected) {
+                if (!ratingIconLayout.setRemoteViewImage(pushTemplate.ratingSelectedIcon, ratingIconImageView)) {
+                    throw NotificationConstructionFailedException("Image for selected rating icon is invalid.")
+                }
+            } else {
+                if (!ratingIconLayout.setRemoteViewImage(pushTemplate.ratingUnselectedIcon, ratingIconImageView)) {
+                    throw NotificationConstructionFailedException("Image for unselected rating icon is invalid.")
+                }
+            }
+            expandedLayout.addView(R.id.rating_icons_container, ratingIconLayout)
+
+            // add pending intent for rating icon click
+            val ratingButtonPendingIntent = createRatingButtonPendingIntent(
+                context,
+                broadcastReceiverClass,
+                channelIdToUse,
+                pushTemplate,
+                i
+            )
+            ratingIconLayout.setOnClickPendingIntent(ratingIconImageView, ratingButtonPendingIntent)
+        }
     }
 
     /**
