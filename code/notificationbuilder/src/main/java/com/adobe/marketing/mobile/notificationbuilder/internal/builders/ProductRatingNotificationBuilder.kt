@@ -218,7 +218,7 @@ internal object ProductRatingNotificationBuilder {
 
         return PendingIntent.getBroadcast(
             context,
-            ratingButtonSelection,
+            pushTemplate.tag.hashCode() + ratingButtonSelection,
             ratingButtonClickIntent,
             PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
         )
