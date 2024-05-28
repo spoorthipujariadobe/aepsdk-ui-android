@@ -146,4 +146,8 @@ internal object PushTemplateConstants {
         const val PRICE = "price"
         const val URI = "uri"
     }
+
+    internal object ProductRatingKeys {
+        const val RATING_UNSELECTED = -1
+    }
 }

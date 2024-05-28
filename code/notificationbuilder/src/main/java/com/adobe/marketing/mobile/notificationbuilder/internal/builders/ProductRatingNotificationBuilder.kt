@@ -98,7 +98,7 @@ internal object ProductRatingNotificationBuilder {
         )
 
         // check if confirm button needs to be shown
-        if (pushTemplate.ratingSelected >= 0) {
+        if (pushTemplate.ratingSelected > PushTemplateConstants.ProductRatingKeys.RATING_UNSELECTED) {
             expandedLayout.setViewVisibility(R.id.rating_confirm, View.VISIBLE)
             expandedLayout.setNotificationTitleTextColor(
                 pushTemplate.titleTextColor,
@@ -144,15 +144,24 @@ internal object ProductRatingNotificationBuilder {
         channelIdToUse: String
     ) {
         // set the rating icons in the notification based on the rating selected
+        val downloadRatingIconsCount = PushTemplateImageUtils.cacheImages(
+            listOf(
+                pushTemplate.ratingUnselectedIcon,
+                pushTemplate.ratingSelectedIcon
+            )
+        )
+
+        // only construct the notification if both selected and unselected icons are valid
+        if (downloadRatingIconsCount != 2) {
+            throw NotificationConstructionFailedException("Image for rating icon is invalid")
+        }
         for (i in 0 until pushTemplate.ratingActionList.size) {
             val ratingIconLayout = RemoteViews(packageName, R.layout.push_template_product_rating_icon_layout)
             val ratingIconImageView = R.id.rating_icon_image
             if (i <= pushTemplate.ratingSelected) {
-                if (!ratingIconLayout.setRemoteViewImage(pushTemplate.ratingSelectedIcon, ratingIconImageView)) {
-                    throw NotificationConstructionFailedException("Image for selected rating icon is invalid.")
-                }
-            } else if (!ratingIconLayout.setRemoteViewImage(pushTemplate.ratingUnselectedIcon, ratingIconImageView)) {
-                throw NotificationConstructionFailedException("Image for unselected rating icon is invalid.")
+                ratingIconLayout.setRemoteViewImage(pushTemplate.ratingSelectedIcon, ratingIconImageView)
+            } else {
+                ratingIconLayout.setRemoteViewImage(pushTemplate.ratingUnselectedIcon, ratingIconImageView)
             }
             expandedLayout.addView(R.id.rating_icons_container, ratingIconLayout)
 

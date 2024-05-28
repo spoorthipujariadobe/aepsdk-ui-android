@@ -168,6 +168,9 @@ internal fun RemoteViews.setRemoteViewImage(
         setViewVisibility(containerViewId, View.GONE)
         return false
     }
+    // logical OR is used here for short circuiting the second condition
+    // first check if image represents a valid URL
+    // only if it is not, check for bundled image
     return setRemoteImage(image, containerViewId) || setBundledImage(image, containerViewId)
 }
 

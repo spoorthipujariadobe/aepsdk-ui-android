@@ -16,24 +16,13 @@ import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateConst
 import com.adobe.marketing.mobile.notificationbuilder.internal.util.NotificationData
 import com.adobe.marketing.mobile.services.Log
 import org.json.JSONArray
-import org.json.JSONException
 import org.json.JSONObject
 
 internal class ProductRatingPushTemplate(data: NotificationData) : AEPPushTemplate(data) {
 
     private val SELF_TAG = "ProductRatingPushTemplate"
 
-    class RatingAction(val link: String?, type: String) {
-        val type: PushTemplateConstants.ActionType
-
-        init {
-            this.type = try {
-                PushTemplateConstants.ActionType.valueOf(type)
-            } catch (e: IllegalArgumentException) {
-                throw IllegalArgumentException("Invalid action type provided. Error : ${e.localizedMessage}")
-            }
-        }
-
+    class RatingAction(val type: PushTemplateConstants.ActionType, val link: String?) {
         companion object {
             private const val SELF_TAG = "RatingAction"
 
@@ -43,11 +32,11 @@ internal class ProductRatingPushTemplate(data: NotificationData) : AEPPushTempla
              * @param jsonObject [JSONObject] containing the action details
              * @return an [RatingAction] or null if the conversion fails
              */
-            fun getRatingActionFromJSONObject(jsonObject: JSONObject): RatingAction? {
+            fun from(jsonObject: JSONObject): RatingAction? {
                 return try {
                     var uri: String? = null
-                    val type = jsonObject.getString(PushTemplateConstants.RatingAction.TYPE)
-                    if (type == PushTemplateConstants.ActionType.WEBURL.name || type == PushTemplateConstants.ActionType.DEEPLINK.name) {
+                    val type = PushTemplateConstants.ActionType.valueOf(jsonObject.getString(PushTemplateConstants.RatingAction.TYPE))
+                    if (type == PushTemplateConstants.ActionType.WEBURL || type == PushTemplateConstants.ActionType.DEEPLINK) {
                         uri = jsonObject.getString(PushTemplateConstants.RatingAction.URI)
                     }
                     Log.trace(
@@ -55,8 +44,8 @@ internal class ProductRatingPushTemplate(data: NotificationData) : AEPPushTempla
                         SELF_TAG,
                         "Creating a rating action with uri ($uri), and type ($type)."
                     )
-                    RatingAction(uri, type)
-                } catch (e: JSONException) {
+                    RatingAction(type, uri)
+                } catch (e: Exception) {
                     Log.warning(
                         PushTemplateConstants.LOG_TAG,
                         SELF_TAG,
@@ -72,8 +61,7 @@ internal class ProductRatingPushTemplate(data: NotificationData) : AEPPushTempla
     internal val ratingSelectedIcon: String
     internal val ratingActionString: String
     internal val ratingActionList: List<RatingAction>
-    internal var ratingSelected: Int = -1
-        private set
+    internal val ratingSelected: Int
 
     init {
         ratingUnselectedIcon = data.getRequiredString(PushTemplateConstants.PushPayloadKeys.RATING_UNSELECTED_ICON)
@@ -84,7 +72,8 @@ internal class ProductRatingPushTemplate(data: NotificationData) : AEPPushTempla
         if (ratingActionList.size < 3 || ratingActionList.size > 5) {
             throw IllegalArgumentException("\"${PushTemplateConstants.PushPayloadKeys.RATING_ACTIONS}\" field must have 3 to 5 rating actions")
         }
-        ratingSelected = data.getInteger(PushTemplateIntentConstants.IntentKeys.RATING_SELECTED) ?: -1
+        ratingSelected = data.getInteger(PushTemplateIntentConstants.IntentKeys.RATING_SELECTED)
+            ?: PushTemplateConstants.ProductRatingKeys.RATING_UNSELECTED
     }
 
     private fun getRatingActionsFromString(ratingActionJsonString: String?): List<RatingAction>? {
@@ -102,7 +91,7 @@ internal class ProductRatingPushTemplate(data: NotificationData) : AEPPushTempla
             val jsonArray = JSONArray(ratingActionJsonString)
             for (i in 0 until jsonArray.length()) {
                 val jsonObject = jsonArray.getJSONObject(i)
-                val ratingAction = RatingAction.getRatingActionFromJSONObject(jsonObject) ?: return null
+                val ratingAction = RatingAction.from(jsonObject) ?: return null
                 ratingActionList.add(ratingAction)
             }
         } catch (e: Exception) {
