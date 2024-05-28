@@ -151,10 +151,8 @@ internal object ProductRatingNotificationBuilder {
                 if (!ratingIconLayout.setRemoteViewImage(pushTemplate.ratingSelectedIcon, ratingIconImageView)) {
                     throw NotificationConstructionFailedException("Image for selected rating icon is invalid.")
                 }
-            } else {
-                if (!ratingIconLayout.setRemoteViewImage(pushTemplate.ratingUnselectedIcon, ratingIconImageView)) {
-                    throw NotificationConstructionFailedException("Image for unselected rating icon is invalid.")
-                }
+            } else if (!ratingIconLayout.setRemoteViewImage(pushTemplate.ratingUnselectedIcon, ratingIconImageView)) {
+                throw NotificationConstructionFailedException("Image for unselected rating icon is invalid.")
             }
             expandedLayout.addView(R.id.rating_icons_container, ratingIconLayout)
 
