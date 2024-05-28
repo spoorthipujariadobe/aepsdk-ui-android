@@ -168,12 +168,7 @@ internal fun RemoteViews.setRemoteViewImage(
         setViewVisibility(containerViewId, View.GONE)
         return false
     }
-
-    return if (UrlUtils.isValidUrl(image)) {
-        setRemoteImage(image, containerViewId)
-    } else {
-        setBundledImage(image, containerViewId)
-    }
+    return setRemoteImage(image, containerViewId) || setBundledImage(image, containerViewId)
 }
 
 /**
@@ -193,7 +188,7 @@ internal fun RemoteViews.setRemoteViewClickAction(
     trackerActivityClass: Class<out Activity>?,
     targetViewResourceId: Int,
     actionUri: String?,
-    actionType: PushTemplateConstants.ActionType?,
+    actionId: String?,
     tag: String?,
     stickyNotification: Boolean
 ) {
@@ -204,40 +199,14 @@ internal fun RemoteViews.setRemoteViewClickAction(
     )
 
     val pendingIntent: PendingIntent? =
-        if (actionType != null &&
-            (
-                actionType === PushTemplateConstants.ActionType.DISMISS ||
-                    actionType === PushTemplateConstants.ActionType.OPENAPP
-                )
-        ) {
-            PendingIntentUtils.createPendingIntent(
-                context,
-                trackerActivityClass,
-                null,
-                null,
-                tag,
-                stickyNotification
-            )
-        } else {
-            if (actionUri.isNullOrEmpty()) {
-                Log.trace(
-                    PushTemplateConstants.LOG_TAG,
-                    SELF_TAG,
-                    "No valid action uri found for the clicked view with id" +
-                        "$targetViewResourceId and action type $actionType." +
-                        "No click action will be assigned."
-                )
-                return
-            }
-            PendingIntentUtils.createPendingIntent(
-                context,
-                trackerActivityClass,
-                actionUri,
-                null,
-                tag,
-                stickyNotification
-            )
-        }
+        PendingIntentUtils.createPendingIntent(
+            context,
+            trackerActivityClass,
+            actionUri,
+            actionId,
+            tag,
+            stickyNotification
+        )
     setOnClickPendingIntent(targetViewResourceId, pendingIntent)
 }
 
@@ -245,31 +214,31 @@ internal fun RemoteViews.setRemoteViewClickAction(
  * Sets the image for the provided [RemoteViews] by downloading the image from the provided URL.
  * If the image cannot be downloaded, the image visibility is set to [View.GONE].
  *
- * @param image `String` containing the image URL to download and use
+ * @param imageUrl `String` containing the image URL to download and use
  * @param containerViewId [Int] containing the resource id of the view to attach the image to
  *
  * @return `Boolean` true if the image was set, false otherwise
  */
 internal fun RemoteViews.setRemoteImage(
-    image: String?,
+    imageUrl: String?,
     containerViewId: Int
 ): Boolean {
-    if (!UrlUtils.isValidUrl(image)) {
+    if (!UrlUtils.isValidUrl(imageUrl)) {
         return false
     }
-    val downloadedIconCount = PushTemplateImageUtils.cacheImages(listOf(image))
+    val downloadedIconCount = PushTemplateImageUtils.cacheImages(listOf(imageUrl))
     if (downloadedIconCount == 0) {
-        Log.trace(
+        Log.warning(
             PushTemplateConstants.LOG_TAG,
             SELF_TAG,
-            "Unable to download an image from $image, image will not be applied."
+            "Unable to download an image from URL $imageUrl, image will not be applied."
         )
         setViewVisibility(containerViewId, View.GONE)
         return false
     }
     setImageViewBitmap(
         containerViewId,
-        PushTemplateImageUtils.getCachedImage(image)
+        PushTemplateImageUtils.getCachedImage(imageUrl)
     )
     return true
 }
@@ -290,10 +259,10 @@ internal fun RemoteViews.setBundledImage(
     val bundledIconId: Int? = ServiceProvider.getInstance()
         .appContextService.applicationContext?.getIconWithResourceName(image)
     if (bundledIconId == null || bundledIconId == 0) {
-        Log.trace(
+        Log.warning(
             PushTemplateConstants.LOG_TAG,
             SELF_TAG,
-            "Unable to find a bundled image with name $image, large image will not be applied."
+            "Unable to find a bundled image with name $image, image will not be applied."
         )
         setViewVisibility(containerViewId, View.GONE)
         return false

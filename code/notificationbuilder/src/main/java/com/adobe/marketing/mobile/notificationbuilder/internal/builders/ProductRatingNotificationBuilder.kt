@@ -33,7 +33,7 @@ import com.adobe.marketing.mobile.notificationbuilder.internal.templates.Product
 import com.adobe.marketing.mobile.services.Log
 
 internal object ProductRatingNotificationBuilder {
-    private const val SELF_TAG = "RatingNotificationBuilder"
+    private const val SELF_TAG = "ProductRatingNotificationBuilder"
 
     @Throws(NotificationConstructionFailedException::class)
     fun construct(
@@ -113,7 +113,7 @@ internal object ProductRatingNotificationBuilder {
                 trackerActivityClass,
                 R.id.rating_confirm,
                 selectedRatingAction.link,
-                selectedRatingAction.type,
+                pushTemplate.ratingSelected.toString(),
                 pushTemplate.tag,
                 false
             )

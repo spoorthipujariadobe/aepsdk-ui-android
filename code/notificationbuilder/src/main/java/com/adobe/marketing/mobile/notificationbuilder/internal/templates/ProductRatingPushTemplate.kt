@@ -21,7 +21,7 @@ import org.json.JSONObject
 
 internal class ProductRatingPushTemplate(data: NotificationData) : AEPPushTemplate(data) {
 
-    private val SELF_TAG = "RatingPushTemplate"
+    private val SELF_TAG = "ProductRatingPushTemplate"
 
     class RatingAction(val link: String?, type: String) {
         val type: PushTemplateConstants.ActionType
@@ -30,7 +30,7 @@ internal class ProductRatingPushTemplate(data: NotificationData) : AEPPushTempla
             this.type = try {
                 PushTemplateConstants.ActionType.valueOf(type)
             } catch (e: IllegalArgumentException) {
-                throw IllegalArgumentException("Invalid action type provided, defaulting to NONE. Error : ${e.localizedMessage}")
+                throw IllegalArgumentException("Invalid action type provided. Error : ${e.localizedMessage}")
             }
         }
 
@@ -40,7 +40,7 @@ internal class ProductRatingPushTemplate(data: NotificationData) : AEPPushTempla
             /**
              * Converts the json object representing the action on selecting the rating to a [RatingAction].
              *
-             * @param jsonObject [JSONObject] containing the action action details
+             * @param jsonObject [JSONObject] containing the action details
              * @return an [RatingAction] or null if the conversion fails
              */
             fun getRatingActionFromJSONObject(jsonObject: JSONObject): RatingAction? {
@@ -48,7 +48,7 @@ internal class ProductRatingPushTemplate(data: NotificationData) : AEPPushTempla
                     var uri: String? = null
                     val type = jsonObject.getString(PushTemplateConstants.RatingAction.TYPE)
                     if (type == PushTemplateConstants.ActionType.WEBURL.name || type == PushTemplateConstants.ActionType.DEEPLINK.name) {
-                        uri = jsonObject.optString(PushTemplateConstants.RatingAction.URI)
+                        uri = jsonObject.getString(PushTemplateConstants.RatingAction.URI)
                     }
                     Log.trace(
                         PushTemplateConstants.LOG_TAG,
@@ -68,17 +68,10 @@ internal class ProductRatingPushTemplate(data: NotificationData) : AEPPushTempla
         }
     }
 
-    internal var ratingUnselectedIcon: String
-        private set
-
-    internal var ratingSelectedIcon: String
-        private set
-    internal var ratingActionString: String
-        private set
-
-    internal var ratingActionList: List<RatingAction>
-        private set
-
+    internal val ratingUnselectedIcon: String
+    internal val ratingSelectedIcon: String
+    internal val ratingActionString: String
+    internal val ratingActionList: List<RatingAction>
     internal var ratingSelected: Int = -1
         private set
 
@@ -94,8 +87,8 @@ internal class ProductRatingPushTemplate(data: NotificationData) : AEPPushTempla
         ratingSelected = data.getInteger(PushTemplateIntentConstants.IntentKeys.RATING_SELECTED) ?: -1
     }
 
-    private fun getRatingActionsFromString(ratingUriString: String?): List<RatingAction>? {
-        if (ratingUriString.isNullOrEmpty()) {
+    private fun getRatingActionsFromString(ratingActionJsonString: String?): List<RatingAction>? {
+        if (ratingActionJsonString.isNullOrEmpty()) {
             Log.debug(
                 PushTemplateConstants.LOG_TAG,
                 SELF_TAG,
@@ -106,7 +99,7 @@ internal class ProductRatingPushTemplate(data: NotificationData) : AEPPushTempla
         }
         val ratingActionList = mutableListOf<RatingAction>()
         try {
-            val jsonArray = JSONArray(ratingUriString)
+            val jsonArray = JSONArray(ratingActionJsonString)
             for (i in 0 until jsonArray.length()) {
                 val jsonObject = jsonArray.getJSONObject(i)
                 val ratingAction = RatingAction.getRatingActionFromJSONObject(jsonObject) ?: return null
