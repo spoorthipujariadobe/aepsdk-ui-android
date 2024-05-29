@@ -266,15 +266,6 @@ internal object ProductCatalogNotificationBuilder {
         containerViewId: Int,
         buttonColor: String?
     ) {
-        // get custom color from hex string and set it the cta button
-        if (buttonColor.isNullOrEmpty()) {
-            Log.trace(
-                LOG_TAG,
-                SELF_TAG,
-                "Empty cta button color hex string found, custom color will not be applied to the cta button."
-            )
-            return
-        }
         setElementColor(
             containerViewId,
             "#$buttonColor",
@@ -293,15 +284,6 @@ internal object ProductCatalogNotificationBuilder {
         containerViewId: Int,
         buttonTextColor: String?
     ) {
-        // get custom color from hex string and set it the cta button
-        if (buttonTextColor.isNullOrEmpty()) {
-            Log.trace(
-                LOG_TAG,
-                SELF_TAG,
-                "Empty cta button text color hex string found, custom color will not be applied to the cta button."
-            )
-            return
-        }
         setElementColor(
             containerViewId,
             "#$buttonTextColor",

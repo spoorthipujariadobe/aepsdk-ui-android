@@ -42,11 +42,11 @@ private const val SELF_TAG = "RemoteViewExtensions"
  */
 internal fun RemoteViews.setElementColor(
     elementId: Int,
-    colorHex: String,
+    colorHex: String?,
     methodName: String,
     viewFriendlyName: String
 ) {
-    if (colorHex.isEmpty()) {
+    if (colorHex.isNullOrEmpty()) {
         Log.trace(
             LOG_TAG,
             SELF_TAG,
@@ -77,14 +77,6 @@ internal fun RemoteViews.setNotificationBackgroundColor(
     containerViewId: Int
 ) {
     // get custom color from hex string and set it the notification background
-    if (backgroundColor.isNullOrEmpty()) {
-        Log.trace(
-            LOG_TAG,
-            SELF_TAG,
-            "Empty background color hex string found, custom color will not be applied to the notification background."
-        )
-        return
-    }
     setElementColor(
         containerViewId,
         "#$backgroundColor",
@@ -104,14 +96,6 @@ internal fun RemoteViews.setNotificationTitleTextColor(
     containerViewId: Int
 ) {
     // get custom color from hex string and set it the notification title
-    if (titleTextColor.isNullOrEmpty()) {
-        Log.trace(
-            LOG_TAG,
-            SELF_TAG,
-            "Empty title text color hex string found, custom color will not be applied to the notification title text."
-        )
-        return
-    }
     setElementColor(
         containerViewId,
         "#$titleTextColor",
@@ -132,14 +116,6 @@ internal fun RemoteViews.setNotificationBodyTextColor(
     containerViewId: Int
 ) {
     // get custom color from hex string and set it the notification body text
-    if (expandedBodyTextColor.isNullOrEmpty()) {
-        Log.trace(
-            LOG_TAG,
-            SELF_TAG,
-            "Empty expanded body text color hex string found, custom color will not be applied to the notification body text."
-        )
-        return
-    }
     setElementColor(
         containerViewId,
         "#$expandedBodyTextColor",
