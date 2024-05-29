@@ -26,16 +26,16 @@ import com.adobe.marketing.mobile.notificationbuilder.internal.util.Notification
  * This class is used to parse the push template data payload or an intent and provide the necessary information
  * to build a notification.
  */
-internal sealed class AEPPushTemplate(data: NotificationData) {
+internal sealed class AEPPushTemplate(val data: NotificationData) {
 
     // Required, title of the message shown in the collapsed and expanded push template layouts
-    internal val title: String
+    internal val title: String = data.getRequiredString(PushPayloadKeys.TITLE)
 
     // Required, body of the message shown in the collapsed push template layout
-    internal val body: String
+    internal val body: String = data.getRequiredString(PushPayloadKeys.BODY)
 
     // Required, Version of the payload assigned by the authoring UI.
-    internal val payloadVersion: String
+    internal val payloadVersion: String = data.getRequiredString(PushPayloadKeys.VERSION)
 
     // begin optional values
     // Optional, sound to play when the notification is shown
@@ -109,12 +109,7 @@ internal sealed class AEPPushTemplate(data: NotificationData) {
      * @param data the data to initialize the push template with
      */
     init {
-        // extract the notification payload version
-        payloadVersion = data.getRequiredString(PushPayloadKeys.VERSION)
-
-        // extract the text information
-        title = data.getRequiredString(PushPayloadKeys.TITLE)
-        body = data.getRequiredString(PushPayloadKeys.BODY)
+        // extract the remaining text information
         expandedBodyText = data.getString(PushPayloadKeys.EXPANDED_BODY_TEXT)
         ticker = data.getString(PushPayloadKeys.TICKER)
 

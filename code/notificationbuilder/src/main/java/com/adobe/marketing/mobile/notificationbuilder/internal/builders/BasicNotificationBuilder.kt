@@ -30,6 +30,7 @@ import com.adobe.marketing.mobile.notificationbuilder.internal.extensions.addAct
 import com.adobe.marketing.mobile.notificationbuilder.internal.extensions.createNotificationChannelIfRequired
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.BasicPushTemplate
 import com.adobe.marketing.mobile.notificationbuilder.internal.util.IntentData
+import com.adobe.marketing.mobile.notificationbuilder.internal.util.NotificationData
 import com.adobe.marketing.mobile.services.Log
 
 /**
@@ -111,11 +112,9 @@ internal object BasicNotificationBuilder {
         context: Context,
         trackerActivityClass: Class<out Activity>?,
         broadcastReceiverClass: Class<out BroadcastReceiver>?,
-        intent: Intent
+        data: NotificationData
     ): NotificationCompat.Builder {
-        val extras = intent.extras
-            ?: throw NotificationConstructionFailedException("Intent extras are null, cannot fallback to basic notification.")
-        val basicPushTemplate = BasicPushTemplate(IntentData(extras, intent.action))
+        val basicPushTemplate = BasicPushTemplate(data)
         return construct(
             context,
             basicPushTemplate,
