@@ -116,7 +116,8 @@ internal object ManualCarouselNotificationBuilder {
             context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
         // create the notification channel if needed
-        val channelIdToUse = notificationManager.createNotificationChannelIfRequired(context, pushTemplate)
+        val channelIdToUse =
+            notificationManager.createNotificationChannelIfRequired(context, pushTemplate)
 
         // create the notification builder with the common settings applied
         val notificationBuilder = AEPPushNotificationBuilder.construct(
@@ -158,7 +159,11 @@ internal object ManualCarouselNotificationBuilder {
             val imageUri: String = item.imageUri
             val pushImage: Bitmap? = PushTemplateImageUtils.getCachedImage(imageUri)
             if (pushImage == null) {
-                Log.trace(LOG_TAG, SELF_TAG, "Failed to retrieve an image from $imageUri, will not create a new carousel item.")
+                Log.trace(
+                    LOG_TAG,
+                    SELF_TAG,
+                    "Failed to retrieve an image from $imageUri, will not create a new carousel item."
+                )
                 continue
             }
             validCarouselItems.add(item)
@@ -313,7 +318,7 @@ internal object ManualCarouselNotificationBuilder {
             val pushImage: Bitmap? = PushTemplateImageUtils.getCachedImage(imageUri)
             if (pushImage == null) {
                 Log.trace(
-                    PushTemplateConstants.LOG_TAG,
+                    LOG_TAG,
                     SELF_TAG,
                     "Failed to retrieve an image from $imageUri, will not create a new carousel item."
                 )
@@ -382,7 +387,7 @@ internal object ManualCarouselNotificationBuilder {
         val assetCacheLocation = PushTemplateImageUtils.getAssetCacheLocation()
         if (assetCacheLocation.isNullOrEmpty()) {
             Log.trace(
-                PushTemplateConstants.LOG_TAG,
+                LOG_TAG,
                 SELF_TAG,
                 "Asset cache location is null or empty, unable to retrieve filmstrip carousel images."
             )
@@ -460,7 +465,7 @@ internal object ManualCarouselNotificationBuilder {
         val newCenterIndex = (centerIndex + 1) % listSize
         val newRightIndex = (newCenterIndex + 1) % listSize
         Log.trace(
-            PushTemplateConstants.LOG_TAG,
+            LOG_TAG,
             SELF_TAG,
             "Calculated new indices. New center index is $newCenterIndex, new left index is $centerIndex, and new right index is $newRightIndex."
         )
@@ -496,10 +501,22 @@ internal object ManualCarouselNotificationBuilder {
         clickIntent.putExtra(PushPayloadKeys.CAROUSEL_LAYOUT, pushTemplate.carouselLayout)
         clickIntent.putExtra(PushPayloadKeys.CAROUSEL_ITEMS, pushTemplate.rawCarouselItems)
         clickIntent.putExtra(PushPayloadKeys.CAROUSEL_OPERATION_MODE, pushTemplate.carouselMode)
-        clickIntent.putExtra(PushTemplateIntentConstants.IntentKeys.CENTER_IMAGE_INDEX, pushTemplate.centerImageIndex.toString())
-        clickIntent.putExtra(PushTemplateIntentConstants.IntentKeys.IMAGE_URLS, downloadedImageUris.toTypedArray())
-        clickIntent.putExtra(PushTemplateIntentConstants.IntentKeys.IMAGE_CAPTIONS, imageCaptions.toTypedArray())
-        clickIntent.putExtra(PushTemplateIntentConstants.IntentKeys.IMAGE_CLICK_ACTIONS, imageClickActions.toTypedArray())
+        clickIntent.putExtra(
+            PushTemplateIntentConstants.IntentKeys.CENTER_IMAGE_INDEX,
+            pushTemplate.centerImageIndex.toString()
+        )
+        clickIntent.putExtra(
+            PushTemplateIntentConstants.IntentKeys.IMAGE_URLS,
+            downloadedImageUris.toTypedArray()
+        )
+        clickIntent.putExtra(
+            PushTemplateIntentConstants.IntentKeys.IMAGE_CAPTIONS,
+            imageCaptions.toTypedArray()
+        )
+        clickIntent.putExtra(
+            PushTemplateIntentConstants.IntentKeys.IMAGE_CLICK_ACTIONS,
+            imageClickActions.toTypedArray()
+        )
         broadcastReceiverClass?.let {
             clickIntent.setClass(context, broadcastReceiverClass)
         }

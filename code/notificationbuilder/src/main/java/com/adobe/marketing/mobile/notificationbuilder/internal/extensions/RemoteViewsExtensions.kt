@@ -20,6 +20,7 @@ import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
 import com.adobe.marketing.mobile.notificationbuilder.internal.PendingIntentUtils
 import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateConstants
+import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateConstants.LOG_TAG
 import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateImageUtils
 import com.adobe.marketing.mobile.services.Log
 import com.adobe.marketing.mobile.services.ServiceProvider
@@ -40,13 +41,13 @@ private const val SELF_TAG = "RemoteViewExtensions"
  */
 internal fun RemoteViews.setElementColor(
     elementId: Int,
-    colorHex: String,
+    colorHex: String?,
     methodName: String,
     viewFriendlyName: String
 ) {
-    if (colorHex.isEmpty()) {
+    if (colorHex.isNullOrEmpty()) {
         Log.trace(
-            PushTemplateConstants.LOG_TAG,
+            LOG_TAG,
             SELF_TAG,
             "Empty color hex string found, custom color will not be applied to $viewFriendlyName."
         )
@@ -57,7 +58,7 @@ internal fun RemoteViews.setElementColor(
         setInt(elementId, methodName, Color.parseColor(colorHex))
     } catch (exception: IllegalArgumentException) {
         Log.trace(
-            PushTemplateConstants.LOG_TAG,
+            LOG_TAG,
             SELF_TAG,
             "Unrecognized hex string passed to Color.parseColor(), custom color will not be applied to $viewFriendlyName."
         )
@@ -75,14 +76,6 @@ internal fun RemoteViews.setNotificationBackgroundColor(
     containerViewId: Int
 ) {
     // get custom color from hex string and set it the notification background
-    if (backgroundColor.isNullOrEmpty()) {
-        Log.trace(
-            PushTemplateConstants.LOG_TAG,
-            SELF_TAG,
-            "Empty background color hex string found, custom color will not be applied to the notification background."
-        )
-        return
-    }
     setElementColor(
         containerViewId,
         "#$backgroundColor",
@@ -102,14 +95,6 @@ internal fun RemoteViews.setNotificationTitleTextColor(
     containerViewId: Int
 ) {
     // get custom color from hex string and set it the notification title
-    if (titleTextColor.isNullOrEmpty()) {
-        Log.trace(
-            PushTemplateConstants.LOG_TAG,
-            SELF_TAG,
-            "Empty title text color hex string found, custom color will not be applied to the notification title text."
-        )
-        return
-    }
     setElementColor(
         containerViewId,
         "#$titleTextColor",
@@ -130,14 +115,6 @@ internal fun RemoteViews.setNotificationBodyTextColor(
     containerViewId: Int
 ) {
     // get custom color from hex string and set it the notification body text
-    if (expandedBodyTextColor.isNullOrEmpty()) {
-        Log.trace(
-            PushTemplateConstants.LOG_TAG,
-            SELF_TAG,
-            "Empty body text color hex string found, custom color will not be applied to the notification body text."
-        )
-        return
-    }
     setElementColor(
         containerViewId,
         "#$expandedBodyTextColor",
@@ -161,7 +138,7 @@ internal fun RemoteViews.setRemoteViewImage(
 ): Boolean {
     if (image.isNullOrEmpty()) {
         Log.trace(
-            PushTemplateConstants.LOG_TAG,
+            LOG_TAG,
             SELF_TAG,
             "Null or empty image string found, image will not be applied."
         )
@@ -196,7 +173,7 @@ internal fun RemoteViews.setRemoteViewClickAction(
     stickyNotification: Boolean
 ) {
     Log.trace(
-        PushTemplateConstants.LOG_TAG,
+        LOG_TAG,
         SELF_TAG,
         "Setting remote view click action uri: $actionUri."
     )
@@ -232,7 +209,7 @@ internal fun RemoteViews.setRemoteImage(
     val downloadedIconCount = PushTemplateImageUtils.cacheImages(listOf(imageUrl))
     if (downloadedIconCount == 0) {
         Log.warning(
-            PushTemplateConstants.LOG_TAG,
+            LOG_TAG,
             SELF_TAG,
             "Unable to download an image from URL $imageUrl, image will not be applied."
         )
@@ -263,7 +240,7 @@ internal fun RemoteViews.setBundledImage(
         .appContextService.applicationContext?.getIconWithResourceName(image)
     if (bundledIconId == null || bundledIconId == 0) {
         Log.warning(
-            PushTemplateConstants.LOG_TAG,
+            LOG_TAG,
             SELF_TAG,
             "Unable to find a bundled image with name $image, image will not be applied."
         )

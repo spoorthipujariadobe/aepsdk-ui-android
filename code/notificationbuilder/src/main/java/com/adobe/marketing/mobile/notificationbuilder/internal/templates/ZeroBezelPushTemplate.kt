@@ -38,6 +38,8 @@ internal class ZeroBezelPushTemplate(data: NotificationData) : AEPPushTemplate(d
      */
     init {
         collapsedStyle = ZeroBezelStyle
-            .getCollapsedStyleFromString(data.getString(PushPayloadKeys.ZERO_BEZEL_COLLAPSED_STYLE) ?: "txt")
+            .getCollapsedStyleFromString(
+                data.getString(PushPayloadKeys.ZERO_BEZEL_COLLAPSED_STYLE) ?: "txt"
+            )
     }
 }

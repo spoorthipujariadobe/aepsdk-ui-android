@@ -51,7 +51,8 @@ internal object BasicNotificationBuilder {
 
         val notificationManager =
             context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        val channelIdToUse: String = notificationManager.createNotificationChannelIfRequired(context, pushTemplate)
+        val channelIdToUse: String =
+            notificationManager.createNotificationChannelIfRequired(context, pushTemplate)
 
         // create the notification builder with the common settings applied
         val notificationBuilder = AEPPushNotificationBuilder.construct(
@@ -139,12 +140,25 @@ internal object BasicNotificationBuilder {
         if (broadcastReceiverClass == null) {
             return null
         }
-        Log.trace(LOG_TAG, SELF_TAG, "Creating a remind later pending intent from a push template object.")
+        Log.trace(
+            LOG_TAG,
+            SELF_TAG,
+            "Creating a remind later pending intent from a push template object."
+        )
 
-        val remindIntent = AEPPushNotificationBuilder.createIntent(PushTemplateIntentConstants.IntentActions.REMIND_LATER_CLICKED, pushTemplate)
+        val remindIntent = AEPPushNotificationBuilder.createIntent(
+            PushTemplateIntentConstants.IntentActions.REMIND_LATER_CLICKED,
+            pushTemplate
+        )
         remindIntent.putExtra(PushPayloadKeys.REMIND_LATER_TEXT, pushTemplate.remindLaterText)
-        remindIntent.putExtra(PushPayloadKeys.REMIND_LATER_TIMESTAMP, pushTemplate.remindLaterTimestamp)
-        remindIntent.putExtra(PushPayloadKeys.REMIND_LATER_DURATION, pushTemplate.remindLaterDuration)
+        remindIntent.putExtra(
+            PushPayloadKeys.REMIND_LATER_TIMESTAMP,
+            pushTemplate.remindLaterTimestamp
+        )
+        remindIntent.putExtra(
+            PushPayloadKeys.REMIND_LATER_DURATION,
+            pushTemplate.remindLaterDuration
+        )
         remindIntent.putExtra(PushPayloadKeys.ACTION_BUTTONS, pushTemplate.actionButtonsString)
         remindIntent.putExtra(PushPayloadKeys.CHANNEL_ID, channelId)
 

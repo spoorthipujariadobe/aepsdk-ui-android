@@ -68,6 +68,7 @@ internal object PushTemplateConstants {
         const val NO_CENTER_INDEX_SET = -1
         const val INPUT_BOX_DEFAULT_REPLY_TEXT = "Reply"
         const val PRODUCT_CATALOG_START_INDEX = 0
+        const val PRODUCT_CATALOG_VERTICAL_LAYOUT = "vertical"
 
         // TODO: revisit this value. should cache time be configurable rather than have a static
         // value?
@@ -84,6 +85,7 @@ internal object PushTemplateConstants {
         const val NOTIFICATION_BACKGROUND = "notification background"
         const val NOTIFICATION_TITLE = "notification title"
         const val NOTIFICATION_BODY_TEXT = "notification body text"
+        const val CTA_BUTTON = "product catalog cta button"
     }
 
     internal object PushPayloadKeys {
@@ -125,6 +127,7 @@ internal object PushTemplateConstants {
         const val ZERO_BEZEL_COLLAPSED_STYLE = "adb_col_style"
         const val CATALOG_CTA_BUTTON_TEXT = "adb_cta_txt"
         const val CATALOG_CTA_BUTTON_COLOR = "adb_cta_clr"
+        const val CATALOG_CTA_BUTTON_TEXT_COLOR = "adb_cta_txt_clr"
         const val CATALOG_CTA_BUTTON_URI = "adb_cta_uri"
         const val CATALOG_LAYOUT = "adb_display"
         const val CATALOG_ITEMS = "adb_items"
@@ -145,6 +148,11 @@ internal object PushTemplateConstants {
         const val IMAGE = "img"
         const val PRICE = "price"
         const val URI = "uri"
+    }
+
+    internal object CatalogActionIds {
+        const val CTA_BUTTON_CLICKED = "cta_button_clicked"
+        const val PRODUCT_IMAGE_CLICKED = "product_image_clicked"
     }
 
     internal object ProductRatingKeys {

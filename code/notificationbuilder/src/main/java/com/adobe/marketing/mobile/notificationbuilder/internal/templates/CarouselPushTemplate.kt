@@ -20,7 +20,8 @@ import com.adobe.marketing.mobile.services.Log
 import org.json.JSONArray
 import org.json.JSONException
 
-internal open class CarouselPushTemplate protected constructor(data: NotificationData) : AEPPushTemplate(data) {
+internal open class CarouselPushTemplate protected constructor(data: NotificationData) :
+    AEPPushTemplate(data) {
     // Optional, Determines how the carousel will be operated. Valid values are "auto" or "manual".
     // Default is "auto".
     internal val carouselMode: String
@@ -60,7 +61,8 @@ internal open class CarouselPushTemplate protected constructor(data: Notificatio
         private const val SELF_TAG = "CarouselPushTemplate"
 
         fun createCarouselPushTemplate(data: NotificationData): CarouselPushTemplate {
-            val carouselMode = data.getString(PushPayloadKeys.CAROUSEL_OPERATION_MODE) ?: DefaultValues.AUTO_CAROUSEL_MODE
+            val carouselMode = data.getString(PushPayloadKeys.CAROUSEL_OPERATION_MODE)
+                ?: DefaultValues.AUTO_CAROUSEL_MODE
             return if (carouselMode == DefaultValues.AUTO_CAROUSEL_MODE) {
                 AutoCarouselPushTemplate(data)
             } else

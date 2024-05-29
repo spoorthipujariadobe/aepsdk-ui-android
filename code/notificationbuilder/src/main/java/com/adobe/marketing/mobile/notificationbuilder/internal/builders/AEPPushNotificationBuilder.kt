@@ -132,34 +132,61 @@ internal object AEPPushNotificationBuilder {
         // add the notification text information
         intent.putExtra(PushTemplateConstants.PushPayloadKeys.TITLE, template.title)
         intent.putExtra(PushTemplateConstants.PushPayloadKeys.BODY, template.body)
-        intent.putExtra(PushTemplateConstants.PushPayloadKeys.EXPANDED_BODY_TEXT, template.expandedBodyText)
+        intent.putExtra(
+            PushTemplateConstants.PushPayloadKeys.EXPANDED_BODY_TEXT,
+            template.expandedBodyText
+        )
         intent.putExtra(PushTemplateConstants.PushPayloadKeys.TICKER, template.ticker)
 
         // add the template type
-        intent.putExtra(PushTemplateConstants.PushPayloadKeys.TEMPLATE_TYPE, template.templateType?.value)
+        intent.putExtra(
+            PushTemplateConstants.PushPayloadKeys.TEMPLATE_TYPE,
+            template.templateType?.value
+        )
 
         // add the basic media information
         intent.putExtra(PushTemplateConstants.PushPayloadKeys.IMAGE_URL, template.imageUrl)
 
         // add the notification action information
         intent.putExtra(PushTemplateConstants.PushPayloadKeys.ACTION_URI, template.actionUri)
-        intent.putExtra(PushTemplateConstants.PushPayloadKeys.ACTION_TYPE, template.actionType?.name)
+        intent.putExtra(
+            PushTemplateConstants.PushPayloadKeys.ACTION_TYPE,
+            template.actionType?.name
+        )
 
         // add the notification icon information
         intent.putExtra(PushTemplateConstants.PushPayloadKeys.SMALL_ICON, template.smallIcon)
         intent.putExtra(PushTemplateConstants.PushPayloadKeys.LARGE_ICON, template.largeIcon)
 
         // add the notification color data
-        intent.putExtra(PushTemplateConstants.PushPayloadKeys.TITLE_TEXT_COLOR, template.titleTextColor)
-        intent.putExtra(PushTemplateConstants.PushPayloadKeys.BODY_TEXT_COLOR, template.bodyTextColor)
-        intent.putExtra(PushTemplateConstants.PushPayloadKeys.BACKGROUND_COLOR, template.backgroundColor)
-        intent.putExtra(PushTemplateConstants.PushPayloadKeys.SMALL_ICON_COLOR, template.smallIconColor)
+        intent.putExtra(
+            PushTemplateConstants.PushPayloadKeys.TITLE_TEXT_COLOR,
+            template.titleTextColor
+        )
+        intent.putExtra(
+            PushTemplateConstants.PushPayloadKeys.BODY_TEXT_COLOR,
+            template.bodyTextColor
+        )
+        intent.putExtra(
+            PushTemplateConstants.PushPayloadKeys.BACKGROUND_COLOR,
+            template.backgroundColor
+        )
+        intent.putExtra(
+            PushTemplateConstants.PushPayloadKeys.SMALL_ICON_COLOR,
+            template.smallIconColor
+        )
 
         // add other notification properties
         intent.putExtra(PushTemplateConstants.PushPayloadKeys.TAG, template.tag)
         intent.putExtra(PushTemplateConstants.PushPayloadKeys.SOUND, template.sound)
-        intent.putExtra(PushTemplateConstants.PushPayloadKeys.BADGE_COUNT, template.badgeCount.toString())
-        intent.putExtra(PushTemplateConstants.PushPayloadKeys.STICKY, template.isNotificationSticky.toString())
+        intent.putExtra(
+            PushTemplateConstants.PushPayloadKeys.BADGE_COUNT,
+            template.badgeCount.toString()
+        )
+        intent.putExtra(
+            PushTemplateConstants.PushPayloadKeys.STICKY,
+            template.isNotificationSticky.toString()
+        )
 
         // add notification priority and visibility
         intent.putExtra(PushTemplateConstants.PushPayloadKeys.PRIORITY, template.priorityString)

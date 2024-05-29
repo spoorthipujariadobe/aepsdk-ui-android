@@ -49,7 +49,11 @@ internal fun NotificationManager.createNotificationChannelIfRequired(
 
     // Don't create a channel if it already exists
     if (getNotificationChannel(channelIdToUse) != null) {
-        Log.trace(LOG_TAG, SELF_TAG, "Using previously created notification channel: $channelIdToUse.")
+        Log.trace(
+            LOG_TAG,
+            SELF_TAG,
+            "Using previously created notification channel: $channelIdToUse."
+        )
         return channelIdToUse
     }
 
@@ -71,7 +75,9 @@ internal fun NotificationManager.createNotificationChannelIfRequired(
     }
 
     Log.trace(
-        LOG_TAG, SELF_TAG, "Creating a new notification channel with ID: ${template.channelId}. ${if (template.sound.isNullOrEmpty()) "and default sound." else "and custom sound: ${template.sound}."}"
+        LOG_TAG,
+        SELF_TAG,
+        "Creating a new notification channel with ID: ${template.channelId}. ${if (template.sound.isNullOrEmpty()) "and default sound." else "and custom sound: ${template.sound}."}"
     )
     createNotificationChannel(channel)
     return channelIdToUse

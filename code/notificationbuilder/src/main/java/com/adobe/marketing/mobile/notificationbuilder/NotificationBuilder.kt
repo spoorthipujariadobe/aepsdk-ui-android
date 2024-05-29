@@ -15,6 +15,7 @@ import android.app.Activity
 import android.content.BroadcastReceiver
 import android.content.Intent
 import androidx.core.app.NotificationCompat
+import com.adobe.marketing.mobile.notificationbuilder.NotificationBuilder.constructNotificationBuilder
 import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateConstants
 import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateConstants.LOG_TAG
 import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateType
@@ -23,6 +24,7 @@ import com.adobe.marketing.mobile.notificationbuilder.internal.builders.BasicNot
 import com.adobe.marketing.mobile.notificationbuilder.internal.builders.InputBoxNotificationBuilder
 import com.adobe.marketing.mobile.notificationbuilder.internal.builders.LegacyNotificationBuilder
 import com.adobe.marketing.mobile.notificationbuilder.internal.builders.ManualCarouselNotificationBuilder
+import com.adobe.marketing.mobile.notificationbuilder.internal.builders.ProductCatalogNotificationBuilder
 import com.adobe.marketing.mobile.notificationbuilder.internal.builders.ProductRatingNotificationBuilder
 import com.adobe.marketing.mobile.notificationbuilder.internal.builders.ZeroBezelNotificationBuilder
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.AEPPushTemplate
@@ -31,6 +33,7 @@ import com.adobe.marketing.mobile.notificationbuilder.internal.templates.BasicPu
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.CarouselPushTemplate
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.InputBoxPushTemplate
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.ManualCarouselPushTemplate
+import com.adobe.marketing.mobile.notificationbuilder.internal.templates.ProductCatalogPushTemplate
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.ProductRatingPushTemplate
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.ZeroBezelPushTemplate
 import com.adobe.marketing.mobile.notificationbuilder.internal.util.IntentData
@@ -130,6 +133,15 @@ object NotificationBuilder {
                 )
             }
 
+            PushTemplateType.PRODUCT_CATALOG -> {
+                return ProductCatalogNotificationBuilder.construct(
+                    context,
+                    ProductCatalogPushTemplate(notificationData),
+                    trackerActivityClass,
+                    broadcastReceiverClass
+                )
+            }
+
             PushTemplateType.PRODUCT_RATING -> {
                 return ProductRatingNotificationBuilder.construct(
                     context,
@@ -187,6 +199,15 @@ object NotificationBuilder {
                 return InputBoxNotificationBuilder.construct(
                     context,
                     InputBoxPushTemplate(intentData),
+                    trackerActivityClass,
+                    broadcastReceiverClass
+                )
+            }
+
+            PushTemplateType.PRODUCT_CATALOG -> {
+                return ProductCatalogNotificationBuilder.construct(
+                    context,
+                    ProductCatalogPushTemplate(intentData),
                     trackerActivityClass,
                     broadcastReceiverClass
                 )

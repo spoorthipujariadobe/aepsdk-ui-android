@@ -52,7 +52,8 @@ internal object InputBoxNotificationBuilder {
 
         val notificationManager =
             context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        val channelIdToUse: String = notificationManager.createNotificationChannelIfRequired(context, pushTemplate)
+        val channelIdToUse: String =
+            notificationManager.createNotificationChannelIfRequired(context, pushTemplate)
 
         // create the notification builder with the common settings applied
         val notificationBuilder = AEPPushNotificationBuilder.construct(
@@ -166,14 +167,30 @@ internal object InputBoxNotificationBuilder {
         if (broadcastReceiverClass == null) {
             return null
         }
-        Log.trace(LOG_TAG, SELF_TAG, "Creating a text input received intent from a push template object.")
+        Log.trace(
+            LOG_TAG,
+            SELF_TAG,
+            "Creating a text input received intent from a push template object."
+        )
 
-        val inputReceivedIntent = AEPPushNotificationBuilder.createIntent(PushTemplateIntentConstants.IntentActions.INPUT_RECEIVED, pushTemplate)
+        val inputReceivedIntent = AEPPushNotificationBuilder.createIntent(
+            PushTemplateIntentConstants.IntentActions.INPUT_RECEIVED,
+            pushTemplate
+        )
         inputReceivedIntent.putExtra(PushPayloadKeys.CHANNEL_ID, channelId)
-        inputReceivedIntent.putExtra(PushPayloadKeys.INPUT_BOX_RECEIVER_NAME, pushTemplate.inputBoxReceiverName)
+        inputReceivedIntent.putExtra(
+            PushPayloadKeys.INPUT_BOX_RECEIVER_NAME,
+            pushTemplate.inputBoxReceiverName
+        )
         inputReceivedIntent.putExtra(PushPayloadKeys.INPUT_BOX_HINT, pushTemplate.inputTextHint)
-        inputReceivedIntent.putExtra(PushPayloadKeys.INPUT_BOX_FEEDBACK_TEXT, pushTemplate.feedbackText)
-        inputReceivedIntent.putExtra(PushPayloadKeys.INPUT_BOX_FEEDBACK_IMAGE, pushTemplate.feedbackImage)
+        inputReceivedIntent.putExtra(
+            PushPayloadKeys.INPUT_BOX_FEEDBACK_TEXT,
+            pushTemplate.feedbackText
+        )
+        inputReceivedIntent.putExtra(
+            PushPayloadKeys.INPUT_BOX_FEEDBACK_IMAGE,
+            pushTemplate.feedbackImage
+        )
         broadcastReceiverClass.let {
             inputReceivedIntent.setClass(context.applicationContext, broadcastReceiverClass)
         }

@@ -131,10 +131,12 @@ internal sealed class AEPPushTemplate(data: NotificationData) {
 
         // extract the action information
         actionUri = data.getString(PushPayloadKeys.ACTION_URI)
-        actionType = ActionType.valueOf(data.getString(PushPayloadKeys.ACTION_TYPE) ?: ActionType.NONE.name)
+        actionType =
+            ActionType.valueOf(data.getString(PushPayloadKeys.ACTION_TYPE) ?: ActionType.NONE.name)
 
         // extract the icon information
-        smallIcon = data.getString(PushPayloadKeys.SMALL_ICON) ?: data.getString(PushPayloadKeys.LEGACY_SMALL_ICON)
+        smallIcon = data.getString(PushPayloadKeys.SMALL_ICON)
+            ?: data.getString(PushPayloadKeys.LEGACY_SMALL_ICON)
         largeIcon = data.getString(PushPayloadKeys.LARGE_ICON)
 
         // extract the color components
