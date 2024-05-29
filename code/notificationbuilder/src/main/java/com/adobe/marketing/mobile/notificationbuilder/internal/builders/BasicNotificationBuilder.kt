@@ -16,7 +16,6 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
-import android.content.Intent
 import android.view.View
 import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
@@ -29,7 +28,6 @@ import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateImage
 import com.adobe.marketing.mobile.notificationbuilder.internal.extensions.addActionButtons
 import com.adobe.marketing.mobile.notificationbuilder.internal.extensions.createNotificationChannelIfRequired
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.BasicPushTemplate
-import com.adobe.marketing.mobile.notificationbuilder.internal.util.IntentData
 import com.adobe.marketing.mobile.notificationbuilder.internal.util.NotificationData
 import com.adobe.marketing.mobile.services.Log
 

@@ -72,7 +72,6 @@ internal object AutoCarouselNotificationBuilder {
             packageName
         )
 
-
         val notificationManager =
             context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
