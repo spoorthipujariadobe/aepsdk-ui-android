@@ -338,6 +338,7 @@ internal object ManualCarouselNotificationBuilder {
                     trackerActivityClass,
                     R.id.carousel_item_image_view,
                     interactionUri,
+                    null,
                     tag,
                     autoCancel ?: true
                 )
@@ -422,6 +423,7 @@ internal object ManualCarouselNotificationBuilder {
             trackerActivityClass,
             R.id.manual_carousel_filmstrip_center,
             interactionUri,
+            null,
             pushTemplate.tag,
             pushTemplate.isNotificationSticky ?: false
         )

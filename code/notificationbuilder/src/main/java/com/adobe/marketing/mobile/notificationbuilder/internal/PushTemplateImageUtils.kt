@@ -228,10 +228,11 @@ internal object PushTemplateImageUtils {
      * @return an `InputStream` created from the provided bitmap
      */
     private fun bitmapToInputStream(bitmap: Bitmap): InputStream {
-        val byteArrayOutputStream = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.PNG, FULL_BITMAP_QUALITY, byteArrayOutputStream)
-        val bitmapData = byteArrayOutputStream.toByteArray()
-        return ByteArrayInputStream(bitmapData)
+        ByteArrayOutputStream().use {
+            bitmap.compress(Bitmap.CompressFormat.PNG, FULL_BITMAP_QUALITY, it)
+            val bitmapData = it.toByteArray()
+            return ByteArrayInputStream(bitmapData)
+        }
     }
 
     /**

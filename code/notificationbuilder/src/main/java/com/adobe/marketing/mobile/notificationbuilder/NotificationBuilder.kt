@@ -25,6 +25,7 @@ import com.adobe.marketing.mobile.notificationbuilder.internal.builders.InputBox
 import com.adobe.marketing.mobile.notificationbuilder.internal.builders.LegacyNotificationBuilder
 import com.adobe.marketing.mobile.notificationbuilder.internal.builders.ManualCarouselNotificationBuilder
 import com.adobe.marketing.mobile.notificationbuilder.internal.builders.ProductCatalogNotificationBuilder
+import com.adobe.marketing.mobile.notificationbuilder.internal.builders.ProductRatingNotificationBuilder
 import com.adobe.marketing.mobile.notificationbuilder.internal.builders.ZeroBezelNotificationBuilder
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.AEPPushTemplate
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.AutoCarouselPushTemplate
@@ -33,6 +34,7 @@ import com.adobe.marketing.mobile.notificationbuilder.internal.templates.Carouse
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.InputBoxPushTemplate
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.ManualCarouselPushTemplate
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.ProductCatalogPushTemplate
+import com.adobe.marketing.mobile.notificationbuilder.internal.templates.ProductRatingPushTemplate
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.ZeroBezelPushTemplate
 import com.adobe.marketing.mobile.notificationbuilder.internal.util.IntentData
 import com.adobe.marketing.mobile.notificationbuilder.internal.util.MapData
@@ -140,6 +142,15 @@ object NotificationBuilder {
                 )
             }
 
+            PushTemplateType.PRODUCT_RATING -> {
+                return ProductRatingNotificationBuilder.construct(
+                    context,
+                    ProductRatingPushTemplate(notificationData),
+                    trackerActivityClass,
+                    broadcastReceiverClass
+                )
+            }
+
             PushTemplateType.UNKNOWN -> {
                 return LegacyNotificationBuilder.construct(
                     context,
@@ -197,6 +208,15 @@ object NotificationBuilder {
                 return ProductCatalogNotificationBuilder.construct(
                     context,
                     ProductCatalogPushTemplate(intentData),
+                    trackerActivityClass,
+                    broadcastReceiverClass
+                )
+            }
+
+            PushTemplateType.PRODUCT_RATING -> {
+                return ProductRatingNotificationBuilder.construct(
+                    context,
+                    ProductRatingPushTemplate(intentData),
                     trackerActivityClass,
                     broadcastReceiverClass
                 )

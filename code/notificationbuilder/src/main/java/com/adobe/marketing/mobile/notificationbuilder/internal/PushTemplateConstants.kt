@@ -32,6 +32,11 @@ internal object PushTemplateConstants {
         const val TYPE = "type"
     }
 
+    internal object RatingAction {
+        const val URI = "uri"
+        const val TYPE = "type"
+    }
+
     internal object NotificationAction {
         const val DISMISSED = "Notification Dismissed"
         const val OPENED = "Notification Opened"
@@ -126,6 +131,9 @@ internal object PushTemplateConstants {
         const val CATALOG_CTA_BUTTON_URI = "adb_cta_uri"
         const val CATALOG_LAYOUT = "adb_display"
         const val CATALOG_ITEMS = "adb_items"
+        const val RATING_UNSELECTED_ICON = "adb_rate_unselected_icon"
+        const val RATING_SELECTED_ICON = "adb_rate_selected_icon"
+        const val RATING_ACTIONS = "adb_rate_act"
     }
 
     internal object CarouselItemKeys {
@@ -145,5 +153,9 @@ internal object PushTemplateConstants {
     internal object CatalogActionIds {
         const val CTA_BUTTON_CLICKED = "cta_button_clicked"
         const val PRODUCT_IMAGE_CLICKED = "product_image_clicked"
+    }
+
+    internal object ProductRatingKeys {
+        const val RATING_UNSELECTED = -1
     }
 }

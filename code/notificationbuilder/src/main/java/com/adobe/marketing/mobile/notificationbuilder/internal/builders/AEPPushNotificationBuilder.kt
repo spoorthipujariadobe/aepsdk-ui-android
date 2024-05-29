@@ -25,7 +25,7 @@ import com.adobe.marketing.mobile.notificationbuilder.internal.extensions.setNot
 import com.adobe.marketing.mobile.notificationbuilder.internal.extensions.setNotificationClickAction
 import com.adobe.marketing.mobile.notificationbuilder.internal.extensions.setNotificationDeleteAction
 import com.adobe.marketing.mobile.notificationbuilder.internal.extensions.setNotificationTitleTextColor
-import com.adobe.marketing.mobile.notificationbuilder.internal.extensions.setRemoteViewLargeIcon
+import com.adobe.marketing.mobile.notificationbuilder.internal.extensions.setRemoteViewImage
 import com.adobe.marketing.mobile.notificationbuilder.internal.extensions.setSmallIcon
 import com.adobe.marketing.mobile.notificationbuilder.internal.extensions.setSound
 import com.adobe.marketing.mobile.notificationbuilder.internal.extensions.setVisibility
@@ -87,8 +87,8 @@ internal object AEPPushNotificationBuilder {
         )
 
         // set a large icon if one is present
-        smallLayout.setRemoteViewLargeIcon(pushTemplate.largeIcon)
-        expandedLayout.setRemoteViewLargeIcon(pushTemplate.largeIcon)
+        smallLayout.setRemoteViewImage(pushTemplate.largeIcon, R.id.large_icon)
+        expandedLayout.setRemoteViewImage(pushTemplate.largeIcon, R.id.large_icon)
 
         val builder = NotificationCompat.Builder(context, channelIdToUse)
             .setTicker(pushTemplate.ticker)
