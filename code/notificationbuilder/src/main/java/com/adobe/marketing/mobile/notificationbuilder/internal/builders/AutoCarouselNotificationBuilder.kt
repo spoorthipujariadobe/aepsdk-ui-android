@@ -137,6 +137,7 @@ internal object AutoCarouselNotificationBuilder {
                     trackerActivityClass,
                     R.id.carousel_item_image_view,
                     interactionUri,
+                    null,
                     pushTemplate.tag,
                     pushTemplate.isNotificationSticky ?: false
                 )
