@@ -19,13 +19,13 @@ class NotificationVisibilityTests {
     @Test
     fun testEnumValues() {
         assertEquals(NotificationCompat.VISIBILITY_PRIVATE, NotificationVisibility.VISIBILITY_PRIVATE.value)
-        assertEquals("VISIBILITY_PRIVATE", NotificationVisibility.VISIBILITY_PRIVATE.string)
+        assertEquals("VISIBILITY_PRIVATE", NotificationVisibility.VISIBILITY_PRIVATE.stringValue)
 
         assertEquals(NotificationCompat.VISIBILITY_PUBLIC, NotificationVisibility.VISIBILITY_PUBLIC.value)
-        assertEquals("VISIBILITY_PUBLIC", NotificationVisibility.VISIBILITY_PUBLIC.string)
+        assertEquals("VISIBILITY_PUBLIC", NotificationVisibility.VISIBILITY_PUBLIC.stringValue)
 
         assertEquals(NotificationCompat.VISIBILITY_SECRET, NotificationVisibility.VISIBILITY_SECRET.value)
-        assertEquals("VISIBILITY_SECRET", NotificationVisibility.VISIBILITY_SECRET.string)
+        assertEquals("VISIBILITY_SECRET", NotificationVisibility.VISIBILITY_SECRET.stringValue)
     }
 
     @Test

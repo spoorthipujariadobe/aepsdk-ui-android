@@ -20,19 +20,19 @@ class NotificationPriorityTests {
     @Test
     fun testEnumValues() {
         assertEquals(NotificationCompat.PRIORITY_DEFAULT, NotificationPriority.PRIORITY_DEFAULT.value)
-        assertEquals("PRIORITY_DEFAULT", NotificationPriority.PRIORITY_DEFAULT.string)
+        assertEquals("PRIORITY_DEFAULT", NotificationPriority.PRIORITY_DEFAULT.stringValue)
 
         assertEquals(NotificationCompat.PRIORITY_MIN, NotificationPriority.PRIORITY_MIN.value)
-        assertEquals("PRIORITY_MIN", NotificationPriority.PRIORITY_MIN.string)
+        assertEquals("PRIORITY_MIN", NotificationPriority.PRIORITY_MIN.stringValue)
 
         assertEquals(NotificationCompat.PRIORITY_LOW, NotificationPriority.PRIORITY_LOW.value)
-        assertEquals("PRIORITY_LOW", NotificationPriority.PRIORITY_LOW.string)
+        assertEquals("PRIORITY_LOW", NotificationPriority.PRIORITY_LOW.stringValue)
 
         assertEquals(NotificationCompat.PRIORITY_HIGH, NotificationPriority.PRIORITY_HIGH.value)
-        assertEquals("PRIORITY_HIGH", NotificationPriority.PRIORITY_HIGH.string)
+        assertEquals("PRIORITY_HIGH", NotificationPriority.PRIORITY_HIGH.stringValue)
 
         assertEquals(NotificationCompat.PRIORITY_MAX, NotificationPriority.PRIORITY_MAX.value)
-        assertEquals("PRIORITY_MAX", NotificationPriority.PRIORITY_MAX.string)
+        assertEquals("PRIORITY_MAX", NotificationPriority.PRIORITY_MAX.stringValue)
     }
 
     @Test
