@@ -13,7 +13,7 @@ package com.adobe.marketing.mobile.notificationbuilder.internal
 
 import androidx.core.app.NotificationCompat
 
-enum class NotificationPriority(val value: Int, val string: String) {
+enum class NotificationPriority(val value: Int, val stringValue: String) {
     PRIORITY_DEFAULT(NotificationCompat.PRIORITY_DEFAULT, "PRIORITY_DEFAULT"),
     PRIORITY_MIN(NotificationCompat.PRIORITY_MIN, "PRIORITY_MIN"),
     PRIORITY_LOW(NotificationCompat.PRIORITY_LOW, "PRIORITY_LOW"),
@@ -21,7 +21,7 @@ enum class NotificationPriority(val value: Int, val string: String) {
     PRIORITY_MAX(NotificationCompat.PRIORITY_MAX, "PRIORITY_MAX");
 
     companion object {
-        private val mapByString = values().associateBy { it.string }
+        private val mapByString = values().associateBy { it.stringValue }
         private val mapByValue = values().associateBy { it.value }
 
         /**
@@ -41,5 +41,4 @@ enum class NotificationPriority(val value: Int, val string: String) {
             value?.let { mapByValue[it] } ?: PRIORITY_DEFAULT
     }
 
-    override fun toString(): String = string
 }

@@ -13,14 +13,14 @@ package com.adobe.marketing.mobile.notificationbuilder.internal
 
 import androidx.core.app.NotificationCompat
 
-enum class NotificationVisibility(val value: Int, val string: String) {
+enum class NotificationVisibility(val value: Int, val stringValue: String) {
     VISIBILITY_PRIVATE(NotificationCompat.VISIBILITY_PRIVATE, "VISIBILITY_PRIVATE"),
     VISIBILITY_PUBLIC(NotificationCompat.VISIBILITY_PUBLIC, "VISIBILITY_PUBLIC"),
     VISIBILITY_SECRET(NotificationCompat.VISIBILITY_SECRET, "VISIBILITY_SECRET");
 
     companion object {
 
-        private val mapString = NotificationVisibility.values().associateBy { it.string }
+        private val mapString = NotificationVisibility.values().associateBy { it.stringValue }
         private val mapValue = NotificationVisibility.values().associateBy { it.value }
 
         /**
@@ -42,5 +42,4 @@ enum class NotificationVisibility(val value: Int, val string: String) {
         }
     }
 
-    override fun toString(): String = string
 }

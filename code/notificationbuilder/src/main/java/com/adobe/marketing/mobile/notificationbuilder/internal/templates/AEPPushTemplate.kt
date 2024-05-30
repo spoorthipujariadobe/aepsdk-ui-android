@@ -29,13 +29,13 @@ import com.adobe.marketing.mobile.notificationbuilder.internal.util.Notification
 internal sealed class AEPPushTemplate(val data: NotificationData) {
 
     // Required, title of the message shown in the collapsed and expanded push template layouts
-    internal val title: String = data.getRequiredString(PushPayloadKeys.TITLE)
+    internal val title: String
 
     // Required, body of the message shown in the collapsed push template layout
-    internal val body: String = data.getRequiredString(PushPayloadKeys.BODY)
+    internal val body: String
 
     // Required, Version of the payload assigned by the authoring UI.
-    internal val payloadVersion: String = data.getRequiredString(PushPayloadKeys.VERSION)
+    internal val payloadVersion: String
 
     // begin optional values
     // Optional, sound to play when the notification is shown
@@ -109,7 +109,12 @@ internal sealed class AEPPushTemplate(val data: NotificationData) {
      * @param data the data to initialize the push template with
      */
     init {
+        // extract the payload version
+        payloadVersion = data.getRequiredString(PushPayloadKeys.VERSION)
+
         // extract the remaining text information
+        title = data.getRequiredString(PushPayloadKeys.TITLE)
+        body = data.getRequiredString(PushPayloadKeys.BODY)
         expandedBodyText = data.getString(PushPayloadKeys.EXPANDED_BODY_TEXT)
         ticker = data.getString(PushPayloadKeys.TICKER)
 
@@ -148,7 +153,7 @@ internal sealed class AEPPushTemplate(val data: NotificationData) {
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     fun getNotificationImportance(): Int =
-        notificationImportanceMap[priority.string] ?: NotificationManager.IMPORTANCE_DEFAULT
+        notificationImportanceMap[priority.stringValue] ?: NotificationManager.IMPORTANCE_DEFAULT
 
     companion object {
         @RequiresApi(api = Build.VERSION_CODES.N)

@@ -161,8 +161,8 @@ internal object AEPPushNotificationBuilder {
         intent.putExtra(PushTemplateConstants.PushPayloadKeys.STICKY, template.isNotificationSticky.toString())
 
         // add notification priority and visibility
-        intent.putExtra(PushTemplateConstants.PushPayloadKeys.PRIORITY, template.priority.toString())
-        intent.putExtra(PushTemplateConstants.PushPayloadKeys.VISIBILITY, template.visibility.toString())
+        intent.putExtra(PushTemplateConstants.PushPayloadKeys.PRIORITY, template.priority.stringValue)
+        intent.putExtra(PushTemplateConstants.PushPayloadKeys.VISIBILITY, template.visibility.stringValue)
         return intent
     }
 }
