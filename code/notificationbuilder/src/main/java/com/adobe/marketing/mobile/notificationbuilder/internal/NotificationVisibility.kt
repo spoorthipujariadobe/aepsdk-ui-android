@@ -41,5 +41,4 @@ enum class NotificationVisibility(val value: Int, val stringValue: String) {
             return visibilityValue?.let { mapValue[it] } ?: VISIBILITY_PRIVATE
         }
     }
-
 }

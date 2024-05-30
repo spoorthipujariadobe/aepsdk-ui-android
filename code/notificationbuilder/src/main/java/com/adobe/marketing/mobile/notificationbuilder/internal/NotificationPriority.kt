@@ -40,5 +40,4 @@ enum class NotificationPriority(val value: Int, val stringValue: String) {
         fun fromValue(value: Int?): NotificationPriority =
             value?.let { mapByValue[it] } ?: PRIORITY_DEFAULT
     }
-
 }
