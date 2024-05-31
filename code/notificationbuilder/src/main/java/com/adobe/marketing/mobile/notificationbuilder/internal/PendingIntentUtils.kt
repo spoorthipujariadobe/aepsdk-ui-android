@@ -15,11 +15,10 @@ import android.app.Activity
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import com.adobe.marketing.mobile.notificationbuilder.PushTemplateConstants
 import java.util.Random
 
-internal object PendingIntentUtils {
-
-    private const val SELF_TAG = "PendingIntentUtils"
+object PendingIntentUtils {
 
     /**
      * Creates a pending intent for a notification.
@@ -32,7 +31,7 @@ internal object PendingIntentUtils {
      * @param stickyNotification [Boolean] if false, remove the notification after it is interacted with
      * @return the created [PendingIntent]
      */
-    internal fun createPendingIntent(
+    internal fun createPendingIntentForTrackerActivity(
         context: Context,
         trackerActivityClass: Class<out Activity>?,
         actionUri: String?,
@@ -40,13 +39,13 @@ internal object PendingIntentUtils {
         tag: String?,
         stickyNotification: Boolean
     ): PendingIntent? {
-        val intent = Intent(PushTemplateConstants.NotificationAction.BUTTON_CLICKED)
+        val intent = Intent(PushTemplateConstants.NotificationAction.CLICKED)
         trackerActivityClass?.let {
             intent.setClass(context.applicationContext, trackerActivityClass)
         }
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP)
         intent.putExtra(PushTemplateConstants.PushPayloadKeys.TAG, tag)
-        intent.putExtra(PushTemplateConstants.PushPayloadKeys.STICKY, stickyNotification)
+        intent.putExtra(PushTemplateConstants.PushPayloadKeys.STICKY, stickyNotification.toString())
         addActionDetailsToIntent(
             intent,
             actionUri,
@@ -74,10 +73,10 @@ internal object PendingIntentUtils {
         actionId: String?
     ) {
         if (!actionUri.isNullOrEmpty()) {
-            intent.putExtra(PushTemplateConstants.Tracking.TrackingKeys.ACTION_URI, actionUri)
+            intent.putExtra(PushTemplateConstants.TrackingKeys.ACTION_URI, actionUri)
         }
         if (!actionId.isNullOrEmpty()) {
-            intent.putExtra(PushTemplateConstants.Tracking.TrackingKeys.ACTION_ID, actionId)
+            intent.putExtra(PushTemplateConstants.TrackingKeys.ACTION_ID, actionId)
         }
     }
 }
