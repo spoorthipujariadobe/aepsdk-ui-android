@@ -171,8 +171,14 @@ internal object TimerNotificationBuilder {
         return intent
     }
 
+    /**
+     * Checks if exact alarms are allowed on the device
+     *
+     * @param context the context
+     * @return true if exact alarms are allowed, false otherwise
+     */
     private fun isExactAlarmsAllowed(context: Context): Boolean {
-        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && alarmManager.canScheduleExactAlarms()
+        return Build.VERSION.SDK_INT < Build.VERSION_CODES.S ||
+                (context.getSystemService(Context.ALARM_SERVICE) as AlarmManager).canScheduleExactAlarms()
     }
 }
