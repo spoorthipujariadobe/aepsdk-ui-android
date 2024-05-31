@@ -14,9 +14,9 @@ package com.adobe.marketing.mobile.notificationbuilder.internal
 import androidx.core.app.NotificationCompat
 
 enum class NotificationVisibility(val value: Int, val stringValue: String) {
-    VISIBILITY_PRIVATE(NotificationCompat.VISIBILITY_PRIVATE, "VISIBILITY_PRIVATE"),
-    VISIBILITY_PUBLIC(NotificationCompat.VISIBILITY_PUBLIC, "VISIBILITY_PUBLIC"),
-    VISIBILITY_SECRET(NotificationCompat.VISIBILITY_SECRET, "VISIBILITY_SECRET");
+    VISIBILITY_PRIVATE(NotificationCompat.VISIBILITY_PRIVATE, "PRIVATE"),
+    VISIBILITY_PUBLIC(NotificationCompat.VISIBILITY_PUBLIC, "PUBLIC"),
+    VISIBILITY_SECRET(NotificationCompat.VISIBILITY_SECRET, "SECRET");
 
     companion object {
 

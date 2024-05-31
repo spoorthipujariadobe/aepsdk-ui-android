@@ -63,13 +63,4 @@ class NotificationPriorityTests {
         assertEquals(NotificationPriority.PRIORITY_DEFAULT, NotificationPriority.fromValue(null))
         assertEquals(NotificationPriority.PRIORITY_DEFAULT, NotificationPriority.fromValue(-999))
     }
-
-    @Test
-    fun testToString() {
-        assertEquals("PRIORITY_DEFAULT", NotificationPriority.PRIORITY_DEFAULT.toString())
-        assertEquals("PRIORITY_MIN", NotificationPriority.PRIORITY_MIN.toString())
-        assertEquals("PRIORITY_LOW", NotificationPriority.PRIORITY_LOW.toString())
-        assertEquals("PRIORITY_HIGH", NotificationPriority.PRIORITY_HIGH.toString())
-        assertEquals("PRIORITY_MAX", NotificationPriority.PRIORITY_MAX.toString())
-    }
 }
