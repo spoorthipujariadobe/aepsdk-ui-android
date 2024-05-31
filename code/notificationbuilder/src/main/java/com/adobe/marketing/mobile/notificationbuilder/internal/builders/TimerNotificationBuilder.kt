@@ -179,6 +179,6 @@ internal object TimerNotificationBuilder {
      */
     private fun isExactAlarmsAllowed(context: Context): Boolean {
         return Build.VERSION.SDK_INT < Build.VERSION_CODES.S ||
-                (context.getSystemService(Context.ALARM_SERVICE) as AlarmManager).canScheduleExactAlarms()
+            (context.getSystemService(Context.ALARM_SERVICE) as AlarmManager).canScheduleExactAlarms()
     }
 }
