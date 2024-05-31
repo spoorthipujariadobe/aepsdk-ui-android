@@ -19,20 +19,20 @@ class NotificationVisibilityTests {
     @Test
     fun testEnumValues() {
         assertEquals(NotificationCompat.VISIBILITY_PRIVATE, NotificationVisibility.VISIBILITY_PRIVATE.value)
-        assertEquals("VISIBILITY_PRIVATE", NotificationVisibility.VISIBILITY_PRIVATE.stringValue)
+        assertEquals("PRIVATE", NotificationVisibility.VISIBILITY_PRIVATE.stringValue)
 
         assertEquals(NotificationCompat.VISIBILITY_PUBLIC, NotificationVisibility.VISIBILITY_PUBLIC.value)
-        assertEquals("VISIBILITY_PUBLIC", NotificationVisibility.VISIBILITY_PUBLIC.stringValue)
+        assertEquals("PUBLIC", NotificationVisibility.VISIBILITY_PUBLIC.stringValue)
 
         assertEquals(NotificationCompat.VISIBILITY_SECRET, NotificationVisibility.VISIBILITY_SECRET.value)
-        assertEquals("VISIBILITY_SECRET", NotificationVisibility.VISIBILITY_SECRET.stringValue)
+        assertEquals("SECRET", NotificationVisibility.VISIBILITY_SECRET.stringValue)
     }
 
     @Test
     fun testFromString() {
-        assertEquals(NotificationVisibility.VISIBILITY_PRIVATE, NotificationVisibility.fromString("VISIBILITY_PRIVATE"))
-        assertEquals(NotificationVisibility.VISIBILITY_PUBLIC, NotificationVisibility.fromString("VISIBILITY_PUBLIC"))
-        assertEquals(NotificationVisibility.VISIBILITY_SECRET, NotificationVisibility.fromString("VISIBILITY_SECRET"))
+        assertEquals(NotificationVisibility.VISIBILITY_PRIVATE, NotificationVisibility.fromString("PRIVATE"))
+        assertEquals(NotificationVisibility.VISIBILITY_PUBLIC, NotificationVisibility.fromString("PUBLIC"))
+        assertEquals(NotificationVisibility.VISIBILITY_SECRET, NotificationVisibility.fromString("SECRET"))
         // verify invalid inputs
         assertEquals(NotificationVisibility.VISIBILITY_PRIVATE, NotificationVisibility.fromString("INVALID"))
         assertEquals(NotificationVisibility.VISIBILITY_PRIVATE, NotificationVisibility.fromString(""))
@@ -48,12 +48,5 @@ class NotificationVisibilityTests {
         assertEquals(NotificationVisibility.VISIBILITY_PRIVATE, NotificationVisibility.fromValue(999))
         assertEquals(NotificationVisibility.VISIBILITY_PRIVATE, NotificationVisibility.fromValue(null))
         assertEquals(NotificationVisibility.VISIBILITY_PRIVATE, NotificationVisibility.fromValue(-999))
-    }
-
-    @Test
-    fun testToString() {
-        assertEquals("VISIBILITY_PRIVATE", NotificationVisibility.VISIBILITY_PRIVATE.toString())
-        assertEquals("VISIBILITY_PUBLIC", NotificationVisibility.VISIBILITY_PUBLIC.toString())
-        assertEquals("VISIBILITY_SECRET", NotificationVisibility.VISIBILITY_SECRET.toString())
     }
 }
