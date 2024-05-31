@@ -30,6 +30,7 @@ import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateConst
 import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateConstants.PushPayloadKeys.TimerKeys
 import com.adobe.marketing.mobile.notificationbuilder.internal.extensions.createNotificationChannelIfRequired
 import com.adobe.marketing.mobile.notificationbuilder.internal.extensions.setRemoteViewImage
+import com.adobe.marketing.mobile.notificationbuilder.internal.extensions.setTimerTextColor
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.TimerPushTemplate
 import com.adobe.marketing.mobile.notificationbuilder.internal.util.TimeUtil
 import com.adobe.marketing.mobile.services.Log
@@ -97,7 +98,7 @@ internal object TimerNotificationBuilder {
         if (!isExpired) {
             val remainingTimeInSeconds = template.expiryTime - TimeUtil.currentTimestamp
             // set the timer clock
-            setTimerClock(smallLayout, expandedLayout, remainingTimeInSeconds)
+            setTimerClock(smallLayout, expandedLayout, remainingTimeInSeconds, template.timerColor)
 
             // create the intent for the timer expiry
             val intent = createIntent(template)
@@ -142,11 +143,13 @@ internal object TimerNotificationBuilder {
      * @param expandedLayout the expanded layout
      * @param remainingTime the remaining time for the timer
      */
-    private fun setTimerClock(smallLayout: RemoteViews, expandedLayout: RemoteViews, remainingTime: Long) {
+    private fun setTimerClock(smallLayout: RemoteViews, expandedLayout: RemoteViews, remainingTime: Long, timerColor: String?) {
         val remainingTimeWithSystemClock = SystemClock.elapsedRealtime() + (remainingTime * 1000)
 
         smallLayout.setChronometer(R.id.timer_text, remainingTimeWithSystemClock, null, true)
         expandedLayout.setChronometer(R.id.timer_text, remainingTimeWithSystemClock, null, true)
+        smallLayout.setTimerTextColor(timerColor, R.id.timer_text)
+        expandedLayout.setTimerTextColor(timerColor, R.id.timer_text)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             smallLayout.setChronometerCountDown(R.id.timer_text, true)

@@ -85,6 +85,7 @@ internal object PushTemplateConstants {
         const val NOTIFICATION_BACKGROUND = "notification background"
         const val NOTIFICATION_TITLE = "notification title"
         const val NOTIFICATION_BODY_TEXT = "notification body text"
+        const val TIMER_TEXT = "Timer Text"
         const val CTA_BUTTON = "product catalog cta button"
     }
 
