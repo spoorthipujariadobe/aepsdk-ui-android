@@ -32,7 +32,6 @@ import com.adobe.marketing.mobile.notificationbuilder.internal.extensions.setRem
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.CarouselPushTemplate
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.ManualCarouselPushTemplate
 import com.adobe.marketing.mobile.services.Log
-import com.adobe.marketing.mobile.services.caching.CacheService
 
 /**
  * Object responsible for constructing a [NotificationCompat.Builder] object containing a manual or filmstrip carousel push template notification.
@@ -286,7 +285,6 @@ internal object ManualCarouselNotificationBuilder {
      *
      * @param context the current [Context] of the application
      * @param trackerActivityClass the [Class] of the activity that will be used for tracking interactions with the carousel item
-     * @param cacheService the [CacheService] used to cache the downloaded images
      * @param expandedLayout the [RemoteViews] containing the expanded layout of the notification
      * @param items the list of [CarouselPushTemplate.CarouselItem] objects to be displayed in the carousel
      * @param packageName the `String` name of the application package used to locate the layout resources
@@ -351,7 +349,6 @@ internal object ManualCarouselNotificationBuilder {
      * Populates the images for a manual filmstrip carousel push template.
      *
      * @param context the current [Context] of the application
-     * @param cacheService the [CacheService] used to cache the downloaded images
      * @param imageCaptions the list of [String] captions for each filmstrip carousel image
      * @param imageClickActions the list of [String] click actions for each filmstrip carousel image
      * @param newIndices a [Triple] of [Int] indices for the new left, center, and right images
