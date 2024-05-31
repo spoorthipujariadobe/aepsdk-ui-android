@@ -11,10 +11,10 @@
 
 package com.adobe.marketing.mobile.notificationbuilder.internal.templates
 
-import com.adobe.marketing.mobile.notificationbuilder.NotificationConstructionFailedException
 import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateConstants.PushPayloadKeys.TimerKeys
 import com.adobe.marketing.mobile.notificationbuilder.internal.util.NotificationData
 import com.adobe.marketing.mobile.notificationbuilder.internal.util.TimeUtil
+import com.adobe.marketing.mobile.services.Log.*
 
 /**
  * Class for parsing the data required to display a Timer notification.
@@ -33,8 +33,6 @@ internal class TimerPushTemplate(data: NotificationData) : AEPPushTemplate(data)
     internal val alternateExpandedBody: String?
     internal val alternateImage: String?
     internal val timerColor: String?
-    internal val duration: Long?
-    internal val endTime: Long?
     internal val expiryTime: Long
     internal val timerContent: TimerContent
 
@@ -43,9 +41,7 @@ internal class TimerPushTemplate(data: NotificationData) : AEPPushTemplate(data)
      */
     init {
         alternateTitle = data.getRequiredString(TimerKeys.ALTERNATE_TITLE)
-        duration = data.getString(TimerKeys.TIMER_DURATION)?.toLongOrNull()
-        endTime = data.getString(TimerKeys.TIMER_END_TIME)?.toLongOrNull()
-        expiryTime = extractExpiryTime(data) ?: throw NotificationConstructionFailedException("Timer expiry time not found in the data. Skipping to display timer notification.")
+        expiryTime = extractExpiryTime(data) ?: 0
         alternateBody = data.getString(TimerKeys.ALTERNATE_BODY)
         alternateExpandedBody = data.getString(TimerKeys.ALTERNATE_EXPANDED_BODY)
         alternateImage = data.getString(TimerKeys.ALTERNATE_IMAGE)
@@ -78,16 +74,17 @@ internal class TimerPushTemplate(data: NotificationData) : AEPPushTemplate(data)
     /**
      * Returns the timestamp when the timer will expire.
      *
-     * @param source the notification data source
      * @return the expiry time in seconds
      */
-    private fun extractExpiryTime(source: NotificationData): Long? {
+    private fun extractExpiryTime(data: NotificationData): Long? {
+        val duration = data.getString(TimerKeys.TIMER_DURATION)?.toLongOrNull()
+        val endTimestamp = data.getString(TimerKeys.TIMER_END_TIME)?.toLongOrNull()
         // If duration is provided, calculate the expiry time based on the current time.
         // If endTimestamp is provided, use it as the expiry time.
         // duration takes precedence over endTimestamp, if both are provided.
         return when {
             duration != null -> TimeUtil.currentTimestamp + duration
-            endTime != null -> endTime
+            endTimestamp != null -> endTimestamp
             else -> null
         }
     }

@@ -106,8 +106,9 @@ internal object TimerNotificationBuilder {
 
             // set the alarm manager to trigger the intent at the expiry time
             val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-            val triggerTime = System.currentTimeMillis() + (remainingTimeInSeconds * 1000)
-            alarmManager.setExact(AlarmManager.RTC_WAKEUP, triggerTime, pendingIntent)
+            val triggerTime = TimeUtil.currentTimestamp + remainingTimeInSeconds
+            val triggerTimeAtMillis = triggerTime * 1000
+            alarmManager.setExact(AlarmManager.RTC_WAKEUP, triggerTimeAtMillis, pendingIntent)
         }
         return notificationBuilder
     }
@@ -163,8 +164,6 @@ internal object TimerNotificationBuilder {
         intent.putExtra(TimerKeys.ALTERNATE_EXPANDED_BODY, template.alternateExpandedBody)
         intent.putExtra(TimerKeys.ALTERNATE_IMAGE, template.alternateImage)
         intent.putExtra(TimerKeys.TIMER_COLOR, template.timerColor)
-        intent.putExtra(TimerKeys.TIMER_DURATION, template.duration.toString())
-        intent.putExtra(TimerKeys.TIMER_END_TIME, template.endTime.toString())
         return intent
     }
 }
