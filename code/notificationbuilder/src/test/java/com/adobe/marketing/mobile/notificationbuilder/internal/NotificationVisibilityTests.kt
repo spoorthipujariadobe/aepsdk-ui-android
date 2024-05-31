@@ -49,5 +49,4 @@ class NotificationVisibilityTests {
         assertEquals(NotificationVisibility.VISIBILITY_PRIVATE, NotificationVisibility.fromValue(null))
         assertEquals(NotificationVisibility.VISIBILITY_PRIVATE, NotificationVisibility.fromValue(-999))
     }
-
 }

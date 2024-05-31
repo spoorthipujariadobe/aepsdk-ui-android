@@ -60,6 +60,10 @@ internal object TimerNotificationBuilder {
 
         Log.trace(LOG_TAG, TAG, "Building a timer template push notification.")
 
+        if (!isExactAlarmsAllowed(context)) {
+            throw NotificationConstructionFailedException("Exact alarms are not allowed on this device.")
+        }
+
         val notificationManager =
             context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
@@ -165,5 +169,10 @@ internal object TimerNotificationBuilder {
         intent.putExtra(TimerKeys.ALTERNATE_IMAGE, template.alternateImage)
         intent.putExtra(TimerKeys.TIMER_COLOR, template.timerColor)
         return intent
+    }
+
+    private fun isExactAlarmsAllowed(context: Context): Boolean {
+        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && alarmManager.canScheduleExactAlarms()
     }
 }
