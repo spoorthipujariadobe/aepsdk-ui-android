@@ -64,6 +64,7 @@ object NotificationBuilder {
         trackerActivityClass: Class<out Activity>?,
         broadcastReceiverClass: Class<out BroadcastReceiver>?
     ): NotificationCompat.Builder {
+
         val context = ServiceProvider.getInstance().appContextService.applicationContext
             ?: throw NotificationConstructionFailedException("Application context is null, cannot build a notification.")
         if (messageData.isEmpty()) {

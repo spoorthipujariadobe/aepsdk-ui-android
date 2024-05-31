@@ -20,7 +20,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.SystemClock
-import android.view.View
 import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
 import com.adobe.marketing.mobile.notificationbuilder.NotificationConstructionFailedException
@@ -28,9 +27,11 @@ import com.adobe.marketing.mobile.notificationbuilder.PushTemplateIntentConstant
 import com.adobe.marketing.mobile.notificationbuilder.R
 import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateConstants
 import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateConstants.LOG_TAG
-import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateImageUtils
+import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateConstants.PushPayloadKeys.TimerKeys
 import com.adobe.marketing.mobile.notificationbuilder.internal.extensions.createNotificationChannelIfRequired
+import com.adobe.marketing.mobile.notificationbuilder.internal.extensions.setRemoteViewImage
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.TimerPushTemplate
+import com.adobe.marketing.mobile.notificationbuilder.internal.util.TimeUtil
 import com.adobe.marketing.mobile.services.Log
 
 private const val TAG = "TimerNotificationBuilder"
@@ -39,13 +40,6 @@ private const val TAG = "TimerNotificationBuilder"
  * Object responsible for constructing a [NotificationCompat.Builder] object containing a timer push template notification.
  */
 internal object TimerNotificationBuilder {
-
-    data class TimerContent(
-        val title: String,
-        val body: String?,
-        val expandedBody: String?,
-        val imageUrl: String?
-    )
 
     /**
      * Constructs a notification for the timer push template
@@ -87,33 +81,19 @@ internal object TimerNotificationBuilder {
             R.id.basic_expanded_layout
         )
 
-        // create the timer content according to the expiry time
-        val timerContent = if (isExpired) {
-            TimerContent(template.alternateTitle, template.alternateBody, template.alternateExpandedBody, template.alternateImage)
-        } else {
-            TimerContent(template.title, template.body, template.expandedBodyText, template.imageUrl)
-        }
-
         // add text to collapsed layout
-        smallLayout.setTextViewText(R.id.notification_title, timerContent.title)
-        smallLayout.setTextViewText(R.id.notification_body, timerContent.body)
+        smallLayout.setTextViewText(R.id.notification_title, template.timerContent.title)
+        smallLayout.setTextViewText(R.id.notification_body, template.timerContent.body)
 
         // add text to expanded layout
-        expandedLayout.setTextViewText(R.id.notification_title, timerContent.title)
-        expandedLayout.setTextViewText(R.id.notification_body_expanded, timerContent.expandedBody)
-
-        // download the image for expanded layout
-        val downloadedImageCount = PushTemplateImageUtils.cacheImages(listOf(timerContent.imageUrl))
-        if (downloadedImageCount == 0) {
-            Log.trace(LOG_TAG, TAG, "Timer push template unable to download the image for url : " + timerContent.imageUrl)
-            expandedLayout.setViewVisibility(R.id.expanded_template_image, View.GONE)
-        } else {
-            expandedLayout.setImageViewBitmap(R.id.expanded_template_image, PushTemplateImageUtils.getCachedImage(timerContent.imageUrl))
-        }
+        expandedLayout.setTextViewText(R.id.notification_title, template.timerContent.title)
+        expandedLayout.setTextViewText(R.id.notification_body_expanded, template.timerContent.expandedBody)
+        expandedLayout.setRemoteViewImage(template.timerContent.imageUrl, R.id.expanded_template_image)
 
         if (!isExpired) {
+            val remainingTimeInSeconds = template.expiryTime - TimeUtil.currentTimestamp
             // set the timer clock
-            setTimerClock(smallLayout, expandedLayout, template)
+            setTimerClock(smallLayout, expandedLayout, remainingTimeInSeconds)
 
             // create the intent for the timer expiry
             val intent = createIntent(template)
@@ -126,7 +106,7 @@ internal object TimerNotificationBuilder {
 
             // set the alarm manager to trigger the intent at the expiry time
             val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-            val triggerTime = System.currentTimeMillis() + (template.remainingTimeInSeconds * 1000)
+            val triggerTime = System.currentTimeMillis() + (remainingTimeInSeconds * 1000)
             alarmManager.setExact(AlarmManager.RTC_WAKEUP, triggerTime, pendingIntent)
         }
         return notificationBuilder
@@ -155,13 +135,13 @@ internal object TimerNotificationBuilder {
      *
      * @param smallLayout the collapsed layout
      * @param expandedLayout the expanded layout
-     * @param template the timer push template
+     * @param remainingTime the remaining time for the timer
      */
-    private fun setTimerClock(smallLayout: RemoteViews, expandedLayout: RemoteViews, template: TimerPushTemplate) {
-        val remainingTime = SystemClock.elapsedRealtime() + (template.remainingTimeInSeconds * 1000)
+    private fun setTimerClock(smallLayout: RemoteViews, expandedLayout: RemoteViews, remainingTime: Long) {
+        val remainingTimeWithSystemClock = SystemClock.elapsedRealtime() + (remainingTime * 1000)
 
-        smallLayout.setChronometer(R.id.timer_text, remainingTime, null, true)
-        expandedLayout.setChronometer(R.id.timer_text, remainingTime, null, true)
+        smallLayout.setChronometer(R.id.timer_text, remainingTimeWithSystemClock, null, true)
+        expandedLayout.setChronometer(R.id.timer_text, remainingTimeWithSystemClock, null, true)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             smallLayout.setChronometerCountDown(R.id.timer_text, true)
@@ -178,11 +158,13 @@ internal object TimerNotificationBuilder {
     private fun createIntent(template: TimerPushTemplate): Intent {
         val intent = AEPPushNotificationBuilder.createIntent(PushTemplateIntentConstants.IntentActions.TIMER_EXPIRED, template)
         intent.putExtra(PushTemplateConstants.PushPayloadKeys.TEMPLATE_TYPE, template.templateType?.value)
-        intent.putExtra(PushTemplateConstants.TimerKeys.ALTERNATE_TITLE, template.alternateTitle)
-        intent.putExtra(PushTemplateConstants.TimerKeys.ALTERNATE_BODY, template.alternateBody)
-        intent.putExtra(PushTemplateConstants.TimerKeys.ALTERNATE_EXPANDED_BODY, template.alternateExpandedBody)
-        intent.putExtra(PushTemplateConstants.TimerKeys.ALTERNATE_IMAGE, template.alternateImage)
-        intent.putExtra(PushTemplateConstants.TimerKeys.TIMER_COLOR, template.timerColor)
+        intent.putExtra(TimerKeys.ALTERNATE_TITLE, template.alternateTitle)
+        intent.putExtra(TimerKeys.ALTERNATE_BODY, template.alternateBody)
+        intent.putExtra(TimerKeys.ALTERNATE_EXPANDED_BODY, template.alternateExpandedBody)
+        intent.putExtra(TimerKeys.ALTERNATE_IMAGE, template.alternateImage)
+        intent.putExtra(TimerKeys.TIMER_COLOR, template.timerColor)
+        intent.putExtra(TimerKeys.TIMER_DURATION, template.duration.toString())
+        intent.putExtra(TimerKeys.TIMER_END_TIME, template.endTime.toString())
         return intent
     }
 }
