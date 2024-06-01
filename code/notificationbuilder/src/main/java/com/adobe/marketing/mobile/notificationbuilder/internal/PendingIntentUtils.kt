@@ -18,7 +18,9 @@ import android.content.Intent
 import com.adobe.marketing.mobile.notificationbuilder.PushTemplateConstants
 import java.util.Random
 
-object PendingIntentUtils {
+internal object PendingIntentUtils {
+
+    private const val SELF_TAG = "PendingIntentUtils"
 
     /**
      * Creates a pending intent for a notification.

@@ -99,8 +99,6 @@ internal object AEPPushNotificationBuilder {
             .setSmallIcon(context, pushTemplate.smallIcon, pushTemplate.smallIconColor)
             // set notification visibility
             .setVisibility(pushTemplate.visibility.value)
-            // if not from intent, set custom sound, note this applies to API 25 and lower only as
-            // API 26 and up set the sound on the notification channel
             .setNotificationClickAction(
                 context,
                 trackerActivityClass,
@@ -110,6 +108,8 @@ internal object AEPPushNotificationBuilder {
             )
             .setNotificationDeleteAction(context, trackerActivityClass)
 
+        // if not from intent, set custom sound, note this applies to API 25 and lower only as
+        // API 26 and up set the sound on the notification channel
         if (!pushTemplate.isFromIntent) {
             builder.setSound(context, pushTemplate.sound)
         }
