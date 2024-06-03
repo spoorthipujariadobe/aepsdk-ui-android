@@ -15,7 +15,14 @@ package com.adobe.marketing.mobile.notificationbuilder.internal
  * Enum class representing the different types of out-of-the-box push templates.
  */
 internal enum class PushTemplateType(val value: String) {
-    BASIC("basic"), CAROUSEL("car"), INPUT_BOX("input"), ZERO_BEZEL("zb"), PRODUCT_RATING("rate"), PRODUCT_CATALOG("cat"), UNKNOWN("unknown");
+    BASIC("basic"),
+    CAROUSEL("car"),
+    INPUT_BOX("input"),
+    ZERO_BEZEL("zb"),
+    PRODUCT_RATING("rate"),
+    PRODUCT_CATALOG("cat"),
+    MULTI_ICON("icon"),
+    UNKNOWN("unknown");
 
     companion object {
         /**
@@ -32,6 +39,7 @@ internal enum class PushTemplateType(val value: String) {
                 "zb" -> ZERO_BEZEL
                 "cat" -> PRODUCT_CATALOG
                 "rate" -> PRODUCT_RATING
+                "icon" -> MULTI_ICON
                 else -> UNKNOWN
             }
         }

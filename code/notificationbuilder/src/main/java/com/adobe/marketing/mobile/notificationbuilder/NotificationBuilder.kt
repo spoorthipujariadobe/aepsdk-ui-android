@@ -24,6 +24,7 @@ import com.adobe.marketing.mobile.notificationbuilder.internal.builders.BasicNot
 import com.adobe.marketing.mobile.notificationbuilder.internal.builders.InputBoxNotificationBuilder
 import com.adobe.marketing.mobile.notificationbuilder.internal.builders.LegacyNotificationBuilder
 import com.adobe.marketing.mobile.notificationbuilder.internal.builders.ManualCarouselNotificationBuilder
+import com.adobe.marketing.mobile.notificationbuilder.internal.builders.MultiIconNotificationBuilder
 import com.adobe.marketing.mobile.notificationbuilder.internal.builders.ProductCatalogNotificationBuilder
 import com.adobe.marketing.mobile.notificationbuilder.internal.builders.ProductRatingNotificationBuilder
 import com.adobe.marketing.mobile.notificationbuilder.internal.builders.ZeroBezelNotificationBuilder
@@ -33,6 +34,7 @@ import com.adobe.marketing.mobile.notificationbuilder.internal.templates.BasicPu
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.CarouselPushTemplate
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.InputBoxPushTemplate
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.ManualCarouselPushTemplate
+import com.adobe.marketing.mobile.notificationbuilder.internal.templates.MultiIconPushTemplate
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.ProductCatalogPushTemplate
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.ProductRatingPushTemplate
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.ZeroBezelPushTemplate
@@ -148,6 +150,14 @@ object NotificationBuilder {
                     ProductRatingPushTemplate(notificationData),
                     trackerActivityClass,
                     broadcastReceiverClass
+                )
+            }
+
+            PushTemplateType.MULTI_ICON -> {
+                return MultiIconNotificationBuilder.construct(
+                    context,
+                    MultiIconPushTemplate(notificationData),
+                    trackerActivityClass,
                 )
             }
 
