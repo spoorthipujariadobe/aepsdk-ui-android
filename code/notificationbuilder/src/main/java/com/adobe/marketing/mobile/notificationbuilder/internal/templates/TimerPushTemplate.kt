@@ -13,7 +13,7 @@ package com.adobe.marketing.mobile.notificationbuilder.internal.templates
 
 import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateConstants.PushPayloadKeys.TimerKeys
 import com.adobe.marketing.mobile.notificationbuilder.internal.util.NotificationData
-import com.adobe.marketing.mobile.notificationbuilder.internal.util.TimeUtil
+import com.adobe.marketing.mobile.util.TimeUtils
 
 /**
  * Class for parsing the data required to display a Timer notification.
@@ -67,7 +67,7 @@ internal class TimerPushTemplate(data: NotificationData) : AEPPushTemplate(data)
      * Returns true if the timer has expired, false otherwise.
      */
     internal fun isExpired(): Boolean {
-        return expiryTime.let { TimeUtil.currentTimestamp > it }
+        return expiryTime.let { TimeUtils.getUnixTimeInSeconds() > it }
     }
 
     /**
@@ -82,7 +82,7 @@ internal class TimerPushTemplate(data: NotificationData) : AEPPushTemplate(data)
         // If endTimestamp is provided, use it as the expiry time.
         // duration takes precedence over endTimestamp, if both are provided.
         return when {
-            duration != null -> TimeUtil.currentTimestamp + duration
+            duration != null -> TimeUtils.getUnixTimeInSeconds() + duration
             endTimestamp != null -> endTimestamp
             else -> null
         }

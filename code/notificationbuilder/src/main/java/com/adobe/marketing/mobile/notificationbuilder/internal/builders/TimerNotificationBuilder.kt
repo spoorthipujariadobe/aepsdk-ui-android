@@ -32,8 +32,8 @@ import com.adobe.marketing.mobile.notificationbuilder.internal.extensions.create
 import com.adobe.marketing.mobile.notificationbuilder.internal.extensions.setRemoteViewImage
 import com.adobe.marketing.mobile.notificationbuilder.internal.extensions.setTimerTextColor
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.TimerPushTemplate
-import com.adobe.marketing.mobile.notificationbuilder.internal.util.TimeUtil
 import com.adobe.marketing.mobile.services.Log
+import com.adobe.marketing.mobile.util.TimeUtils
 
 private const val TAG = "TimerNotificationBuilder"
 
@@ -96,7 +96,7 @@ internal object TimerNotificationBuilder {
         expandedLayout.setRemoteViewImage(template.timerContent.imageUrl, R.id.expanded_template_image)
 
         if (!isExpired) {
-            val remainingTimeInSeconds = template.expiryTime - TimeUtil.currentTimestamp
+            val remainingTimeInSeconds = template.expiryTime - TimeUtils.getUnixTimeInSeconds()
             // set the timer clock
             setTimerClock(smallLayout, expandedLayout, remainingTimeInSeconds, template.timerColor)
 
@@ -111,7 +111,7 @@ internal object TimerNotificationBuilder {
 
             // set the alarm manager to trigger the intent at the expiry time
             val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-            val triggerTime = TimeUtil.currentTimestamp + remainingTimeInSeconds
+            val triggerTime = TimeUtils.getUnixTimeInSeconds() + remainingTimeInSeconds
             val triggerTimeAtMillis = triggerTime * 1000
             alarmManager.setExact(AlarmManager.RTC_WAKEUP, triggerTimeAtMillis, pendingIntent)
         }
