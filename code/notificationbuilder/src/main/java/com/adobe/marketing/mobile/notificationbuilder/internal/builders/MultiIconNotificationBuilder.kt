@@ -1,18 +1,25 @@
+/*
+  Copyright 2024 Adobe. All rights reserved.
+  This file is licensed to you under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License. You may obtain a copy
+  of the License at http://www.apache.org/licenses/LICENSE-2.0
+  Unless required by applicable law or agreed to in writing, software distributed under
+  the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR REPRESENTATIONS
+  OF ANY KIND, either express or implied. See the License for the specific language
+  governing permissions and limitations under the License.
+*/
+
 package com.adobe.marketing.mobile.notificationbuilder.internal.builders
 
 import android.app.Activity
 import android.app.NotificationManager
 import android.content.Context
-import android.graphics.Bitmap
 import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
 import com.adobe.marketing.mobile.notificationbuilder.NotificationConstructionFailedException
 import com.adobe.marketing.mobile.notificationbuilder.R
 import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateConstants
-import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateImageUtils
 import com.adobe.marketing.mobile.notificationbuilder.internal.extensions.createNotificationChannelIfRequired
-import com.adobe.marketing.mobile.notificationbuilder.internal.extensions.setBundledImage
-import com.adobe.marketing.mobile.notificationbuilder.internal.extensions.setRemoteImage
 import com.adobe.marketing.mobile.notificationbuilder.internal.extensions.setRemoteViewClickAction
 import com.adobe.marketing.mobile.notificationbuilder.internal.extensions.setRemoteViewImage
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.MultiIconPushTemplate
@@ -62,7 +69,6 @@ internal object MultiIconNotificationBuilder {
             false
         )
 
-
         return AEPPushNotificationBuilder.construct(
             context,
             pushTemplate,
@@ -72,7 +78,6 @@ internal object MultiIconNotificationBuilder {
             notificationLayout,
             R.id.carousel_container_layout
         )
-
     }
 
     private fun populateIconsForMultiIconTemplate(
@@ -82,12 +87,12 @@ internal object MultiIconNotificationBuilder {
         pushTemplate: MultiIconPushTemplate,
         items: MutableList<MultiIconPushTemplate.MultiIconTemplateItem>,
         packageName: String?
-    ){
+    ) {
         var validImagesAddedCount = 0
         for (item in items) {
             val imageUri: String = item.iconUrl
             val iconItem = RemoteViews(packageName, R.layout.multi_icon_template_item)
-            if(iconItem.setRemoteViewImage(imageUri, R.id.icon_item_image_view)) {
+            if (iconItem.setRemoteViewImage(imageUri, R.id.icon_item_image_view)) {
                 validImagesAddedCount++
             }
 
