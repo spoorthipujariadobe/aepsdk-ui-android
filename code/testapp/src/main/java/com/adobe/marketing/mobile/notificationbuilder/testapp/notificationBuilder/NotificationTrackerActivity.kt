@@ -8,11 +8,16 @@
   OF ANY KIND, either express or implied. See the License for the specific language
   governing permissions and limitations under the License.
  */
-package com.adobe.marketing.mobile.notificationbuilder.testapp.ui.theme
 
-import androidx.compose.ui.graphics.Color
+package com.adobe.marketing.mobile.notificationbuilder.testapp.notificationBuilder
 
-val Purple200 = Color(0xFF345B97)
-val Purple500 = Color(0xFF6200EE)
-val Purple700 = Color(0xFF3700B3)
-val Teal200 = Color(0xFF03DAC5)
+import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
+
+class NotificationTrackerActivity : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        finish()
+        return
+    }
+}
