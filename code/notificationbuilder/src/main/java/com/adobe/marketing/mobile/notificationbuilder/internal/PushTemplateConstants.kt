@@ -134,6 +134,7 @@ internal object PushTemplateConstants {
         const val RATING_UNSELECTED_ICON = "adb_rate_unselected_icon"
         const val RATING_SELECTED_ICON = "adb_rate_selected_icon"
         const val RATING_ACTIONS = "adb_rate_act"
+        const val MULTI_ICON_ITEMS = "adb_items"
     }
 
     internal object CarouselItemKeys {
@@ -157,5 +158,11 @@ internal object PushTemplateConstants {
 
     internal object ProductRatingKeys {
         const val RATING_UNSELECTED = -1
+    }
+
+    internal object MultiIconTemplateKeys {
+        const val IMG = "img"
+        const val URI = "uri"
+        const val TYPE = "type"
     }
 }

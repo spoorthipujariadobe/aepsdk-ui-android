@@ -1,0 +1,94 @@
+package com.adobe.marketing.mobile.notificationbuilder.internal.templates
+
+import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateConstants
+import com.adobe.marketing.mobile.notificationbuilder.internal.util.NotificationData
+import com.adobe.marketing.mobile.services.Log
+import org.json.JSONArray
+import org.json.JSONObject
+
+internal class MultiIconPushTemplate(data: NotificationData) : AEPPushTemplate(data) {
+
+    private val SELF_TAG = "MultiIconNotificationTemplate"
+    data class MultiIconTemplateItem(
+        val iconUrl: String,
+        val actionType: PushTemplateConstants.ActionType,
+        val actionUri: String?
+    )
+
+    internal val templateItemList: MutableList<MultiIconTemplateItem>
+
+    init {
+        val itemsJson = data.getRequiredString(PushTemplateConstants.PushPayloadKeys.MULTI_ICON_ITEMS)
+        templateItemList = getTemplateItemList(itemsJson)
+            ?: throw IllegalArgumentException("Required field \"${PushTemplateConstants.PushPayloadKeys.MULTI_ICON_ITEMS}\" is invalid.")
+        if (templateItemList.size < 3 || templateItemList.size > 5) {
+            throw IllegalArgumentException("\"${PushTemplateConstants.PushPayloadKeys.MULTI_ICON_ITEMS}\" field must have 3 to 5 valid items")
+        }
+    }
+
+    private fun getTemplateItemList(templateActionList: String?): MutableList<MultiIconTemplateItem>? {
+        if (templateActionList.isNullOrEmpty()) {
+            Log.debug(
+                PushTemplateConstants.LOG_TAG,
+                SELF_TAG,
+                "Exception in converting rating uri json string to json array, Error :" +
+                        " rating uris is null"
+            )
+            return null
+        }
+        val actionList = mutableListOf<MultiIconTemplateItem>()
+        try {
+            val jsonArray = JSONArray(templateActionList)
+            for (i in 0 until jsonArray.length()) {
+                val jsonObject = jsonArray.getJSONObject(i)
+                val multiIconAction = getIconItemFromJsonObject(jsonObject)
+                multiIconAction?.let { actionList.add(it) }
+            }
+        } catch (e: Exception) {
+            Log.debug(
+                PushTemplateConstants.LOG_TAG,
+                SELF_TAG,
+                "Exception in converting template action json string to json array, Error : ${e.localizedMessage}"
+            )
+            return null
+        }
+        return actionList
+    }
+
+    private fun getIconItemFromJsonObject(jsonObject: JSONObject): MultiIconTemplateItem? {
+        return try {
+            val imageUri = jsonObject.getString(PushTemplateConstants.MultiIconTemplateKeys.IMG)
+            // In case of non valid image URI, return null as icon is mandatory
+            if(imageUri.isNullOrEmpty()) {
+                Log.debug(
+                    PushTemplateConstants.LOG_TAG,
+                    SELF_TAG,
+                    "Image uri is empty, cannot create icon item."
+                )
+                return null
+            }
+            var uri: String? = null
+            val actionTypeString = jsonObject.getString(PushTemplateConstants.MultiIconTemplateKeys.TYPE)
+            var actionType = if(actionTypeString.isNullOrEmpty()) {
+                PushTemplateConstants.ActionType.NONE
+            } else {
+                PushTemplateConstants.ActionType.valueOf(actionTypeString)
+            }
+            if (actionType == PushTemplateConstants.ActionType.WEBURL || actionType == PushTemplateConstants.ActionType.DEEPLINK) {
+                uri = jsonObject.getString(PushTemplateConstants.MultiIconTemplateKeys.URI)
+                if (uri.isNullOrEmpty()) {
+                    Log.debug(
+                        PushTemplateConstants.LOG_TAG,
+                        SELF_TAG,
+                        "Uri is empty for action type $actionType, cannot create icon item."
+                    )
+                    return null
+                }
+            }
+
+            MultiIconTemplateItem(imageUri, actionType, uri)
+        } catch (e: Exception) {
+            null
+        }
+    }
+}
