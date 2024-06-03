@@ -27,6 +27,7 @@ import com.adobe.marketing.mobile.notificationbuilder.internal.builders.ManualCa
 import com.adobe.marketing.mobile.notificationbuilder.internal.builders.MultiIconNotificationBuilder
 import com.adobe.marketing.mobile.notificationbuilder.internal.builders.ProductCatalogNotificationBuilder
 import com.adobe.marketing.mobile.notificationbuilder.internal.builders.ProductRatingNotificationBuilder
+import com.adobe.marketing.mobile.notificationbuilder.internal.builders.TimerNotificationBuilder
 import com.adobe.marketing.mobile.notificationbuilder.internal.builders.ZeroBezelNotificationBuilder
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.AEPPushTemplate
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.AutoCarouselPushTemplate
@@ -37,6 +38,7 @@ import com.adobe.marketing.mobile.notificationbuilder.internal.templates.ManualC
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.MultiIconPushTemplate
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.ProductCatalogPushTemplate
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.ProductRatingPushTemplate
+import com.adobe.marketing.mobile.notificationbuilder.internal.templates.TimerPushTemplate
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.ZeroBezelPushTemplate
 import com.adobe.marketing.mobile.notificationbuilder.internal.util.IntentData
 import com.adobe.marketing.mobile.notificationbuilder.internal.util.MapData
@@ -64,6 +66,7 @@ object NotificationBuilder {
         trackerActivityClass: Class<out Activity>?,
         broadcastReceiverClass: Class<out BroadcastReceiver>?
     ): NotificationCompat.Builder {
+
         val context = ServiceProvider.getInstance().appContextService.applicationContext
             ?: throw NotificationConstructionFailedException("Application context is null, cannot build a notification.")
         if (messageData.isEmpty()) {
@@ -153,6 +156,15 @@ object NotificationBuilder {
                 )
             }
 
+            PushTemplateType.TIMER -> {
+                return TimerNotificationBuilder.construct(
+                    context,
+                    TimerPushTemplate(notificationData),
+                    trackerActivityClass,
+                    broadcastReceiverClass
+                )
+            }
+
             PushTemplateType.MULTI_ICON -> {
                 return MultiIconNotificationBuilder.construct(
                     context,
@@ -237,6 +249,15 @@ object NotificationBuilder {
                     context,
                     BasicPushTemplate(intentData),
                     trackerActivityClass
+                )
+            }
+
+            PushTemplateType.TIMER -> {
+                return TimerNotificationBuilder.construct(
+                    context,
+                    TimerPushTemplate(intentData),
+                    trackerActivityClass,
+                    broadcastReceiverClass
                 )
             }
 
