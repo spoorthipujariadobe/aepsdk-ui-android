@@ -9,91 +9,86 @@
   governing permissions and limitations under the License.
 */
 
-package com.adobe.marketing.mobile.notificationbuilder.internal
+package com.adobe.marketing.mobile.notificationbuilder
 
 import java.util.concurrent.TimeUnit
 
 /**
  * This object holds all constant values for handling out-of-the-box push template notifications
  */
-internal object PushTemplateConstants {
-    const val LOG_TAG = "PushTemplates"
-    const val CACHE_BASE_DIR = "pushtemplates"
-    const val PUSH_IMAGE_CACHE = "pushimagecache"
+object PushTemplateConstants {
+    internal const val LOG_TAG = "PushTemplates"
+    internal const val CACHE_BASE_DIR = "pushtemplates"
+    internal const val PUSH_IMAGE_CACHE = "pushimagecache"
 
     /** Enum to denote the type of action  */
-    enum class ActionType {
+    internal enum class ActionType {
         DEEPLINK, WEBURL, DISMISS, OPENAPP, NONE
     }
 
     internal object ActionButtons {
-        const val LABEL = "label"
-        const val URI = "uri"
-        const val TYPE = "type"
+        internal const val LABEL = "label"
+        internal const val URI = "uri"
+        internal const val TYPE = "type"
     }
 
     internal object RatingAction {
-        const val URI = "uri"
-        const val TYPE = "type"
+        internal const val URI = "uri"
+        internal const val TYPE = "type"
     }
 
-    internal object NotificationAction {
+    object NotificationAction {
         const val DISMISSED = "Notification Dismissed"
-        const val OPENED = "Notification Opened"
-        const val BUTTON_CLICKED = "Notification Button Clicked"
+        const val CLICKED = "Notification Clicked"
     }
-
-    internal class Tracking private constructor() {
-        internal object TrackingKeys {
-            const val ACTION_ID = "actionId"
-            const val ACTION_URI = "actionUri"
-        }
+    object TrackingKeys {
+        const val ACTION_ID = "actionId"
+        const val ACTION_URI = "actionUri"
     }
 
     internal object DefaultValues {
         // When no channel name is received from the push notification, this default channel name is used.
         // This will appear in the notification settings for the app.
-        const val DEFAULT_CHANNEL_NAME = "AEPSDK Push Notifications"
-        const val SILENT_CHANNEL_NAME = "AEPSDK Silent Push Notifications"
-        const val DEFAULT_CHANNEL_ID = "AEPSDKPushChannel"
-        const val SILENT_NOTIFICATION_CHANNEL_ID = "AEPSDKSilentPushChannel"
-        const val CAROUSEL_MAX_BITMAP_WIDTH = 300
-        const val CAROUSEL_MAX_BITMAP_HEIGHT = 200
-        const val AUTO_CAROUSEL_MODE = "auto"
-        const val DEFAULT_MANUAL_CAROUSEL_MODE = "default"
-        const val FILMSTRIP_CAROUSEL_MODE = "filmstrip"
-        const val CAROUSEL_MINIMUM_IMAGE_COUNT = 3
-        const val MANUAL_CAROUSEL_START_INDEX = 0
-        const val FILMSTRIP_CAROUSEL_CENTER_INDEX = 1
-        const val NO_CENTER_INDEX_SET = -1
-        const val INPUT_BOX_DEFAULT_REPLY_TEXT = "Reply"
-        const val PRODUCT_CATALOG_START_INDEX = 0
-        const val PRODUCT_CATALOG_VERTICAL_LAYOUT = "vertical"
+        internal const val DEFAULT_CHANNEL_NAME = "AEPSDK Push Notifications"
+        internal const val SILENT_CHANNEL_NAME = "AEPSDK Silent Push Notifications"
+        internal const val DEFAULT_CHANNEL_ID = "AEPSDKPushChannel"
+        internal const val SILENT_NOTIFICATION_CHANNEL_ID = "AEPSDKSilentPushChannel"
+        internal const val CAROUSEL_MAX_BITMAP_WIDTH = 300
+        internal const val CAROUSEL_MAX_BITMAP_HEIGHT = 200
+        internal const val AUTO_CAROUSEL_MODE = "auto"
+        internal const val DEFAULT_MANUAL_CAROUSEL_MODE = "default"
+        internal const val FILMSTRIP_CAROUSEL_MODE = "filmstrip"
+        internal const val CAROUSEL_MINIMUM_IMAGE_COUNT = 3
+        internal const val MANUAL_CAROUSEL_START_INDEX = 0
+        internal const val FILMSTRIP_CAROUSEL_CENTER_INDEX = 1
+        internal const val NO_CENTER_INDEX_SET = -1
+        internal const val INPUT_BOX_DEFAULT_REPLY_TEXT = "Reply"
+        internal const val PRODUCT_CATALOG_START_INDEX = 0
+        internal const val PRODUCT_CATALOG_VERTICAL_LAYOUT = "vertical"
 
         // TODO: revisit this value. should cache time be configurable rather than have a static
         // value?
-        val PUSH_NOTIFICATION_IMAGE_CACHE_EXPIRY_IN_MILLISECONDS: Long =
+        internal val PUSH_NOTIFICATION_IMAGE_CACHE_EXPIRY_IN_MILLISECONDS: Long =
             TimeUnit.DAYS.toMillis(3) // 3 days
     }
 
     internal object MethodNames {
-        const val SET_BACKGROUND_COLOR = "setBackgroundColor"
-        const val SET_TEXT_COLOR = "setTextColor"
+        internal const val SET_BACKGROUND_COLOR = "setBackgroundColor"
+        internal const val SET_TEXT_COLOR = "setTextColor"
     }
 
     internal object FriendlyViewNames {
-        const val NOTIFICATION_BACKGROUND = "notification background"
-        const val NOTIFICATION_TITLE = "notification title"
-        const val NOTIFICATION_BODY_TEXT = "notification body text"
-        const val TIMER_TEXT = "Timer Text"
-        const val CTA_BUTTON = "product catalog cta button"
+        internal const val NOTIFICATION_BACKGROUND = "notification background"
+        internal const val NOTIFICATION_TITLE = "notification title"
+        internal const val NOTIFICATION_BODY_TEXT = "notification body text"
+        internal const val CTA_BUTTON = "product catalog cta button"
+        internal const val TIMER_TEXT = "Timer Text"
     }
 
-    internal object PushPayloadKeys {
+    object PushPayloadKeys {
         const val TEMPLATE_TYPE = "adb_template_type"
         const val TITLE = "adb_title"
         const val BODY = "adb_body"
-        const val ACC_PAYLOAD_BODY = "_msg"
         const val SOUND = "adb_sound"
         const val BADGE_COUNT = "adb_n_count"
         const val VISIBILITY = "adb_n_visibility"
@@ -135,6 +130,7 @@ internal object PushTemplateConstants {
         const val RATING_UNSELECTED_ICON = "adb_rate_unselected_icon"
         const val RATING_SELECTED_ICON = "adb_rate_selected_icon"
         const val RATING_ACTIONS = "adb_rate_act"
+
         internal object TimerKeys {
             const val ALTERNATE_TITLE = "adb_title_alt"
             const val ALTERNATE_BODY = "adb_body_alt"
@@ -147,25 +143,47 @@ internal object PushTemplateConstants {
     }
 
     internal object CarouselItemKeys {
-        const val IMAGE = "img"
-        const val TEXT = "txt"
-        const val URI = "uri"
+        internal const val IMAGE = "img"
+        internal const val TEXT = "txt"
+        internal const val URI = "uri"
     }
 
     internal object CatalogItemKeys {
-        const val TITLE = "title"
-        const val BODY = "body"
-        const val IMAGE = "img"
-        const val PRICE = "price"
-        const val URI = "uri"
+        internal const val TITLE = "title"
+        internal const val BODY = "body"
+        internal const val IMAGE = "img"
+        internal const val PRICE = "price"
+        internal const val URI = "uri"
     }
 
     internal object CatalogActionIds {
-        const val CTA_BUTTON_CLICKED = "cta_button_clicked"
-        const val PRODUCT_IMAGE_CLICKED = "product_image_clicked"
+        internal const val CTA_BUTTON_CLICKED = "cta_button_clicked"
+        internal const val PRODUCT_IMAGE_CLICKED = "product_image_clicked"
     }
 
     internal object ProductRatingKeys {
-        const val RATING_UNSELECTED = -1
+        internal const val RATING_UNSELECTED = -1
+    }
+
+    object IntentActions {
+        const val FILMSTRIP_LEFT_CLICKED = "filmstrip_left"
+        const val FILMSTRIP_RIGHT_CLICKED = "filmstrip_right"
+        const val REMIND_LATER_CLICKED = "remind_clicked"
+        const val MANUAL_CAROUSEL_LEFT_CLICKED = "manual_left"
+        const val MANUAL_CAROUSEL_RIGHT_CLICKED = "manual_right"
+        const val INPUT_RECEIVED = "input_received"
+        const val CATALOG_THUMBNAIL_CLICKED = "thumbnail_clicked"
+        const val RATING_ICON_CLICKED = "rating_icon_clicked"
+        const val SCHEDULED_NOTIFICATION_BROADCAST = "scheduled_notification_broadcast"
+        const val TIMER_EXPIRED = "timer_expired"
+    }
+
+    object IntentKeys {
+        const val CENTER_IMAGE_INDEX = "centerImageIndex"
+        const val CATALOG_ITEM_INDEX = "catalogItemIndex"
+        const val IMAGE_URLS = "imageUrls"
+        const val IMAGE_CAPTIONS = "imageCaptions"
+        const val IMAGE_CLICK_ACTIONS = "imageClickActions"
+        const val RATING_SELECTED = "ratingSelected"
     }
 }

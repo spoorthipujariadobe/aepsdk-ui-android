@@ -23,11 +23,10 @@ import android.os.SystemClock
 import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
 import com.adobe.marketing.mobile.notificationbuilder.NotificationConstructionFailedException
-import com.adobe.marketing.mobile.notificationbuilder.PushTemplateIntentConstants
+import com.adobe.marketing.mobile.notificationbuilder.PushTemplateConstants
+import com.adobe.marketing.mobile.notificationbuilder.PushTemplateConstants.LOG_TAG
+import com.adobe.marketing.mobile.notificationbuilder.PushTemplateConstants.PushPayloadKeys.TimerKeys
 import com.adobe.marketing.mobile.notificationbuilder.R
-import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateConstants
-import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateConstants.LOG_TAG
-import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateConstants.PushPayloadKeys.TimerKeys
 import com.adobe.marketing.mobile.notificationbuilder.internal.extensions.createNotificationChannelIfRequired
 import com.adobe.marketing.mobile.notificationbuilder.internal.extensions.setRemoteViewImage
 import com.adobe.marketing.mobile.notificationbuilder.internal.extensions.setTimerTextColor
@@ -109,6 +108,7 @@ internal object TimerNotificationBuilder {
             // create the pending intent for the timer expiry
             val pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
 
+            // todo replace this with PendingIntentUtils.createPendingIntentForScheduledNotifications
             // set the alarm manager to trigger the intent at the expiry time
             val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
             val triggerTime = TimeUtils.getUnixTimeInSeconds() + remainingTimeInSeconds
@@ -164,7 +164,7 @@ internal object TimerNotificationBuilder {
      * @return the intent for the timer expiry
      */
     private fun createIntent(template: TimerPushTemplate): Intent {
-        val intent = AEPPushNotificationBuilder.createIntent(PushTemplateIntentConstants.IntentActions.TIMER_EXPIRED, template)
+        val intent = AEPPushNotificationBuilder.createIntent(PushTemplateConstants.IntentActions.TIMER_EXPIRED, template)
         intent.putExtra(PushTemplateConstants.PushPayloadKeys.TEMPLATE_TYPE, template.templateType?.value)
         intent.putExtra(TimerKeys.ALTERNATE_TITLE, template.alternateTitle)
         intent.putExtra(TimerKeys.ALTERNATE_BODY, template.alternateBody)

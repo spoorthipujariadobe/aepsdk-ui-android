@@ -101,7 +101,7 @@ internal fun provideMockedManualCarousalTemplate(isFromIntent: Boolean = false):
         val dataMap = MockCarousalTemplateDataProvider.getMockedMapWithManualCarouselData()
         data = MapData(dataMap)
     }
-    return CarouselPushTemplate.createCarouselPushTemplate(data) as ManualCarouselPushTemplate
+    return CarouselPushTemplate(data) as ManualCarouselPushTemplate
 }
 
 internal fun provideMockedAutoCarousalTemplate(isFromIntent: Boolean = false): AutoCarouselPushTemplate {
@@ -113,5 +113,5 @@ internal fun provideMockedAutoCarousalTemplate(isFromIntent: Boolean = false): A
         val dataMap = MockCarousalTemplateDataProvider.getMockedMapWithAutoCarouselData()
         data = MapData(dataMap)
     }
-    return CarouselPushTemplate.createCarouselPushTemplate(data) as AutoCarouselPushTemplate
+    return CarouselPushTemplate(data) as AutoCarouselPushTemplate
 }

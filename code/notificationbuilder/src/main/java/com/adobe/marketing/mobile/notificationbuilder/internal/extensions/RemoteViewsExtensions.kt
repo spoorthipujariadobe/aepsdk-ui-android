@@ -18,9 +18,9 @@ import android.graphics.Color
 import android.view.View
 import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
+import com.adobe.marketing.mobile.notificationbuilder.PushTemplateConstants
+import com.adobe.marketing.mobile.notificationbuilder.PushTemplateConstants.LOG_TAG
 import com.adobe.marketing.mobile.notificationbuilder.internal.PendingIntentUtils
-import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateConstants
-import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateConstants.LOG_TAG
 import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateImageUtils
 import com.adobe.marketing.mobile.services.Log
 import com.adobe.marketing.mobile.services.ServiceProvider
@@ -177,9 +177,9 @@ internal fun RemoteViews.setRemoteViewImage(
  * @param trackerActivityClass the [Class] of the activity to set in the created pending intent for tracking purposes
  * template notification
  * @param targetViewResourceId [Int] containing the resource id of the view to attach the click action
- * @param actionUri `String` containing the action uri defined for the push template image
- * @param actionType the [PushTemplateConstants.ActionType] of the action to be performed
- * @param tag `String` containing the tag to use when scheduling the notification
+ * @param actionUri [String] containing the action uri defined for the push template image
+ * @param actionId the [String] containing action id for tracking purposes
+ * @param tag [String] containing the tag to use when scheduling the notification
  * @param stickyNotification [Boolean] if false, remove the [NotificationCompat] after the `RemoteViews` is pressed
  */
 internal fun RemoteViews.setRemoteViewClickAction(
@@ -198,7 +198,7 @@ internal fun RemoteViews.setRemoteViewClickAction(
     )
 
     val pendingIntent: PendingIntent? =
-        PendingIntentUtils.createPendingIntent(
+        PendingIntentUtils.createPendingIntentForTrackerActivity(
             context,
             trackerActivityClass,
             actionUri,
