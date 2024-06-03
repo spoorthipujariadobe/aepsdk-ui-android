@@ -55,4 +55,5 @@
     <dimen name="rating_star_padding">16dp</dimen>
     <dimen name="rating_star_height">20dp</dimen>
     <dimen name="rating_confirm_padding">10dp</dimen>
+    <dimen name="timer_image_height">200dp</dimen>
 </resources>

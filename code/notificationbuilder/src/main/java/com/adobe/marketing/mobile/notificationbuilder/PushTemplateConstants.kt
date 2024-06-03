@@ -82,6 +82,7 @@ object PushTemplateConstants {
         internal const val NOTIFICATION_TITLE = "notification title"
         internal const val NOTIFICATION_BODY_TEXT = "notification body text"
         internal const val CTA_BUTTON = "product catalog cta button"
+        internal const val TIMER_TEXT = "Timer Text"
     }
 
     object PushPayloadKeys {
@@ -129,6 +130,16 @@ object PushTemplateConstants {
         const val RATING_UNSELECTED_ICON = "adb_rate_unselected_icon"
         const val RATING_SELECTED_ICON = "adb_rate_selected_icon"
         const val RATING_ACTIONS = "adb_rate_act"
+
+        internal object TimerKeys {
+            const val ALTERNATE_TITLE = "adb_title_alt"
+            const val ALTERNATE_BODY = "adb_body_alt"
+            const val ALTERNATE_EXPANDED_BODY = "adb_body_ex_alt"
+            const val TIMER_COLOR = "adb_clr_timer"
+            const val ALTERNATE_IMAGE = "adb_image_alt"
+            const val TIMER_DURATION = "adb_tmr_dur"
+            const val TIMER_END_TIME = "adb_tmr_end"
+        }
     }
 
     internal object CarouselItemKeys {
@@ -164,6 +175,7 @@ object PushTemplateConstants {
         const val CATALOG_THUMBNAIL_CLICKED = "thumbnail_clicked"
         const val RATING_ICON_CLICKED = "rating_icon_clicked"
         const val SCHEDULED_NOTIFICATION_BROADCAST = "scheduled_notification_broadcast"
+        const val TIMER_EXPIRED = "timer_expired"
     }
 
     object IntentKeys {

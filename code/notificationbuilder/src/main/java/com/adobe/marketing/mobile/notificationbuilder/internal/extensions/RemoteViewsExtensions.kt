@@ -85,6 +85,25 @@ internal fun RemoteViews.setNotificationBackgroundColor(
 }
 
 /**
+ * Sets custom color to the timer text.
+ *
+ * @param timerTextColor [String] containing the hex color code for the timer text
+ * @param containerViewId [Int] containing the resource id of the chronometer running timer
+ */
+internal fun RemoteViews.setTimerTextColor(
+    timerTextColor: String?,
+    containerViewId: Int
+) {
+    // get custom color from hex string and set it the notification background
+    setElementColor(
+        containerViewId,
+        "#$timerTextColor",
+        PushTemplateConstants.MethodNames.SET_TEXT_COLOR,
+        PushTemplateConstants.FriendlyViewNames.TIMER_TEXT
+    )
+}
+
+/**
  * Sets custom colors to the notification title text.
  *
  * @param titleTextColor [String] containing the hex color code for the notification title text
