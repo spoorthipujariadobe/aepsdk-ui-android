@@ -12,16 +12,15 @@
 package com.adobe.marketing.mobile.notificationbuilder
 
 import android.app.Activity
-import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.adobe.marketing.mobile.notificationbuilder.NotificationBuilder.constructNotificationBuilder
 import com.adobe.marketing.mobile.notificationbuilder.PushTemplateConstants.LOG_TAG
+import com.adobe.marketing.mobile.notificationbuilder.internal.PendingIntentUtils
 import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateType
 import com.adobe.marketing.mobile.notificationbuilder.internal.builders.AutoCarouselNotificationBuilder
 import com.adobe.marketing.mobile.notificationbuilder.internal.builders.BasicNotificationBuilder
@@ -47,7 +46,7 @@ import com.adobe.marketing.mobile.notificationbuilder.internal.util.MapData
 import com.adobe.marketing.mobile.notificationbuilder.internal.util.NotificationData
 import com.adobe.marketing.mobile.services.Log
 import com.adobe.marketing.mobile.services.ServiceProvider
-import java.util.Calendar
+import com.adobe.marketing.mobile.util.TimeUtils
 
 /**
  * Public facing object to construct a [NotificationCompat.Builder] object for the specified [PushTemplateType].
@@ -86,7 +85,7 @@ object NotificationBuilder {
             throw NotificationConstructionFailedException("Message data is empty, cannot build a notification.")
         }
         val notificationData = MapData(messageData)
-        return getNotificationBuilder(context, notificationData, trackerActivityClass, broadcastReceiverClass)
+        return createNotificationBuilder(context, notificationData, trackerActivityClass, broadcastReceiverClass)
     }
 
     /**
@@ -110,20 +109,20 @@ object NotificationBuilder {
             ?: throw NotificationConstructionFailedException("Application context is null, cannot build a notification.")
         val extras = intent.extras ?: throw NotificationConstructionFailedException("Intent extras are null, cannot re-build the notification.")
         val intentData = IntentData(extras, intent.action)
-        return getNotificationBuilder(context, intentData, trackerActivityClass, broadcastReceiverClass)
+        return createNotificationBuilder(context, intentData, trackerActivityClass, broadcastReceiverClass)
     }
 
     /**
      * Handles the remind later intent by scheduling a [PendingIntent] to the [broadcastReceiverClass]
-     * which will be fire at a time specified in the [remindLaterIntent].
+     * which will be fired at a time specified in the [remindLaterIntent].
      *
      * Once the PendingIntent is fired, the [broadcastReceiverClass] is responsible for
-     * reconstructing the notification and displaying it .
+     * reconstructing the notification and displaying it.
      *
      * @param remindLaterIntent [Intent] containing the data needed to schedule and recreate the notification
      * @param broadcastReceiverClass [Class] of the [BroadcastReceiver] that will be fired when the [PendingIntent] resolves at a later time
      */
-    @Throws(NotificationConstructionFailedException::class)
+    @Throws(NotificationConstructionFailedException::class, IllegalArgumentException::class)
     @JvmStatic
     fun handleRemindIntent(
         remindLaterIntent: Intent,
@@ -131,120 +130,54 @@ object NotificationBuilder {
     ) {
         val context = ServiceProvider.getInstance().appContextService.applicationContext
             ?: throw NotificationConstructionFailedException("Application context is null, cannot schedule notification for later.")
-        if (broadcastReceiverClass == null) {
-            Log.trace(
-                LOG_TAG,
-                SELF_TAG,
-                "Broadcast receiver class is null, will not schedule a notification from the received" +
-                    " intent with action %s",
-                remindLaterIntent.action
-            )
-            return
-        }
-        // get basic notification values from the intent extras
-        val intentExtras = remindLaterIntent.extras
-        if (intentExtras == null) {
-            Log.trace(
-                LOG_TAG,
-                SELF_TAG,
-                "Intent extras are null, will not schedule a notification from the received" +
-                    " intent with action %s",
-                remindLaterIntent.action
-            )
-            return
-        }
 
-        // set the calender time to the remind timestamp to allow the notification to be displayed
-        // at the later time
+        // get the time for remind later from the intent extras
+        val intentExtras = remindLaterIntent.extras
+            ?: throw NotificationConstructionFailedException("Intent extras are null, cannot schedule notification for later.")
         val remindLaterTimestamp =
             intentExtras.getString(PushTemplateConstants.PushPayloadKeys.REMIND_LATER_TIMESTAMP)?.toLongOrNull() ?: 0
         val remindLaterDuration =
             intentExtras.getString(PushTemplateConstants.PushPayloadKeys.REMIND_LATER_DURATION)?.toLongOrNull() ?: 0
 
-        if (remindLaterTimestamp <= 0 && remindLaterDuration <= 0) {
-            Log.trace(
-                LOG_TAG,
-                SELF_TAG,
-                "Remind later timestamp or duration is less than or equal to current timestamp" +
-                    "will not schedule a notification from the received intent with action %s",
-                remindLaterIntent.action
-            )
-            return
-        }
-        val calendar: Calendar = Calendar.getInstance()
-        val notificationManager = NotificationManagerCompat.from(context)
-
-        // get the tag from the intent extras
-        val tag = intentExtras.getString(PushTemplateConstants.PushPayloadKeys.TAG)
-
         // calculate difference in fire date from the current date if timestamp is provided
         val secondsUntilFireDate: Long = if (remindLaterDuration > 0) remindLaterDuration
-        else remindLaterTimestamp - calendar.timeInMillis / 1000
+        else remindLaterTimestamp - TimeUtils.getUnixTimeInSeconds()
+
+        val notificationManager = NotificationManagerCompat.from(context)
+        val tag = intentExtras.getString(PushTemplateConstants.PushPayloadKeys.TAG)
 
         // if fire date is greater than 0 then we want to schedule a reminder notification.
         if (secondsUntilFireDate <= 0) {
+            tag?.let { notificationManager.cancel(tag.hashCode()) }
+            throw IllegalArgumentException("Remind later timestamp or duration is less than or equal to current timestamp, cannot schedule notification for later.")
+        }
+        Log.trace(LOG_TAG, SELF_TAG, "Remind later pressed, will reschedule the notification to be displayed $secondsUntilFireDate seconds from now")
+
+        // calculate the trigger time
+        val triggerTimeInSeconds: Long = if (remindLaterDuration > 0) remindLaterDuration + TimeUtils.getUnixTimeInSeconds()
+        else remindLaterTimestamp
+
+        // schedule a pending intent to be broadcast at the specified timestamp
+        if (broadcastReceiverClass == null) {
             Log.trace(
                 LOG_TAG,
                 SELF_TAG,
-                "Remind later date is before the current date. Will not reschedule the" +
-                    " notification.",
-                secondsUntilFireDate
+                "Broadcast receiver class is null, will not schedule a notification from the received" +
+                    " intent with action ${remindLaterIntent.action}"
             )
-            // cancel the displayed notification
-            notificationManager.cancel(tag.hashCode())
+            tag?.let { notificationManager.cancel(tag.hashCode()) }
             return
         }
-        Log.trace(
-            LOG_TAG,
-            SELF_TAG,
-            "Remind later pressed, will reschedule the notification to be displayed %d" +
-                " seconds from now",
-            secondsUntilFireDate
-        )
-        calendar.add(Calendar.SECOND, secondsUntilFireDate.toInt())
-
-        // schedule a pending intent to be broadcast at the specified timestamp
         val scheduledIntent = Intent(PushTemplateConstants.IntentActions.SCHEDULED_NOTIFICATION_BROADCAST)
-        broadcastReceiverClass.let {
-            scheduledIntent.setClass(context.applicationContext, broadcastReceiverClass)
-        }
         scheduledIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
         scheduledIntent.putExtras(intentExtras)
+        PendingIntentUtils.createPendingIntentForScheduledNotifications(context, scheduledIntent, broadcastReceiverClass, triggerTimeInSeconds)
 
-        val pendingIntent: PendingIntent = PendingIntent.getBroadcast(
-            context,
-            0,
-            scheduledIntent,
-            PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
-        )
-
-        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager?
-        if (alarmManager != null) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && alarmManager.canScheduleExactAlarms()) {
-                Log.trace(
-                    LOG_TAG,
-                    SELF_TAG,
-                    "Exact alarms are permitted, scheduling an exact alarm for the current notification."
-                )
-                alarmManager.setExactAndAllowWhileIdle(
-                    AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pendingIntent
-                )
-            } else {
-                // schedule an inexact alarm for the current notification
-                Log.trace(
-                    LOG_TAG,
-                    SELF_TAG,
-                    "Exact alarms are not permitted, scheduling an inexact alarm for the current notification."
-                )
-                alarmManager[AlarmManager.RTC_WAKEUP, calendar.timeInMillis] =
-                    pendingIntent
-            }
-            // cancel the displayed notification
-            notificationManager.cancel(tag.hashCode())
-        }
+        // cancel the displayed notification
+        tag?.let { notificationManager.cancel(tag.hashCode()) }
     }
 
-    private fun getNotificationBuilder(
+    private fun createNotificationBuilder(
         context: Context,
         notificationData: NotificationData,
         trackerActivityClass: Class<out Activity>?,

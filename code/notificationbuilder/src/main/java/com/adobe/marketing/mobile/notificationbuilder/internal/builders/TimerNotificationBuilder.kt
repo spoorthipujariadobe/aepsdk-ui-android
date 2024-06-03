@@ -108,6 +108,7 @@ internal object TimerNotificationBuilder {
             // create the pending intent for the timer expiry
             val pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
 
+            // todo replace this with PendingIntentUtils.createPendingIntentForScheduledNotifications
             // set the alarm manager to trigger the intent at the expiry time
             val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
             val triggerTime = TimeUtils.getUnixTimeInSeconds() + remainingTimeInSeconds

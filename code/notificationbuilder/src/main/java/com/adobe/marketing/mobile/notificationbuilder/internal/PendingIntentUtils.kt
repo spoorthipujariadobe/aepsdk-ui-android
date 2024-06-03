@@ -12,17 +12,73 @@
 package com.adobe.marketing.mobile.notificationbuilder.internal
 
 import android.app.Activity
+import android.app.AlarmManager
 import android.app.PendingIntent
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import com.adobe.marketing.mobile.notificationbuilder.PushTemplateConstants
+import com.adobe.marketing.mobile.services.Log
 import java.util.Random
 
 internal object PendingIntentUtils {
 
     private const val SELF_TAG = "PendingIntentUtils"
 
+    internal fun createPendingIntentForScheduledNotifications(
+        context: Context,
+        scheduledIntent: Intent,
+        broadcastReceiverClass: Class<out BroadcastReceiver>?,
+        triggerAtSeconds: Long,
+    ) {
+        broadcastReceiverClass?.let {
+            scheduledIntent.setClass(context, broadcastReceiverClass)
+        }
 
+        val pendingIntent: PendingIntent = PendingIntent.getBroadcast(
+            context,
+            Random().nextInt(),
+            scheduledIntent,
+            PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+        )
+
+        val alarmManager =
+            context.getSystemService(Context.ALARM_SERVICE) as AlarmManager? ?: return
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S &&
+            isExactAlarmsAllowed(alarmManager)
+        ) {
+            Log.trace(
+                PushTemplateConstants.LOG_TAG,
+                SELF_TAG,
+                "Exact alarms are permitted, scheduling an exact alarm for the current notification."
+            )
+            alarmManager.setExactAndAllowWhileIdle(
+                AlarmManager.RTC_WAKEUP, triggerAtSeconds * 1000, pendingIntent
+            )
+        } else {
+            // schedule an inexact alarm for the current notification
+            Log.trace(
+                PushTemplateConstants.LOG_TAG,
+                SELF_TAG,
+                "Exact alarms are not permitted, scheduling an inexact alarm for the current notification."
+            )
+            alarmManager[AlarmManager.RTC_WAKEUP, triggerAtSeconds * 1000] =
+                pendingIntent
+        }
+    }
+
+    /**
+     * Checks if exact alarms are allowed on the device
+     *
+     * @param alarmManager [AlarmManager] instance
+     * @return true if exact alarms are allowed, false otherwise
+     */
+    internal fun isExactAlarmsAllowed(alarmManager: AlarmManager?): Boolean {
+        return Build.VERSION.SDK_INT < Build.VERSION_CODES.S ||
+            alarmManager?.canScheduleExactAlarms() ?: false
+    }
 
     /**
      * Creates a pending intent for a notification.

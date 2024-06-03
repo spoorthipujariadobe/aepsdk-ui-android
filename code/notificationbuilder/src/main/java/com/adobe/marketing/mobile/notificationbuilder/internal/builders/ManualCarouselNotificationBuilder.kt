@@ -483,8 +483,10 @@ internal object ManualCarouselNotificationBuilder {
         imageCaptions: List<String?>,
         imageClickActions: List<String?>,
         channelId: String
-    ): PendingIntent {
-
+    ): PendingIntent? {
+        if (broadcastReceiverClass == null) {
+            return null
+        }
         val clickIntent = AEPPushNotificationBuilder.createIntent(intentAction, pushTemplate)
         clickIntent.putExtra(PushPayloadKeys.CHANNEL_ID, channelId)
         clickIntent.putExtra(PushPayloadKeys.CAROUSEL_LAYOUT, pushTemplate.carouselLayout)
