@@ -21,6 +21,7 @@ object PushTemplateIntentConstants {
         const val INPUT_RECEIVED = "input_received"
         const val CATALOG_THUMBNAIL_CLICKED = "thumbnail_clicked"
         const val RATING_ICON_CLICKED = "rating_icon_clicked"
+        const val TIMER_EXPIRED = "timer_expired"
     }
 
     object IntentKeys {
