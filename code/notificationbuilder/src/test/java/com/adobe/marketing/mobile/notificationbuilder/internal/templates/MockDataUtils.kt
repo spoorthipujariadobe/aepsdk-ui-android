@@ -20,7 +20,7 @@ const val MOCKED_BODY = "Mocked Body"
 const val MOCKED_PAYLOAD_VERSION = "1"
 const val MOCKED_CAROUSEL_LAYOUT = "default"
 const val MOCKED_BODY_TEXT_COLOR = "#FFFFFF"
-const val MOCKED_SMALL_ICON = "chat_bubble"
+const val MOCKED_SMALL_ICON = "skipleft"
 const val MOCKED_LARGE_ICON = "https://cdn-icons-png.flaticon.com/128/864/864639.png"
 const val MOCKED_SMALL_ICON_COLOR = "#000000"
 const val MOCKED_VISIBILITY = "PUBLIC"
@@ -44,6 +44,7 @@ const val MOCKED_MALFORMED_JSON_ACTION_BUTTON = "[" +
     "{}," +
     "{\"label\":\"Open the app\",\"uri\":\"\",\"type\":\"GO_TO_WEB_PAGE\"}," +
     "{\"label\":\"Go to chess.com\",\"uri\":\"https://chess.com/games/552\",\"type\":\"DEEPLINK\"}]"
+const val MOCKED_CHANNEL_ID = "AEPSDKPushChannel"
 
 fun <K, V> MutableMap<K, V>.removeKeysFromMap(listOfKeys: List<K>) {
     for (key in listOfKeys) {
