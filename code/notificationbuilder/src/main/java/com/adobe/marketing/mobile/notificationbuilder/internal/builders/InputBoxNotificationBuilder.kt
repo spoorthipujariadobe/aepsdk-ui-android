@@ -30,6 +30,7 @@ import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateImage
 import com.adobe.marketing.mobile.notificationbuilder.internal.extensions.createNotificationChannelIfRequired
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.InputBoxPushTemplate
 import com.adobe.marketing.mobile.services.Log
+import java.util.Random
 
 /**
  * Object responsible for constructing a [NotificationCompat.Builder] object containing an input box push template notification.
@@ -100,7 +101,7 @@ internal object InputBoxNotificationBuilder {
         )
         addInputTextAction(
             context,
-            broadcastReceiverClass,
+            trackerActivityClass,
             notificationBuilder,
             channelIdToUse,
             pushTemplate
@@ -113,7 +114,7 @@ internal object InputBoxNotificationBuilder {
      * Adds an input text action for the notification.
      *
      * @param context the application [Context]
-     * @param broadcastReceiverClass the [BroadcastReceiver] class to use as the broadcast receiver
+     * @param trackerActivityClass the [Activity] class to launch when the input text is submitted
      * @param builder the [NotificationCompat.Builder] to attach the action buttons
      * @param channelId the [String] containing the channel ID to use for the notification
      * @param pushTemplate the [InputBoxPushTemplate] object containing the input box push template data
@@ -121,7 +122,7 @@ internal object InputBoxNotificationBuilder {
      */
     private fun addInputTextAction(
         context: Context,
-        broadcastReceiverClass: Class<out BroadcastReceiver>?,
+        trackerActivityClass: Class<out Activity>?,
         builder: NotificationCompat.Builder,
         channelId: String,
         pushTemplate: InputBoxPushTemplate
@@ -132,22 +133,12 @@ internal object InputBoxNotificationBuilder {
             .setLabel(inputHint)
             .build()
 
-        val inputReceivedIntent = createInputReceivedIntent(
+        val replyPendingIntent = createInputReceivedPendingIntent(
             context,
-            broadcastReceiverClass,
+            trackerActivityClass,
             channelId,
             pushTemplate
         )
-
-        val replyPendingIntent =
-            inputReceivedIntent?.let {
-                PendingIntent.getBroadcast(
-                    context,
-                    pushTemplate.tag.hashCode(),
-                    it,
-                    PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE
-                )
-            }
 
         val action =
             NotificationCompat.Action.Builder(null, inputHint, replyPendingIntent)
@@ -157,42 +148,50 @@ internal object InputBoxNotificationBuilder {
         builder.addAction(action)
     }
 
-    private fun createInputReceivedIntent(
+    /**
+     * Creates a pending intent which resolves to the [trackerActivityClass] for the input submit action.
+     *
+     * @param context the application [Context]
+     * @param trackerActivityClass the [Activity] class to launch when the input text is submitted
+     * @param channelId the [String] containing the channel ID to use for the notification
+     * @param pushTemplate the [InputBoxPushTemplate] object containing the input box push template data
+     * @return the created [PendingIntent]
+     */
+    private fun createInputReceivedPendingIntent(
         context: Context,
-        broadcastReceiverClass: Class<out BroadcastReceiver>?,
+        trackerActivityClass: Class<out Activity>?,
         channelId: String,
         pushTemplate: InputBoxPushTemplate
-    ): Intent? {
-        if (broadcastReceiverClass == null) {
-            return null
-        }
-        Log.trace(
-            LOG_TAG,
-            SELF_TAG,
-            "Creating a text input received intent from a push template object."
-        )
-
-        val inputReceivedIntent = AEPPushNotificationBuilder.createIntent(
-            PushTemplateConstants.IntentActions.INPUT_RECEIVED,
-            pushTemplate
-        )
-        inputReceivedIntent.putExtra(PushPayloadKeys.CHANNEL_ID, channelId)
-        inputReceivedIntent.putExtra(
+    ): PendingIntent {
+        val inputReceivedIntentExtras = pushTemplate.data.getBundle()
+        inputReceivedIntentExtras.putString(PushPayloadKeys.CHANNEL_ID, channelId)
+        // todo these already exists in intent, verify if we can remove in future iterations
+        inputReceivedIntentExtras.putString(
             PushPayloadKeys.INPUT_BOX_RECEIVER_NAME,
             pushTemplate.inputBoxReceiverName
         )
-        inputReceivedIntent.putExtra(PushPayloadKeys.INPUT_BOX_HINT, pushTemplate.inputTextHint)
-        inputReceivedIntent.putExtra(
+        inputReceivedIntentExtras.putString(PushPayloadKeys.INPUT_BOX_HINT, pushTemplate.inputTextHint)
+        inputReceivedIntentExtras.putString(
             PushPayloadKeys.INPUT_BOX_FEEDBACK_TEXT,
             pushTemplate.feedbackText
         )
-        inputReceivedIntent.putExtra(
+        inputReceivedIntentExtras.putString(
             PushPayloadKeys.INPUT_BOX_FEEDBACK_IMAGE,
             pushTemplate.feedbackImage
         )
-        broadcastReceiverClass.let {
-            inputReceivedIntent.setClass(context.applicationContext, broadcastReceiverClass)
+        val intent = Intent(PushTemplateConstants.NotificationAction.INPUT_RECEIVED)
+        trackerActivityClass?.let {
+            intent.setClass(context.applicationContext, trackerActivityClass)
         }
-        return inputReceivedIntent
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        intent.putExtras(inputReceivedIntentExtras)
+
+        // Remote input requires a pending intent to be created with the FLAG_MUTABLE flag
+        return PendingIntent.getActivity(
+            context,
+            Random().nextInt(),
+            intent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE
+        )
     }
 }

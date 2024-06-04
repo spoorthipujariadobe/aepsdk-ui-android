@@ -155,8 +155,7 @@ internal object ProductCatalogNotificationBuilder {
                 trackerActivityClass,
                 pushTemplate.catalogItems[pushTemplate.currentIndex].uri,
                 PushTemplateConstants.CatalogActionIds.PRODUCT_IMAGE_CLICKED,
-                pushTemplate.tag,
-                pushTemplate.isNotificationSticky ?: false
+                pushTemplate.data.getBundle()
             )
         )
     }
@@ -249,8 +248,7 @@ internal object ProductCatalogNotificationBuilder {
                 trackerActivityClass,
                 pushTemplate.ctaButtonUri,
                 PushTemplateConstants.CatalogActionIds.CTA_BUTTON_CLICKED,
-                pushTemplate.tag,
-                pushTemplate.isNotificationSticky ?: false
+                pushTemplate.data.getBundle()
             )
         )
     }
@@ -325,6 +323,11 @@ internal object ProductCatalogNotificationBuilder {
             setClass(context.applicationContext, broadcastReceiverClass)
             putExtra(PushTemplateConstants.PushPayloadKeys.CHANNEL_ID, channelId)
             putExtra(
+                PushTemplateConstants.IntentKeys.CATALOG_ITEM_INDEX,
+                currentIndex.toString()
+            )
+            // todo these already exists in intent, verify if we can remove in future iterations
+            putExtra(
                 PushTemplateConstants.PushPayloadKeys.CATALOG_CTA_BUTTON_TEXT,
                 pushTemplate.ctaButtonText
             )
@@ -347,10 +350,6 @@ internal object ProductCatalogNotificationBuilder {
             putExtra(
                 PushTemplateConstants.PushPayloadKeys.CATALOG_ITEMS,
                 pushTemplate.rawCatalogItems
-            )
-            putExtra(
-                PushTemplateConstants.IntentKeys.CATALOG_ITEM_INDEX,
-                currentIndex.toString()
             )
         }
 

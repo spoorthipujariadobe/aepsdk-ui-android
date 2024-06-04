@@ -136,8 +136,7 @@ internal object AutoCarouselNotificationBuilder {
                     R.id.carousel_item_image_view,
                     interactionUri,
                     null,
-                    pushTemplate.tag,
-                    pushTemplate.isNotificationSticky ?: false
+                    pushTemplate.data.getBundle()
                 )
             }
 

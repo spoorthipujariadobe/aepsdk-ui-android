@@ -40,6 +40,7 @@ object PushTemplateConstants {
     object NotificationAction {
         const val DISMISSED = "Notification Dismissed"
         const val CLICKED = "Notification Clicked"
+        const val INPUT_RECEIVED = "Input Received"
     }
     object TrackingKeys {
         const val ACTION_ID = "actionId"
@@ -181,9 +182,6 @@ object PushTemplateConstants {
     object IntentKeys {
         const val CENTER_IMAGE_INDEX = "centerImageIndex"
         const val CATALOG_ITEM_INDEX = "catalogItemIndex"
-        const val IMAGE_URLS = "imageUrls"
-        const val IMAGE_CAPTIONS = "imageCaptions"
-        const val IMAGE_CLICK_ACTIONS = "imageClickActions"
         const val RATING_SELECTED = "ratingSelected"
     }
 }
