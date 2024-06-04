@@ -102,9 +102,7 @@ internal object AEPPushNotificationBuilder {
                 context,
                 trackerActivityClass,
                 pushTemplate.actionUri,
-                pushTemplate.tag,
-                pushTemplate.isNotificationSticky ?: false,
-                pushTemplate.data.getBundleWithAllData()
+                pushTemplate.data.getBundle()
             )
             .setNotificationDeleteAction(context, trackerActivityClass)
 
@@ -127,7 +125,7 @@ internal object AEPPushNotificationBuilder {
     internal fun createIntent(action: String, template: AEPPushTemplate): Intent {
         val intent = Intent(action)
         intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-        intent.putExtras(template.data.getBundleWithAllData())
+        intent.putExtras(template.data.getBundle())
         return intent
     }
 }

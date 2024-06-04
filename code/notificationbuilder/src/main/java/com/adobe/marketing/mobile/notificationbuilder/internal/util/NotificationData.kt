@@ -60,5 +60,10 @@ interface NotificationData {
      */
     fun getLong(key: String): Long?
 
-    fun getBundleWithAllData(): Bundle
+    /**
+     * Returns a [Bundle] containing all the key-value pairs present in the data.
+     *
+     * @return a [Bundle] containing all the key-value pairs present in the data
+     */
+    fun getBundle(): Bundle
 }

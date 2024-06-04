@@ -84,9 +84,7 @@ internal object BasicNotificationBuilder {
             context,
             trackerActivityClass,
             pushTemplate.actionButtonsList,
-            pushTemplate.tag,
-            pushTemplate.isNotificationSticky ?: false,
-            pushTemplate.data.getBundleWithAllData()
+            pushTemplate.data.getBundle()
         )
 
         // add a remind later button if we have a label and an epoch or delay timestamp
@@ -151,6 +149,8 @@ internal object BasicNotificationBuilder {
             PushTemplateConstants.IntentActions.REMIND_LATER_CLICKED,
             pushTemplate
         )
+        remindIntent.putExtra(PushPayloadKeys.CHANNEL_ID, channelId)
+        // todo these already exists in intent, verify if we can remove in future iterations
         remindIntent.putExtra(PushPayloadKeys.REMIND_LATER_TEXT, pushTemplate.remindLaterText)
         remindIntent.putExtra(
             PushPayloadKeys.REMIND_LATER_TIMESTAMP,
@@ -161,7 +161,6 @@ internal object BasicNotificationBuilder {
             pushTemplate.remindLaterDuration.toString()
         )
         remindIntent.putExtra(PushPayloadKeys.ACTION_BUTTONS, pushTemplate.actionButtonsString)
-        remindIntent.putExtra(PushPayloadKeys.CHANNEL_ID, channelId)
 
         broadcastReceiverClass.let {
             remindIntent.setClass(context.applicationContext, broadcastReceiverClass)

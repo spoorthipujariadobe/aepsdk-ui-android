@@ -17,7 +17,6 @@ import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.os.Bundle
 import android.view.View
 import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
@@ -164,17 +163,28 @@ internal object InputBoxNotificationBuilder {
         channelId: String,
         pushTemplate: InputBoxPushTemplate
     ): PendingIntent {
-        val inputReceivedIntentExtras = addInputReceivedIntentExtras(
-            channelId,
-            pushTemplate
+        val inputReceivedIntentExtras = pushTemplate.data.getBundle()
+        inputReceivedIntentExtras.putString(PushPayloadKeys.CHANNEL_ID, channelId)
+        // todo these already exists in intent, verify if we can remove in future iterations
+        inputReceivedIntentExtras.putString(
+            PushPayloadKeys.INPUT_BOX_RECEIVER_NAME,
+            pushTemplate.inputBoxReceiverName
         )
-
+        inputReceivedIntentExtras.putString(PushPayloadKeys.INPUT_BOX_HINT, pushTemplate.inputTextHint)
+        inputReceivedIntentExtras.putString(
+            PushPayloadKeys.INPUT_BOX_FEEDBACK_TEXT,
+            pushTemplate.feedbackText
+        )
+        inputReceivedIntentExtras.putString(
+            PushPayloadKeys.INPUT_BOX_FEEDBACK_IMAGE,
+            pushTemplate.feedbackImage
+        )
         val intent = Intent(PushTemplateConstants.NotificationAction.INPUT_RECEIVED)
         trackerActivityClass?.let {
             intent.setClass(context.applicationContext, trackerActivityClass)
         }
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP)
-        inputReceivedIntentExtras.let { intent.putExtras(inputReceivedIntentExtras) }
+        intent.putExtras(inputReceivedIntentExtras)
 
         // Remote input requires a pending intent to be created with the FLAG_MUTABLE flag
         return PendingIntent.getActivity(
@@ -183,40 +193,5 @@ internal object InputBoxNotificationBuilder {
             intent,
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE
         )
-    }
-
-    /**
-     * Adds the input received intent extras to the [Bundle].
-     *
-     * @param channelId the [String] containing the channel ID to use for the notification
-     * @param pushTemplate the [InputBoxPushTemplate] object containing the input box push template data
-     * @return the [Bundle] containing the input received intent extras
-     */
-    private fun addInputReceivedIntentExtras(
-        channelId: String,
-        pushTemplate: InputBoxPushTemplate
-    ): Bundle {
-        Log.trace(
-            LOG_TAG,
-            SELF_TAG,
-            "Creating a text input received intent from a push template object."
-        )
-
-        val intentExtras = pushTemplate.data.getBundleWithAllData()
-        intentExtras.putString(PushPayloadKeys.CHANNEL_ID, channelId)
-        intentExtras.putString(
-            PushPayloadKeys.INPUT_BOX_RECEIVER_NAME,
-            pushTemplate.inputBoxReceiverName
-        )
-        intentExtras.putString(PushPayloadKeys.INPUT_BOX_HINT, pushTemplate.inputTextHint)
-        intentExtras.putString(
-            PushPayloadKeys.INPUT_BOX_FEEDBACK_TEXT,
-            pushTemplate.feedbackText
-        )
-        intentExtras.putString(
-            PushPayloadKeys.INPUT_BOX_FEEDBACK_IMAGE,
-            pushTemplate.feedbackImage
-        )
-        return intentExtras
     }
 }

@@ -80,7 +80,6 @@ internal object ManualCarouselNotificationBuilder {
         val imageUris = validCarouselItems.map { it.imageUri }
         val captions = validCarouselItems.map { it.captionText }
         val interactionUris = validCarouselItems.map { it.interactionUri }
-        val fallbackActionUri = pushTemplate.actionUri
 
         // get the indices for the carousel
         val carouselIndices = getCarouselIndices(pushTemplate, imageUris)
@@ -99,7 +98,6 @@ internal object ManualCarouselNotificationBuilder {
             expandedLayout,
             validCarouselItems,
             packageName,
-            fallbackActionUri
         )
 
         val notificationManager =
@@ -200,7 +198,6 @@ internal object ManualCarouselNotificationBuilder {
         expandedLayout: RemoteViews,
         validCarouselItems: List<CarouselPushTemplate.CarouselItem>,
         packageName: String?,
-        fallbackActionUri: String?
     ) {
         if (pushTemplate.carouselLayout == PushTemplateConstants.DefaultValues.FILMSTRIP_CAROUSEL_MODE) {
             populateFilmstripCarouselImages(
@@ -270,6 +267,7 @@ internal object ManualCarouselNotificationBuilder {
      *
      * @param context the current [Context] of the application
      * @param items the list of [CarouselPushTemplate.CarouselItem] objects to be displayed in the carousel
+     * @param packageName the [String] containing the package name of the application
      * @param centerIndex the `Int` index of the center image in the carousel
      * @param pushTemplate the [ManualCarouselPushTemplate] object containing the push template data
      * @param trackerActivityClass the [Class] of the activity that will be used for tracking interactions with the carousel item
@@ -310,9 +308,7 @@ internal object ManualCarouselNotificationBuilder {
                     R.id.carousel_item_image_view,
                     interactionUri,
                     null,
-                    pushTemplate.tag,
-                    pushTemplate.isNotificationSticky ?: true,
-                    pushTemplate.data.getBundleWithAllData()
+                    pushTemplate.data.getBundle()
                 )
             }
 
@@ -395,9 +391,7 @@ internal object ManualCarouselNotificationBuilder {
             R.id.manual_carousel_filmstrip_center,
             interactionUri,
             null,
-            pushTemplate.tag,
-            pushTemplate.isNotificationSticky ?: false,
-            pushTemplate.data.getBundleWithAllData()
+            pushTemplate.data.getBundle()
         )
     }
 
@@ -452,9 +446,7 @@ internal object ManualCarouselNotificationBuilder {
      * @param pushTemplate the [ManualCarouselPushTemplate] object containing the manual carousel push template data
      * @param intentAction [String] containing the intent action
      * @param broadcastReceiverClass the [Class] of the broadcast receiver to set in the created pending intent
-     * @param downloadedImageUris [List] of String` containing the downloaded image URIs
-     * @param imageCaptions `List` of String` containing the image captions
-     * @param imageClickActions `List` of String` containing the image click actions
+     * @param channelId [String] containing the notification channel ID
      * @return the created click [Intent]
      */
     private fun createCarouselNavigationClickPendingIntent(
@@ -469,13 +461,14 @@ internal object ManualCarouselNotificationBuilder {
         }
         val clickIntent = AEPPushNotificationBuilder.createIntent(intentAction, pushTemplate)
         clickIntent.putExtra(PushPayloadKeys.CHANNEL_ID, channelId)
-        clickIntent.putExtra(PushPayloadKeys.CAROUSEL_LAYOUT, pushTemplate.carouselLayout)
-        clickIntent.putExtra(PushPayloadKeys.CAROUSEL_ITEMS, pushTemplate.rawCarouselItems)
-        clickIntent.putExtra(PushPayloadKeys.CAROUSEL_OPERATION_MODE, pushTemplate.carouselMode)
         clickIntent.putExtra(
             PushTemplateConstants.IntentKeys.CENTER_IMAGE_INDEX,
             pushTemplate.centerImageIndex.toString()
         )
+        // todo these already exists in intent, verify if we can remove in future iterations
+        clickIntent.putExtra(PushPayloadKeys.CAROUSEL_LAYOUT, pushTemplate.carouselLayout)
+        clickIntent.putExtra(PushPayloadKeys.CAROUSEL_ITEMS, pushTemplate.rawCarouselItems)
+        clickIntent.putExtra(PushPayloadKeys.CAROUSEL_OPERATION_MODE, pushTemplate.carouselMode)
         broadcastReceiverClass.let {
             clickIntent.setClass(context, broadcastReceiverClass)
         }

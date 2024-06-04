@@ -18,7 +18,6 @@ import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.widget.RemoteViews
-import androidx.core.app.NotificationCompat
 import com.adobe.marketing.mobile.notificationbuilder.PushTemplateConstants
 import com.adobe.marketing.mobile.notificationbuilder.PushTemplateConstants.LOG_TAG
 import com.adobe.marketing.mobile.notificationbuilder.internal.PendingIntentUtils
@@ -180,8 +179,7 @@ internal fun RemoteViews.setRemoteViewImage(
  * @param targetViewResourceId [Int] containing the resource id of the view to attach the click action
  * @param actionUri [String] containing the action uri defined for the push template image
  * @param actionId the [String] containing action id for tracking purposes
- * @param tag [String] containing the tag to use when scheduling the notification
- * @param stickyNotification [Boolean] if false, remove the [NotificationCompat] after the `RemoteViews` is pressed
+ * @param intentExtra the [Bundle] containing the extras to be added to the intent
  */
 internal fun RemoteViews.setRemoteViewClickAction(
     context: Context,
@@ -189,8 +187,6 @@ internal fun RemoteViews.setRemoteViewClickAction(
     targetViewResourceId: Int,
     actionUri: String?,
     actionId: String?,
-    tag: String?,
-    stickyNotification: Boolean,
     intentExtra: Bundle?
 ) {
     Log.trace(
@@ -205,8 +201,6 @@ internal fun RemoteViews.setRemoteViewClickAction(
             trackerActivityClass,
             actionUri,
             actionId,
-            tag,
-            stickyNotification,
             intentExtra
         )
     setOnClickPendingIntent(targetViewResourceId, pendingIntent)

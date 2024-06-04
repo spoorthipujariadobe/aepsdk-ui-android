@@ -27,7 +27,7 @@ internal class MapData(private val data: Map<String, String>) : NotificationData
 
     override fun getLong(key: String): Long? = DataReader.optString(data, key, null)?.toLongOrNull()
 
-    override fun getBundleWithAllData(): Bundle {
+    override fun getBundle(): Bundle {
         val bundle = Bundle()
         for (key in data.keys) {
             bundle.putString(key, data[key])

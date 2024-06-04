@@ -106,6 +106,8 @@ internal object ProductRatingNotificationBuilder {
 
             // add pending intent for confirm click
             // sticky is set to false as the notification will be dismissed after confirm click
+            val intentExtras = pushTemplate.data.getBundle()
+            intentExtras.putString(PushTemplateConstants.PushPayloadKeys.STICKY, "false")
             val selectedRatingAction = pushTemplate.ratingActionList[pushTemplate.ratingSelected]
             expandedLayout.setRemoteViewClickAction(
                 context,
@@ -113,9 +115,7 @@ internal object ProductRatingNotificationBuilder {
                 R.id.rating_confirm,
                 selectedRatingAction.link,
                 pushTemplate.ratingSelected.toString(),
-                pushTemplate.tag,
-                false,
-                pushTemplate.data.getBundleWithAllData()
+                intentExtras
             )
         } else {
             // hide confirm if no rating is selected
@@ -193,7 +193,16 @@ internal object ProductRatingNotificationBuilder {
         broadcastReceiverClass.let {
             ratingButtonClickIntent.setClass(context.applicationContext, broadcastReceiverClass)
         }
+        ratingButtonClickIntent.putExtra(
+            PushTemplateConstants.PushPayloadKeys.RATING_SELECTED_ICON,
+            pushTemplate.ratingSelectedIcon
+        )
 
+        ratingButtonClickIntent.putExtra(
+            PushTemplateConstants.PushPayloadKeys.CHANNEL_ID,
+            channelId
+        )
+        // todo these already exists in intent, verify if we can remove in future iterations
         ratingButtonClickIntent.putExtra(
             PushTemplateConstants.PushPayloadKeys.RATING_ACTIONS,
             pushTemplate.ratingActionString
@@ -205,15 +214,6 @@ internal object ProductRatingNotificationBuilder {
         ratingButtonClickIntent.putExtra(
             PushTemplateConstants.PushPayloadKeys.RATING_UNSELECTED_ICON,
             pushTemplate.ratingUnselectedIcon
-        )
-        ratingButtonClickIntent.putExtra(
-            PushTemplateConstants.PushPayloadKeys.RATING_SELECTED_ICON,
-            pushTemplate.ratingSelectedIcon
-        )
-
-        ratingButtonClickIntent.putExtra(
-            PushTemplateConstants.PushPayloadKeys.CHANNEL_ID,
-            channelId
         )
 
         return PendingIntent.getBroadcast(
