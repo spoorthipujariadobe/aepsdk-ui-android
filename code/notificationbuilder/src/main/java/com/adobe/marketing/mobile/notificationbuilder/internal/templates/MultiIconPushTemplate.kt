@@ -37,23 +37,23 @@ internal class MultiIconPushTemplate(data: NotificationData) : AEPPushTemplate(d
         }
     }
 
-    private fun getTemplateItemList(templateActionList: String?): MutableList<MultiIconTemplateItem>? {
-        if (templateActionList.isNullOrEmpty()) {
-            Log.debug(
+    private fun getTemplateItemList(templateIconListJsonString: String?): MutableList<MultiIconTemplateItem>? {
+        if (templateIconListJsonString.isNullOrEmpty()) {
+            Log.warning(
                 PushTemplateConstants.LOG_TAG,
                 SELF_TAG,
                 "Exception in converting rating uri json string to json array, Error :" +
-                    " rating uris is null"
+                    " templateIconList Json String is null or empty"
             )
             return null
         }
-        val actionList = mutableListOf<MultiIconTemplateItem>()
+        val iconItemsList = mutableListOf<MultiIconTemplateItem>()
         try {
-            val jsonArray = JSONArray(templateActionList)
+            val jsonArray = JSONArray(templateIconListJsonString)
             for (i in 0 until jsonArray.length()) {
                 val jsonObject = jsonArray.getJSONObject(i)
                 val multiIconAction = getIconItemFromJsonObject(jsonObject)
-                multiIconAction?.let { actionList.add(it) }
+                multiIconAction?.let { iconItemsList.add(it) }
             }
         } catch (e: Exception) {
             Log.debug(
@@ -63,7 +63,7 @@ internal class MultiIconPushTemplate(data: NotificationData) : AEPPushTemplate(d
             )
             return null
         }
-        return actionList
+        return iconItemsList
     }
 
     private fun getIconItemFromJsonObject(jsonObject: JSONObject): MultiIconTemplateItem? {
