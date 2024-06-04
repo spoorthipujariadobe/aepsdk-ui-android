@@ -33,6 +33,7 @@ import org.junit.Assert.assertArrayEquals
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.Mockito
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
 import org.robolectric.Shadows
@@ -102,7 +103,9 @@ class LegacyNotificationBuilderTest {
 
     @Test
     fun `construct should set silent notification if isFromIntent is true`() {
-        val pushTemplate = BasicPushTemplate(IntentData(mockBundle, null))
+        val mockedIntentData = Mockito.mock(IntentData::class.java)
+        Mockito.`when`(mockedIntentData.getBundle()).thenReturn(null)
+        val pushTemplate = BasicPushTemplate(mockedIntentData)
         val notification =
             LegacyNotificationBuilder.construct(context, pushTemplate, trackerActivityClass)
                 .build()
