@@ -18,6 +18,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import android.os.Bundle
 import com.adobe.marketing.mobile.notificationbuilder.PushTemplateConstants
 import com.adobe.marketing.mobile.services.Log
 import java.util.Random
@@ -97,7 +98,8 @@ internal object PendingIntentUtils {
         actionUri: String?,
         actionID: String?,
         tag: String?,
-        stickyNotification: Boolean
+        stickyNotification: Boolean,
+        intentExtras: Bundle?
     ): PendingIntent? {
         val intent = Intent(PushTemplateConstants.NotificationAction.CLICKED)
         trackerActivityClass?.let {
@@ -106,6 +108,8 @@ internal object PendingIntentUtils {
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP)
         intent.putExtra(PushTemplateConstants.PushPayloadKeys.TAG, tag)
         intent.putExtra(PushTemplateConstants.PushPayloadKeys.STICKY, stickyNotification.toString())
+        // todo revisit if all data is needed for click actions
+        intentExtras?.let { intent.putExtras(intentExtras) }
         addActionDetailsToIntent(
             intent,
             actionUri,

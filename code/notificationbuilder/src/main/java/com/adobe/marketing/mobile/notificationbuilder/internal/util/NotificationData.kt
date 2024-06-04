@@ -11,6 +11,8 @@
 
 package com.adobe.marketing.mobile.notificationbuilder.internal.util
 
+import android.os.Bundle
+
 // Interface for abstracting the source of notification properties
 interface NotificationData {
 
@@ -57,4 +59,6 @@ interface NotificationData {
      * @return the long value for the given key, or null if the key is not found or the value is not a long
      */
     fun getLong(key: String): Long?
+
+    fun getBundleWithAllData(): Bundle
 }

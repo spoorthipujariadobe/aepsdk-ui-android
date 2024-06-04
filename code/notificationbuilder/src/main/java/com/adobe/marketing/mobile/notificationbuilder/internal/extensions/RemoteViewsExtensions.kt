@@ -15,6 +15,7 @@ import android.app.Activity
 import android.app.PendingIntent
 import android.content.Context
 import android.graphics.Color
+import android.os.Bundle
 import android.view.View
 import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
@@ -189,7 +190,8 @@ internal fun RemoteViews.setRemoteViewClickAction(
     actionUri: String?,
     actionId: String?,
     tag: String?,
-    stickyNotification: Boolean
+    stickyNotification: Boolean,
+    intentExtra: Bundle?
 ) {
     Log.trace(
         LOG_TAG,
@@ -204,7 +206,8 @@ internal fun RemoteViews.setRemoteViewClickAction(
             actionUri,
             actionId,
             tag,
-            stickyNotification
+            stickyNotification,
+            intentExtra
         )
     setOnClickPendingIntent(targetViewResourceId, pendingIntent)
 }

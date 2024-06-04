@@ -17,6 +17,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.media.RingtoneManager
+import android.os.Bundle
 import androidx.core.app.NotificationCompat
 import com.adobe.marketing.mobile.MobileCore
 import com.adobe.marketing.mobile.notificationbuilder.PushTemplateConstants
@@ -223,7 +224,8 @@ internal fun NotificationCompat.Builder.setNotificationClickAction(
     trackerActivityClass: Class<out Activity>?,
     actionUri: String?,
     tag: String?,
-    stickyNotification: Boolean
+    stickyNotification: Boolean,
+    intentExtras: Bundle?
 ): NotificationCompat.Builder {
     val pendingIntent: PendingIntent? = PendingIntentUtils.createPendingIntentForTrackerActivity(
         context,
@@ -231,7 +233,8 @@ internal fun NotificationCompat.Builder.setNotificationClickAction(
         actionUri,
         null,
         tag,
-        stickyNotification
+        stickyNotification,
+        intentExtras
     )
     setContentIntent(pendingIntent)
     return this
@@ -279,7 +282,8 @@ internal fun NotificationCompat.Builder.addActionButtons(
     trackerActivityClass: Class<out Activity>?,
     actionButtons: List<BasicPushTemplate.ActionButton>?,
     tag: String?,
-    stickyNotification: Boolean
+    stickyNotification: Boolean,
+    intentExtras: Bundle?
 ): NotificationCompat.Builder {
     if (actionButtons.isNullOrEmpty()) {
         return this
@@ -295,7 +299,8 @@ internal fun NotificationCompat.Builder.addActionButtons(
                     eachButton.link,
                     eachButton.label,
                     tag,
-                    stickyNotification
+                    stickyNotification,
+                    intentExtras
                 )
             } else {
                 PendingIntentUtils.createPendingIntentForTrackerActivity(
@@ -304,7 +309,8 @@ internal fun NotificationCompat.Builder.addActionButtons(
                     null,
                     eachButton.label,
                     tag,
-                    stickyNotification
+                    stickyNotification,
+                    intentExtras
                 )
             }
         addAction(0, eachButton.label, pendingIntent)

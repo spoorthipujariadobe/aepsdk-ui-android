@@ -85,7 +85,8 @@ internal object BasicNotificationBuilder {
             trackerActivityClass,
             pushTemplate.actionButtonsList,
             pushTemplate.tag,
-            pushTemplate.isNotificationSticky ?: false
+            pushTemplate.isNotificationSticky ?: false,
+            pushTemplate.data.getBundleWithAllData()
         )
 
         // add a remind later button if we have a label and an epoch or delay timestamp

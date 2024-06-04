@@ -156,7 +156,8 @@ internal object ProductCatalogNotificationBuilder {
                 pushTemplate.catalogItems[pushTemplate.currentIndex].uri,
                 PushTemplateConstants.CatalogActionIds.PRODUCT_IMAGE_CLICKED,
                 pushTemplate.tag,
-                pushTemplate.isNotificationSticky ?: false
+                pushTemplate.isNotificationSticky ?: false,
+                pushTemplate.data.getBundleWithAllData()
             )
         )
     }
@@ -250,7 +251,8 @@ internal object ProductCatalogNotificationBuilder {
                 pushTemplate.ctaButtonUri,
                 PushTemplateConstants.CatalogActionIds.CTA_BUTTON_CLICKED,
                 pushTemplate.tag,
-                pushTemplate.isNotificationSticky ?: false
+                pushTemplate.isNotificationSticky ?: false,
+                pushTemplate.data.getBundleWithAllData()
             )
         )
     }

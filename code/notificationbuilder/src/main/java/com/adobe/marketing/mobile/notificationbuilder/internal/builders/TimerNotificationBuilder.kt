@@ -165,7 +165,6 @@ internal object TimerNotificationBuilder {
      */
     private fun createIntent(template: TimerPushTemplate): Intent {
         val intent = AEPPushNotificationBuilder.createIntent(PushTemplateConstants.IntentActions.TIMER_EXPIRED, template)
-        intent.putExtra(PushTemplateConstants.PushPayloadKeys.TEMPLATE_TYPE, template.templateType?.value)
         intent.putExtra(TimerKeys.ALTERNATE_TITLE, template.alternateTitle)
         intent.putExtra(TimerKeys.ALTERNATE_BODY, template.alternateBody)
         intent.putExtra(TimerKeys.ALTERNATE_EXPANDED_BODY, template.alternateExpandedBody)

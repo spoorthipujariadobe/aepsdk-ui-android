@@ -64,7 +64,8 @@ internal object LegacyNotificationBuilder {
                 trackerActivityClass,
                 pushTemplate.actionButtonsList,
                 pushTemplate.tag,
-                pushTemplate.isNotificationSticky ?: false
+                pushTemplate.isNotificationSticky ?: false,
+                pushTemplate.data.getBundleWithAllData()
             )
             // set custom sound, note this applies to API 25 and lower only as API 26 and up set the
             // sound on the notification channel
@@ -75,7 +76,8 @@ internal object LegacyNotificationBuilder {
                 trackerActivityClass,
                 pushTemplate.actionUri,
                 pushTemplate.tag,
-                pushTemplate.isNotificationSticky ?: false
+                pushTemplate.isNotificationSticky ?: false,
+                pushTemplate.data.getBundleWithAllData()
             )
             // set notification delete action
             .setNotificationDeleteAction(

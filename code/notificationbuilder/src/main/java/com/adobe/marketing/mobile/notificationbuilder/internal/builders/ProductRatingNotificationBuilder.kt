@@ -114,7 +114,8 @@ internal object ProductRatingNotificationBuilder {
                 selectedRatingAction.link,
                 pushTemplate.ratingSelected.toString(),
                 pushTemplate.tag,
-                false
+                false,
+                pushTemplate.data.getBundleWithAllData()
             )
         } else {
             // hide confirm if no rating is selected

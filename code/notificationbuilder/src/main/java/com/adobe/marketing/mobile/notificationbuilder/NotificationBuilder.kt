@@ -162,8 +162,7 @@ object NotificationBuilder {
             Log.trace(
                 LOG_TAG,
                 SELF_TAG,
-                "Broadcast receiver class is null, will not schedule a notification from the received" +
-                    " intent with action ${remindLaterIntent.action}"
+                "Broadcast receiver class is null, cannot schedule notification for later."
             )
             tag?.let { notificationManager.cancel(tag.hashCode()) }
             return
