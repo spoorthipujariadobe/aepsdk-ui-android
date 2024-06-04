@@ -129,7 +129,7 @@ internal object ManualCarouselNotificationBuilder {
      * @param items the list of [CarouselPushTemplate.CarouselItem] objects to be displayed in the filmstrip carousel
      * @return a list of `CarouselPushTemplate.CarouselItem` objects that were successfully downloaded
      */
-    private fun downloadCarouselItems(
+    internal fun downloadCarouselItems(
         items: List<CarouselPushTemplate.CarouselItem>
     ): List<CarouselPushTemplate.CarouselItem> {
         val validCarouselItems = mutableListOf<CarouselPushTemplate.CarouselItem>()

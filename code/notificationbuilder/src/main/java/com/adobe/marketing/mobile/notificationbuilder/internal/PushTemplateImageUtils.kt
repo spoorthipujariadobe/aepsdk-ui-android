@@ -42,7 +42,7 @@ import java.util.concurrent.atomic.AtomicInteger
  * Utility functions to assist in downloading and caching images for push template notifications.
  */
 
-internal object PushTemplateImageUtils {
+object PushTemplateImageUtils {
     private const val SELF_TAG = "PushTemplateImageUtil"
     private const val FULL_BITMAP_QUALITY = 100
     private const val DOWNLOAD_TIMEOUT_SECS = 10
@@ -180,6 +180,7 @@ internal object PushTemplateImageUtils {
      * @param url [String] containing the image url to retrieve from cache
      * @return [Bitmap] containing the image retrieved from cache, or `null` if no image is found
      */
+    @JvmStatic
     internal fun getCachedImage(url: String?): Bitmap? {
         val assetCacheLocation = getAssetCacheLocation()
         if (url == null || !UrlUtils.isValidUrl(url) || assetCacheLocation.isNullOrEmpty()) {
