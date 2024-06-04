@@ -12,6 +12,7 @@
 package com.adobe.marketing.mobile.notificationbuilder.internal.templates
 
 import com.adobe.marketing.mobile.notificationbuilder.PushTemplateConstants
+import com.adobe.marketing.mobile.notificationbuilder.PushTemplateConstants.DEFAULT_DELETE_ICON_NAME
 import com.adobe.marketing.mobile.notificationbuilder.internal.util.NotificationData
 import com.adobe.marketing.mobile.services.Log
 import org.json.JSONArray
@@ -39,7 +40,7 @@ internal class MultiIconPushTemplate(data: NotificationData) : AEPPushTemplate(d
 
         cancelIcon = data.getString(PushTemplateConstants.PushPayloadKeys.MULTI_ICON_CLOSE_BUTTON)
         if (cancelIcon.isNullOrEmpty()) {
-            cancelIcon = "cross"
+            cancelIcon = DEFAULT_DELETE_ICON_NAME
         }
     }
 

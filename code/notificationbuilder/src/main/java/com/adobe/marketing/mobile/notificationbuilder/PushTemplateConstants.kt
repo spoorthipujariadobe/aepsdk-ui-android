@@ -21,6 +21,8 @@ object PushTemplateConstants {
     internal const val CACHE_BASE_DIR = "pushtemplates"
     internal const val PUSH_IMAGE_CACHE = "pushimagecache"
 
+    internal const val DEFAULT_DELETE_ICON_NAME = "cross"
+
     /** Enum to denote the type of action  */
     internal enum class ActionType {
         DEEPLINK, WEBURL, DISMISS, OPENAPP, NONE
