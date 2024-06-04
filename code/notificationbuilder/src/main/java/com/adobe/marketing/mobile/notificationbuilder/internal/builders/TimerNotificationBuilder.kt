@@ -170,6 +170,10 @@ internal object TimerNotificationBuilder {
         intent.putExtra(TimerKeys.ALTERNATE_EXPANDED_BODY, template.alternateExpandedBody)
         intent.putExtra(TimerKeys.ALTERNATE_IMAGE, template.alternateImage)
         intent.putExtra(TimerKeys.TIMER_COLOR, template.timerColor)
+
+        // remove timer to prevent countdown from being recreated
+        intent.removeExtra(TimerKeys.TIMER_DURATION)
+        intent.removeExtra(TimerKeys.TIMER_END_TIME)
         return intent
     }
 

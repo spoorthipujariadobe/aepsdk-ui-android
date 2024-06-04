@@ -40,6 +40,7 @@ object PushTemplateConstants {
     object NotificationAction {
         const val DISMISSED = "Notification Dismissed"
         const val CLICKED = "Notification Clicked"
+        const val INPUT_RECEIVED = "Input Received"
     }
     object TrackingKeys {
         const val ACTION_ID = "actionId"
