@@ -18,7 +18,7 @@ import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
 import com.adobe.marketing.mobile.notificationbuilder.NotificationConstructionFailedException
 import com.adobe.marketing.mobile.notificationbuilder.R
-import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateConstants
+import com.adobe.marketing.mobile.notificationbuilder.PushTemplateConstants
 import com.adobe.marketing.mobile.notificationbuilder.internal.extensions.createNotificationChannelIfRequired
 import com.adobe.marketing.mobile.notificationbuilder.internal.extensions.setRemoteViewClickAction
 import com.adobe.marketing.mobile.notificationbuilder.internal.extensions.setRemoteViewImage
