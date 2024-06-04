@@ -132,6 +132,7 @@ object PushTemplateConstants {
         const val RATING_ACTIONS = "adb_rate_act"
 
         const val MULTI_ICON_ITEMS = "adb_items"
+        const val MULTI_ICON_CLOSE_BUTTON = "cancel_image"
         internal object TimerKeys {
             const val ALTERNATE_TITLE = "adb_title_alt"
             const val ALTERNATE_BODY = "adb_body_alt"

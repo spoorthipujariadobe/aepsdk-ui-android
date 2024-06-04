@@ -27,6 +27,7 @@ internal class MultiIconPushTemplate(data: NotificationData) : AEPPushTemplate(d
     )
 
     internal val templateItemList: MutableList<MultiIconTemplateItem>
+    internal var cancelIcon: String? = null
 
     init {
         val itemsJson = data.getRequiredString(PushTemplateConstants.PushPayloadKeys.MULTI_ICON_ITEMS)
@@ -34,6 +35,11 @@ internal class MultiIconPushTemplate(data: NotificationData) : AEPPushTemplate(d
             ?: throw IllegalArgumentException("Required field \"${PushTemplateConstants.PushPayloadKeys.MULTI_ICON_ITEMS}\" is invalid.")
         if (templateItemList.size < 3 || templateItemList.size > 5) {
             throw IllegalArgumentException("\"${PushTemplateConstants.PushPayloadKeys.MULTI_ICON_ITEMS}\" field must have 3 to 5 valid items")
+        }
+
+        cancelIcon = data.getString(PushTemplateConstants.PushPayloadKeys.MULTI_ICON_CLOSE_BUTTON)
+        if (cancelIcon.isNullOrEmpty()) {
+            cancelIcon = "cross"
         }
     }
 
@@ -69,7 +75,7 @@ internal class MultiIconPushTemplate(data: NotificationData) : AEPPushTemplate(d
     private fun getIconItemFromJsonObject(jsonObject: JSONObject): MultiIconTemplateItem? {
         return try {
             val imageUri = jsonObject.getString(PushTemplateConstants.MultiIconTemplateKeys.IMG)
-            // In case of non valid image URI, return null as icon is mandatory
+            // In case of invalid image URI, return null as icon is mandatory
             if (imageUri.isNullOrEmpty()) {
                 Log.debug(
                     PushTemplateConstants.LOG_TAG,

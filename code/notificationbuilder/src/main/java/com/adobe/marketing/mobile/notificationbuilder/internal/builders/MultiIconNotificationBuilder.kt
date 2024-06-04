@@ -59,6 +59,11 @@ internal object MultiIconNotificationBuilder {
             packageName
         )
 
+        setCancelIcon(
+            notificationLayout,
+            pushTemplate,
+            packageName)
+
         notificationLayout.setRemoteViewClickAction(
             context,
             trackerActivityClass,
@@ -78,6 +83,15 @@ internal object MultiIconNotificationBuilder {
             notificationLayout,
             R.id.carousel_container_layout
         )
+    }
+
+    private fun setCancelIcon(
+        notificationLayout: RemoteViews,
+        pushTemplate: MultiIconPushTemplate,
+        packageName: String?
+    ) {
+        val iconString = pushTemplate.cancelIcon
+        notificationLayout.setRemoteViewImage(iconString, R.id.five_icon_close_button)
     }
 
     private fun populateIconsForMultiIconTemplate(
