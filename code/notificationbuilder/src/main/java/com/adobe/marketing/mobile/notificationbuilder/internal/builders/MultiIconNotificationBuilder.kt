@@ -70,8 +70,7 @@ internal object MultiIconNotificationBuilder {
             R.id.five_icon_close_button,
             null,
             null,
-            pushTemplate.tag,
-            false
+            pushTemplate.data.getBundle()
         )
 
         return AEPPushNotificationBuilder.construct(
@@ -116,8 +115,7 @@ internal object MultiIconNotificationBuilder {
                     R.id.icon_item_image_view,
                     interactionUri,
                     null,
-                    pushTemplate.tag,
-                    pushTemplate.isNotificationSticky ?: false
+                    pushTemplate.data.getBundle()
                 )
             }
             notificationLayout.addView(R.id.icons_layout_linear, iconItem)
