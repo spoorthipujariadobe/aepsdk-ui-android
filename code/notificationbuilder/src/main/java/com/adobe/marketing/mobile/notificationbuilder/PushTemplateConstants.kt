@@ -50,8 +50,8 @@ object PushTemplateConstants {
     internal object DefaultValues {
         // When no channel name is received from the push notification, this default channel name is used.
         // This will appear in the notification settings for the app.
-        internal const val DEFAULT_CHANNEL_NAME = "AEPSDK Push Notifications"
-        internal const val SILENT_CHANNEL_NAME = "AEPSDK Silent Push Notifications"
+        internal const val DEFAULT_CHANNEL_NAME = "General Notifications"
+        internal const val SILENT_CHANNEL_NAME = "Silent Notifications"
         internal const val DEFAULT_CHANNEL_ID = "AEPSDKPushChannel"
         internal const val SILENT_NOTIFICATION_CHANNEL_ID = "AEPSDKSilentPushChannel"
         internal const val CAROUSEL_MAX_BITMAP_WIDTH = 300
