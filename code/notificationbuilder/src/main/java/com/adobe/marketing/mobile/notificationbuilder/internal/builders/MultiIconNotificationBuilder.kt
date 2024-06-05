@@ -61,7 +61,8 @@ internal object MultiIconNotificationBuilder {
 
         setCancelIcon(
             notificationLayout,
-            pushTemplate)
+            pushTemplate
+        )
 
         notificationLayout.setRemoteViewClickAction(
             context,

@@ -36,8 +36,8 @@ internal class MultiIconPushTemplate(data: NotificationData) : AEPPushTemplate(d
         templateItemList = getTemplateItemList(itemsJson)
             ?: throw IllegalArgumentException("Required field \"${PushTemplateConstants.PushPayloadKeys.MULTI_ICON_ITEMS}\" is invalid.")
 
-        if (templateItemList.size < PushTemplateConstants.DefaultValues.ICON_TEMPLATE_MIN_IMAGE_COUNT
-            || templateItemList.size > PushTemplateConstants.DefaultValues.ICON_TEMPLATE_MAX_IMAGE_COUNT
+        if (templateItemList.size < PushTemplateConstants.DefaultValues.ICON_TEMPLATE_MIN_IMAGE_COUNT ||
+            templateItemList.size > PushTemplateConstants.DefaultValues.ICON_TEMPLATE_MAX_IMAGE_COUNT
         ) {
             throw IllegalArgumentException("\"${PushTemplateConstants.PushPayloadKeys.MULTI_ICON_ITEMS}\" field must have 3 to 5 valid items")
         }
