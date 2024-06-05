@@ -65,7 +65,7 @@ object MockCarousalTemplateDataProvider {
     }
 
     private fun getMockedBundleWithCarousalData(): Bundle {
-        val mockBundle = mock<Bundle>()
+        val mockBundle = Bundle()
         Mockito.`when`(mockBundle.getString(PushTemplateConstants.PushPayloadKeys.TITLE))
             .thenReturn(MOCKED_TITLE)
         Mockito.`when`(mockBundle.getString(PushTemplateConstants.PushPayloadKeys.BODY))
