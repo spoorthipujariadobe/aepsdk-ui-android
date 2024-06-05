@@ -194,26 +194,12 @@ internal object ProductRatingNotificationBuilder {
             ratingButtonClickIntent.setClass(context.applicationContext, broadcastReceiverClass)
         }
         ratingButtonClickIntent.putExtra(
-            PushTemplateConstants.PushPayloadKeys.RATING_SELECTED_ICON,
-            pushTemplate.ratingSelectedIcon
-        )
-
-        ratingButtonClickIntent.putExtra(
-            PushTemplateConstants.PushPayloadKeys.CHANNEL_ID,
-            channelId
-        )
-        // todo these already exists in intent, verify if we can remove in future iterations
-        ratingButtonClickIntent.putExtra(
-            PushTemplateConstants.PushPayloadKeys.RATING_ACTIONS,
-            pushTemplate.ratingActionString
-        )
-        ratingButtonClickIntent.putExtra(
             PushTemplateConstants.IntentKeys.RATING_SELECTED,
             ratingButtonSelection.toString()
         )
         ratingButtonClickIntent.putExtra(
-            PushTemplateConstants.PushPayloadKeys.RATING_UNSELECTED_ICON,
-            pushTemplate.ratingUnselectedIcon
+            PushTemplateConstants.PushPayloadKeys.CHANNEL_ID,
+            channelId
         )
 
         return PendingIntent.getBroadcast(
