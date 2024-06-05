@@ -1,4 +1,5 @@
 /*
+
   Copyright 2024 Adobe. All rights reserved.
   This file is licensed to you under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License. You may obtain a copy
@@ -8,11 +9,17 @@
   OF ANY KIND, either express or implied. See the License for the specific language
   governing permissions and limitations under the License.
  */
-package com.adobe.marketing.mobile.notificationbuilder.testapp.ui.theme
+package com.adobe.marketing.mobile.notificationbuilder.testapp.notificationBuilder
 
-import androidx.compose.ui.graphics.Color
-
-val Purple200 = Color(0xFF345B97)
-val Purple500 = Color(0xFF6200EE)
-val Purple700 = Color(0xFF3700B3)
-val Teal200 = Color(0xFF03DAC5)
+enum class Template(val displayName: String, val directoryName: String) {
+    Basic("Basic", "basic"),
+    Filmstrip("Filmstrip", "filmstrip"),
+    AutoCarousel("Auto Carousel", "auto"),
+    ManualCarousel("Manual Carousel", "manual"),
+    ProductCatalog("Product Catalog", "product"),
+    Timer("Timer", "timer"),
+    ZeroBezel("Zero Bezel", "zerobezel"),
+    InputBox("InputBox", "inputbox"),
+    FiveIcon("Five Icon", "fiveicon"),
+    Rating("Rating", "rating")
+}

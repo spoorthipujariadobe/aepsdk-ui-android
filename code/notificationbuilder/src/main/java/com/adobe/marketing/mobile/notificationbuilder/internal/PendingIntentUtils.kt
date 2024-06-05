@@ -27,7 +27,7 @@ internal object PendingIntentUtils {
 
     private const val SELF_TAG = "PendingIntentUtils"
 
-    internal fun createPendingIntentForScheduledNotifications(
+    internal fun scheduleNotification(
         context: Context,
         scheduledIntent: Intent,
         broadcastReceiverClass: Class<out BroadcastReceiver>?,
