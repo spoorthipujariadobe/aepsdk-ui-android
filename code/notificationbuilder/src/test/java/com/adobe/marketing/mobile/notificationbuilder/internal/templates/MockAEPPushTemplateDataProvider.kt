@@ -14,7 +14,6 @@ package com.adobe.marketing.mobile.notificationbuilder.internal.templates
 import android.os.Bundle
 import com.adobe.marketing.mobile.notificationbuilder.PushTemplateConstants
 import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateType
-import org.mockito.kotlin.mock
 
 object MockAEPPushTemplateDataProvider {
     fun getMockedDataMapWithRequiredData(): MutableMap<String, String> {
@@ -28,7 +27,7 @@ object MockAEPPushTemplateDataProvider {
      * Returns a mocked data bundle with basic data.
      */
     fun getMockedBundleWithRequiredData(): Bundle {
-        val mockBundle = mock<Bundle>()
+        val mockBundle = Bundle()
         mockBundle.getString(PushTemplateConstants.PushPayloadKeys.TITLE, MOCKED_TITLE)
         mockBundle.getString(PushTemplateConstants.PushPayloadKeys.BODY, MOCKED_BODY)
         mockBundle.getString(PushTemplateConstants.PushPayloadKeys.VERSION, MOCKED_PAYLOAD_VERSION)
