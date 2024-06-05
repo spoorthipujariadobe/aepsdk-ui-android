@@ -14,14 +14,17 @@ package com.adobe.marketing.mobile.notificationbuilder.internal.builders
 import android.app.Activity
 import android.content.BroadcastReceiver
 import android.content.Context
+import android.graphics.Bitmap
 import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateImageUtils
 import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateImageUtils.cacheImages
+import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateImageUtils.getCachedImage
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.ManualCarouselPushTemplate
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.provideMockedManualCarousalTemplate
 import io.mockk.every
 import io.mockk.mockkClass
 import io.mockk.mockkObject
 import io.mockk.verify
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
 import org.junit.Before
 import org.junit.Test
@@ -96,5 +99,13 @@ class ManualCarouselNotificationBuilderTest {
                 pushTemplate.data
             )
         }
+    }
+
+    @Test
+    fun `test downloadCarouselItems return non empty list for it retrieve the image bitmap from cache successfully`() {
+        every { getCachedImage(any()) } answers { mockkClass(Bitmap::class) }
+        val imagesList =
+            ManualCarouselNotificationBuilder.downloadCarouselItems(pushTemplate.carouselItems)
+        assertFalse(imagesList.isEmpty())
     }
 }
