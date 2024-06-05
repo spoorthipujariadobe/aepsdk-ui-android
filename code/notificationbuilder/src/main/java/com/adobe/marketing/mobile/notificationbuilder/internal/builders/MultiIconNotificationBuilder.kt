@@ -14,6 +14,7 @@ package com.adobe.marketing.mobile.notificationbuilder.internal.builders
 import android.app.Activity
 import android.app.NotificationManager
 import android.content.Context
+import android.os.Bundle
 import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
 import com.adobe.marketing.mobile.notificationbuilder.NotificationConstructionFailedException
@@ -64,13 +65,15 @@ internal object MultiIconNotificationBuilder {
             pushTemplate
         )
 
+        val closeButtonIntentExtra = Bundle(pushTemplate.data.getBundle()) // copy the bundle
+        closeButtonIntentExtra.putString(PushTemplateConstants.PushPayloadKeys.STICKY, "false")
         notificationLayout.setRemoteViewClickAction(
             context,
             trackerActivityClass,
             R.id.five_icon_close_button,
             null,
             null,
-            pushTemplate.data.getBundle()
+            closeButtonIntentExtra
         )
 
         return AEPPushNotificationBuilder.construct(
