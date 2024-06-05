@@ -46,7 +46,7 @@ internal fun RemoteViews.setElementColor(
     viewFriendlyName: String
 ) {
     if (colorHex.isNullOrEmpty()) {
-        Log.trace(
+        Log.debug(
             LOG_TAG,
             SELF_TAG,
             "Empty color hex string found, custom color will not be applied to $viewFriendlyName."
@@ -57,7 +57,7 @@ internal fun RemoteViews.setElementColor(
     try {
         setInt(elementId, methodName, Color.parseColor(colorHex))
     } catch (exception: IllegalArgumentException) {
-        Log.trace(
+        Log.warning(
             LOG_TAG,
             SELF_TAG,
             "Unrecognized hex string passed to Color.parseColor(), custom color will not be applied to $viewFriendlyName."
@@ -156,7 +156,7 @@ internal fun RemoteViews.setRemoteViewImage(
     containerViewId: Int
 ): Boolean {
     if (image.isNullOrEmpty()) {
-        Log.trace(
+        Log.warning(
             LOG_TAG,
             SELF_TAG,
             "Null or empty image string found, image will not be applied."

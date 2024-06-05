@@ -93,7 +93,7 @@ private fun NotificationCompat.Builder.setSmallIconColor(
         // sets the icon color if provided
         setColorized(true).color = Color.parseColor("#$iconColorHex")
     } catch (exception: IllegalArgumentException) {
-        Log.trace(
+        Log.warning(
             LOG_TAG,
             SELF_TAG,
             "Unrecognized hex string passed to Color.parseColor(), custom color will not be applied to the notification icon."

@@ -57,7 +57,7 @@ internal object ManualCarouselNotificationBuilder {
         // fallback to a basic push template notification builder if less than 3 images were able
         // to be downloaded
         if (downloadedImagesCount < PushTemplateConstants.DefaultValues.CAROUSEL_MINIMUM_IMAGE_COUNT) {
-            Log.trace(LOG_TAG, SELF_TAG, "Less than 3 images are available for the manual carousel push template, falling back to a basic push template.")
+            Log.warning(LOG_TAG, SELF_TAG, "Less than 3 images are available for the manual carousel push template, falling back to a basic push template.")
             return BasicNotificationBuilder.fallbackToBasicNotification(
                 context,
                 trackerActivityClass,
@@ -144,7 +144,7 @@ internal object ManualCarouselNotificationBuilder {
             val imageUri: String = item.imageUri
             val pushImage: Bitmap? = PushTemplateImageUtils.getCachedImage(imageUri)
             if (pushImage == null) {
-                Log.trace(
+                Log.warning(
                     LOG_TAG,
                     SELF_TAG,
                     "Failed to retrieve an image from $imageUri, will not create a new carousel item."
@@ -286,7 +286,7 @@ internal object ManualCarouselNotificationBuilder {
             val imageUri = item.imageUri
             val pushImage: Bitmap? = PushTemplateImageUtils.getCachedImage(imageUri)
             if (pushImage == null) {
-                Log.trace(
+                Log.warning(
                     LOG_TAG,
                     SELF_TAG,
                     "Failed to retrieve an image from $imageUri, will not create a new carousel item."
@@ -353,7 +353,7 @@ internal object ManualCarouselNotificationBuilder {
         // set the downloaded bitmaps in the filmstrip image views
         val assetCacheLocation = PushTemplateImageUtils.getAssetCacheLocation()
         if (assetCacheLocation.isNullOrEmpty()) {
-            Log.trace(
+            Log.warning(
                 LOG_TAG,
                 SELF_TAG,
                 "Asset cache location is null or empty, unable to retrieve filmstrip carousel images."

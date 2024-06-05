@@ -161,7 +161,7 @@ object NotificationBuilder {
 
         // schedule a pending intent to be broadcast at the specified timestamp
         if (broadcastReceiverClass == null) {
-            Log.trace(
+            Log.warning(
                 LOG_TAG,
                 SELF_TAG,
                 "Broadcast receiver class is null, cannot schedule notification for later."
@@ -223,7 +223,7 @@ object NotificationBuilder {
                     }
 
                     else -> {
-                        Log.trace(
+                        Log.warning(
                             LOG_TAG,
                             SELF_TAG,
                             "Unknown carousel push template type, creating a legacy style notification."
