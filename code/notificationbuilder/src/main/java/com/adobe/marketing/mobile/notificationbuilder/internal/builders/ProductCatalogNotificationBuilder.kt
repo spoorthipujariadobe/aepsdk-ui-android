@@ -326,31 +326,6 @@ internal object ProductCatalogNotificationBuilder {
                 PushTemplateConstants.IntentKeys.CATALOG_ITEM_INDEX,
                 currentIndex.toString()
             )
-            // todo these already exists in intent, verify if we can remove in future iterations
-            putExtra(
-                PushTemplateConstants.PushPayloadKeys.CATALOG_CTA_BUTTON_TEXT,
-                pushTemplate.ctaButtonText
-            )
-            putExtra(
-                PushTemplateConstants.PushPayloadKeys.CATALOG_CTA_BUTTON_COLOR,
-                pushTemplate.ctaButtonColor
-            )
-            putExtra(
-                PushTemplateConstants.PushPayloadKeys.CATALOG_CTA_BUTTON_TEXT_COLOR,
-                pushTemplate.ctaButtonTextColor
-            )
-            putExtra(
-                PushTemplateConstants.PushPayloadKeys.CATALOG_CTA_BUTTON_URI,
-                pushTemplate.ctaButtonUri
-            )
-            putExtra(
-                PushTemplateConstants.PushPayloadKeys.CATALOG_LAYOUT,
-                pushTemplate.displayLayout
-            )
-            putExtra(
-                PushTemplateConstants.PushPayloadKeys.CATALOG_ITEMS,
-                pushTemplate.rawCatalogItems
-            )
         }
 
         return PendingIntent.getBroadcast(

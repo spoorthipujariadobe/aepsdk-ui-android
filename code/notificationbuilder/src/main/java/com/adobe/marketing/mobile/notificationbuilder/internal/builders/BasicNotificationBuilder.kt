@@ -152,17 +152,6 @@ internal object BasicNotificationBuilder {
             pushTemplate
         )
         remindIntent.putExtra(PushPayloadKeys.CHANNEL_ID, channelId)
-        // todo these already exists in intent, verify if we can remove in future iterations
-        remindIntent.putExtra(PushPayloadKeys.REMIND_LATER_TEXT, pushTemplate.remindLaterText)
-        remindIntent.putExtra(
-            PushPayloadKeys.REMIND_LATER_TIMESTAMP,
-            pushTemplate.remindLaterTimestamp.toString()
-        )
-        remindIntent.putExtra(
-            PushPayloadKeys.REMIND_LATER_DURATION,
-            pushTemplate.remindLaterDuration.toString()
-        )
-        remindIntent.putExtra(PushPayloadKeys.ACTION_BUTTONS, pushTemplate.actionButtonsString)
 
         broadcastReceiverClass.let {
             remindIntent.setClass(context.applicationContext, broadcastReceiverClass)

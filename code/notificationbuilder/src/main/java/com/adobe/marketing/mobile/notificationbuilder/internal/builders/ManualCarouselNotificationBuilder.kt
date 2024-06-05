@@ -465,10 +465,6 @@ internal object ManualCarouselNotificationBuilder {
             PushTemplateConstants.IntentKeys.CENTER_IMAGE_INDEX,
             pushTemplate.centerImageIndex.toString()
         )
-        // todo these already exists in intent, verify if we can remove in future iterations
-        clickIntent.putExtra(PushPayloadKeys.CAROUSEL_LAYOUT, pushTemplate.carouselLayout)
-        clickIntent.putExtra(PushPayloadKeys.CAROUSEL_ITEMS, pushTemplate.rawCarouselItems)
-        clickIntent.putExtra(PushPayloadKeys.CAROUSEL_OPERATION_MODE, pushTemplate.carouselMode)
         broadcastReceiverClass.let {
             clickIntent.setClass(context, broadcastReceiverClass)
         }

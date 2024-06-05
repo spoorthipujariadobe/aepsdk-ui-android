@@ -165,20 +165,6 @@ internal object InputBoxNotificationBuilder {
     ): PendingIntent {
         val inputReceivedIntentExtras = pushTemplate.data.getBundle()
         inputReceivedIntentExtras.putString(PushPayloadKeys.CHANNEL_ID, channelId)
-        // todo these already exists in intent, verify if we can remove in future iterations
-        inputReceivedIntentExtras.putString(
-            PushPayloadKeys.INPUT_BOX_RECEIVER_NAME,
-            pushTemplate.inputBoxReceiverName
-        )
-        inputReceivedIntentExtras.putString(PushPayloadKeys.INPUT_BOX_HINT, pushTemplate.inputTextHint)
-        inputReceivedIntentExtras.putString(
-            PushPayloadKeys.INPUT_BOX_FEEDBACK_TEXT,
-            pushTemplate.feedbackText
-        )
-        inputReceivedIntentExtras.putString(
-            PushPayloadKeys.INPUT_BOX_FEEDBACK_IMAGE,
-            pushTemplate.feedbackImage
-        )
         val intent = Intent(PushTemplateConstants.NotificationAction.INPUT_RECEIVED)
         trackerActivityClass?.let {
             intent.setClass(context.applicationContext, trackerActivityClass)
