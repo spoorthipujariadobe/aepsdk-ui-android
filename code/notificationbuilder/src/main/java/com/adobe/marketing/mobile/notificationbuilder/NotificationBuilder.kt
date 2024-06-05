@@ -172,7 +172,7 @@ object NotificationBuilder {
         val scheduledIntent = Intent(PushTemplateConstants.IntentActions.SCHEDULED_NOTIFICATION_BROADCAST)
         scheduledIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
         scheduledIntent.putExtras(intentExtras)
-        PendingIntentUtils.scheduledNotifications(context, scheduledIntent, broadcastReceiverClass, triggerTimeInSeconds)
+        PendingIntentUtils.scheduleNotification(context, scheduledIntent, broadcastReceiverClass, triggerTimeInSeconds)
 
         // cancel the displayed notification
         tag?.let { notificationManager.cancel(tag.hashCode()) }

@@ -110,7 +110,7 @@ internal object TimerNotificationBuilder {
             }
 
             // create the pending intent for the timer expiry
-            PendingIntentUtils.scheduledNotifications(context, intent, broadcastReceiverClass, TimeUtils.getUnixTimeInSeconds() + remainingTimeInSeconds)
+            PendingIntentUtils.scheduleNotification(context, intent, broadcastReceiverClass, TimeUtils.getUnixTimeInSeconds() + remainingTimeInSeconds)
         } else {
             // Before displaying the expired view, check if the notification is still active
             val notification = notificationManager.activeNotifications.find { it.id == template.tag?.hashCode() }
