@@ -103,9 +103,7 @@ class LegacyNotificationBuilderTest {
 
     @Test
     fun `construct should set silent notification if isFromIntent is true`() {
-        val mockedIntentData = Mockito.mock(IntentData::class.java)
-        Mockito.`when`(mockedIntentData.getBundle()).thenReturn(null)
-        val pushTemplate = BasicPushTemplate(mockedIntentData)
+        val pushTemplate = BasicPushTemplate(IntentData(mockBundle, null))
         val notification =
             LegacyNotificationBuilder.construct(context, pushTemplate, trackerActivityClass)
                 .build()
