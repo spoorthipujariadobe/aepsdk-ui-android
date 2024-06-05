@@ -16,6 +16,7 @@ import com.adobe.marketing.mobile.notificationbuilder.PushTemplateConstants.DEFA
 import com.adobe.marketing.mobile.notificationbuilder.internal.util.NotificationData
 import com.adobe.marketing.mobile.services.Log
 import org.json.JSONArray
+import org.json.JSONException
 import org.json.JSONObject
 
 internal class MultiIconPushTemplate(data: NotificationData) : AEPPushTemplate(data) {
@@ -34,7 +35,10 @@ internal class MultiIconPushTemplate(data: NotificationData) : AEPPushTemplate(d
         val itemsJson = data.getRequiredString(PushTemplateConstants.PushPayloadKeys.MULTI_ICON_ITEMS)
         templateItemList = getTemplateItemList(itemsJson)
             ?: throw IllegalArgumentException("Required field \"${PushTemplateConstants.PushPayloadKeys.MULTI_ICON_ITEMS}\" is invalid.")
-        if (templateItemList.size < 3 || templateItemList.size > 5) {
+
+        if (templateItemList.size < PushTemplateConstants.DefaultValues.ICON_TEMPLATE_MIN_IMAGE_COUNT
+            || templateItemList.size > PushTemplateConstants.DefaultValues.ICON_TEMPLATE_MAX_IMAGE_COUNT
+        ) {
             throw IllegalArgumentException("\"${PushTemplateConstants.PushPayloadKeys.MULTI_ICON_ITEMS}\" field must have 3 to 5 valid items")
         }
 
@@ -62,7 +66,7 @@ internal class MultiIconPushTemplate(data: NotificationData) : AEPPushTemplate(d
                 val multiIconAction = getIconItemFromJsonObject(jsonObject)
                 multiIconAction?.let { iconItemsList.add(it) }
             }
-        } catch (e: Exception) {
+        } catch (e: JSONException) {
             Log.debug(
                 PushTemplateConstants.LOG_TAG,
                 SELF_TAG,

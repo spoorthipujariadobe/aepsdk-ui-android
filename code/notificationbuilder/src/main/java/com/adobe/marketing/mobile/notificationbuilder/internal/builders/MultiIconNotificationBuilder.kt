@@ -61,8 +61,7 @@ internal object MultiIconNotificationBuilder {
 
         setCancelIcon(
             notificationLayout,
-            pushTemplate,
-            packageName)
+            pushTemplate)
 
         notificationLayout.setRemoteViewClickAction(
             context,
@@ -88,7 +87,6 @@ internal object MultiIconNotificationBuilder {
     private fun setCancelIcon(
         notificationLayout: RemoteViews,
         pushTemplate: MultiIconPushTemplate,
-        packageName: String?
     ) {
         val iconString = pushTemplate.cancelIcon
         notificationLayout.setRemoteViewImage(iconString, R.id.five_icon_close_button)
@@ -104,9 +102,8 @@ internal object MultiIconNotificationBuilder {
     ) {
         var validImagesAddedCount = 0
         for (item in items) {
-            val imageUri: String = item.iconUrl
             val iconItem = RemoteViews(packageName, R.layout.multi_icon_template_item)
-            if (iconItem.setRemoteViewImage(imageUri, R.id.icon_item_image_view)) {
+            if (iconItem.setRemoteViewImage(item.iconUrl, R.id.icon_item_image_view)) {
                 validImagesAddedCount++
             }
 
@@ -124,7 +121,7 @@ internal object MultiIconNotificationBuilder {
             }
             notificationLayout.addView(R.id.icons_layout_linear, iconItem)
         }
-        if (validImagesAddedCount < 3) {
+        if (validImagesAddedCount < PushTemplateConstants.DefaultValues.ICON_TEMPLATE_MIN_IMAGE_COUNT) {
             throw NotificationConstructionFailedException("Valid icons are less then 3, cannot build a notification.")
         }
     }

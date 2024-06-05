@@ -67,6 +67,9 @@ object PushTemplateConstants {
         internal const val INPUT_BOX_DEFAULT_REPLY_TEXT = "Reply"
         internal const val PRODUCT_CATALOG_START_INDEX = 0
         internal const val PRODUCT_CATALOG_VERTICAL_LAYOUT = "vertical"
+        internal const val ICON_TEMPLATE_CANCEL_IMAGE_NAME = "cross"
+        internal const val ICON_TEMPLATE_MIN_IMAGE_COUNT = 3
+        internal const val ICON_TEMPLATE_MAX_IMAGE_COUNT = 5
 
         // TODO: revisit this value. should cache time be configurable rather than have a static
         // value?
@@ -134,7 +137,8 @@ object PushTemplateConstants {
         const val RATING_ACTIONS = "adb_rate_act"
 
         const val MULTI_ICON_ITEMS = "adb_items"
-        const val MULTI_ICON_CLOSE_BUTTON = "cancel_image"
+        const val MULTI_ICON_CLOSE_BUTTON = "adb_cancel_image"
+
         internal object TimerKeys {
             const val ALTERNATE_TITLE = "adb_title_alt"
             const val ALTERNATE_BODY = "adb_body_alt"
