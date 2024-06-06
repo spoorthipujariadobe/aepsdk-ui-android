@@ -17,7 +17,6 @@ import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.view.View
 import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
 import androidx.core.app.RemoteInput
@@ -26,8 +25,8 @@ import com.adobe.marketing.mobile.notificationbuilder.PushTemplateConstants
 import com.adobe.marketing.mobile.notificationbuilder.PushTemplateConstants.LOG_TAG
 import com.adobe.marketing.mobile.notificationbuilder.PushTemplateConstants.PushPayloadKeys
 import com.adobe.marketing.mobile.notificationbuilder.R
-import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateImageUtils
 import com.adobe.marketing.mobile.notificationbuilder.internal.extensions.createNotificationChannelIfRequired
+import com.adobe.marketing.mobile.notificationbuilder.internal.extensions.setRemoteImage
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.InputBoxPushTemplate
 import com.adobe.marketing.mobile.services.Log
 import java.util.Random
@@ -69,15 +68,7 @@ internal object InputBoxNotificationBuilder {
         // get push payload data. if we are handling an intent then we know that we should be building a feedback received notification.
         val imageUri =
             if (pushTemplate.isFromIntent) pushTemplate.feedbackImage else pushTemplate.imageUrl
-        val downloadedImageCount = PushTemplateImageUtils.cacheImages(listOf(imageUri))
-
-        if (downloadedImageCount == 1) {
-            val pushImage = PushTemplateImageUtils.getCachedImage(imageUri)
-            expandedLayout.setImageViewBitmap(R.id.expanded_template_image, pushImage)
-        } else {
-            Log.trace(LOG_TAG, SELF_TAG, "No image found for input box push template.")
-            expandedLayout.setViewVisibility(R.id.expanded_template_image, View.GONE)
-        }
+        expandedLayout.setRemoteImage(imageUri, R.id.expanded_template_image)
 
         val expandedBodyText =
             if (pushTemplate.isFromIntent) pushTemplate.feedbackText else pushTemplate.expandedBodyText
