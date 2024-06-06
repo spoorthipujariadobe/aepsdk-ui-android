@@ -26,7 +26,7 @@ import com.adobe.marketing.mobile.notificationbuilder.PushTemplateConstants.LOG_
 import com.adobe.marketing.mobile.notificationbuilder.PushTemplateConstants.PushPayloadKeys
 import com.adobe.marketing.mobile.notificationbuilder.R
 import com.adobe.marketing.mobile.notificationbuilder.internal.extensions.createNotificationChannelIfRequired
-import com.adobe.marketing.mobile.notificationbuilder.internal.extensions.setRemoteViewImage
+import com.adobe.marketing.mobile.notificationbuilder.internal.extensions.setRemoteImage
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.InputBoxPushTemplate
 import com.adobe.marketing.mobile.services.Log
 import java.util.Random
@@ -68,7 +68,7 @@ internal object InputBoxNotificationBuilder {
         // get push payload data. if we are handling an intent then we know that we should be building a feedback received notification.
         val imageUri =
             if (pushTemplate.isFromIntent) pushTemplate.feedbackImage else pushTemplate.imageUrl
-        expandedLayout.setRemoteViewImage(imageUri, R.id.expanded_template_image)
+        expandedLayout.setRemoteImage(imageUri, R.id.expanded_template_image)
 
         val expandedBodyText =
             if (pushTemplate.isFromIntent) pushTemplate.feedbackText else pushTemplate.expandedBodyText
