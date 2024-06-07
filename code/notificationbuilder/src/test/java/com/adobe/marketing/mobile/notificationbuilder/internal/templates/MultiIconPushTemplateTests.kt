@@ -10,6 +10,7 @@ import org.junit.runner.RunWith
 import org.mockito.MockitoAnnotations
 import org.mockito.junit.MockitoJUnitRunner
 import kotlin.test.Test
+import kotlin.test.assertFailsWith
 
 @RunWith(MockitoJUnitRunner::class)
 class MultiIconPushTemplateTests {
@@ -37,7 +38,7 @@ class MultiIconPushTemplateTests {
     }
 
     @Test
-    fun testMultiIconPushTemplateOneInvalidUri() {
+    fun testMultiIconPushTemplateWithInvalidUrisAndEmptyAction() {
         // Arrange
         val dataMap = getMockedDataMapWithForMultiIcon()
         dataMap.replaceValueInMap(
@@ -47,5 +48,68 @@ class MultiIconPushTemplateTests {
         val data = MapData(dataMap)
         val multiIconPushTemplate = MultiIconPushTemplate(data)
         assertEquals(3, multiIconPushTemplate.templateItemList.size)
+        assertEquals(multiIconPushTemplate.templateItemList[0].actionType, PushTemplateConstants.ActionType.NONE)
+    }
+
+    @Test
+    fun testMultiIconPushTemplateNoJson() {
+        val dataMap = getMockedDataMapWithForMultiIcon()
+        dataMap.replaceValueInMap(
+            PushTemplateConstants.PushPayloadKeys.MULTI_ICON_ITEMS,
+            MOCK_MULTI_ICON_ITEM_PAYLOAD_INCOMPLETE_JSON
+        )
+        val multiIconPushTemplate = MultiIconPushTemplate(MapData(dataMap))
+        assertEquals(3, multiIconPushTemplate.templateItemList.size)
+    }
+
+    @Test
+    fun testMultiIconPushTemplateEmptyJson() {
+        val dataMap = getMockedDataMapWithForMultiIcon()
+        dataMap.replaceValueInMap(PushTemplateConstants.PushPayloadKeys.MULTI_ICON_ITEMS, "")
+        val data = MapData(dataMap)
+        val exception = assertFailsWith<IllegalArgumentException> {
+            MultiIconPushTemplate(data)
+        }
+        assertEquals(
+            "Required field \"${PushTemplateConstants.PushPayloadKeys.MULTI_ICON_ITEMS}\" is invalid.",
+            exception.message
+        )
+    }
+
+    @Test
+    fun testMultiIconPushTemplateIncompleteJson() {
+        val dataMap = getMockedDataMapWithForMultiIcon()
+        dataMap.replaceValueInMap(PushTemplateConstants.PushPayloadKeys.MULTI_ICON_ITEMS,
+            MOCK_MULTI_ICON_ITEM_PAYLOAD_INCOMPLETE_JSON)
+        val multiIconPushTemplate = MultiIconPushTemplate(MapData(dataMap))
+        assertEquals(3, multiIconPushTemplate.templateItemList.size)
+    }
+
+    @Test
+    fun testAMultiIconPushTemplateInvalidJson() {
+        val dataMap = getMockedDataMapWithForMultiIcon()
+        dataMap.replaceValueInMap(PushTemplateConstants.PushPayloadKeys.MULTI_ICON_ITEMS, MOCKED_MALFORMED_JSON_ACTION_BUTTON)
+        val data = MapData(dataMap)
+        val exception = assertFailsWith<IllegalArgumentException> {
+            MultiIconPushTemplate(data)
+        }
+        assertEquals(
+            "\"${PushTemplateConstants.PushPayloadKeys.MULTI_ICON_ITEMS}\" field must have 3 to 5 valid items",
+            exception.message
+        )
+    }
+
+    @Test
+    fun testBMultiIconPushTemplateEmptyJson2() {
+        val dataMap = getMockedDataMapWithForMultiIcon()
+        dataMap.replaceValueInMap(PushTemplateConstants.PushPayloadKeys.MULTI_ICON_ITEMS, "{}")
+        val data = MapData(dataMap)
+        val exception = assertFailsWith<IllegalArgumentException> {
+            MultiIconPushTemplate(data)
+        }
+        assertEquals(
+            "Required field \"${PushTemplateConstants.PushPayloadKeys.MULTI_ICON_ITEMS}\" is invalid.",
+            exception.message
+        )
     }
 }

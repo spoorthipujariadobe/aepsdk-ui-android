@@ -55,8 +55,14 @@ const val MOCK_MULTI_ICON_ITEM_PAYLOAD = "[" +
         "]"
 const val MOCK_MULTI_ICON_ITEM_PAYLOAD_INVALID_IMAGE = "[" +
         "{\"img\":\"\",\"uri\":\"myapp://chooseShoeType/shoe1\",\"type\":\"DEEPLINK\"}," +
-        "{\"img\":\"bus\",\"uri\":\"myapp://chooseShoeType/shoe2\",\"type\":\"DEEPLINK\"}," +
+        "{\"img\":\"bus\",\"uri\":\"myapp://chooseShoeType/shoe2\",\"type\":\"\"}," +
         "{\"img\":\"\",\"uri\":\"myapp://chooseShoeType/shoe3\",\"type\":\"DEEPLINK\"}," +
+        "{\"img\":\"tempo\",\"uri\":\"myapp://chooseShoeType/shoe4\",\"type\":\"DEEPLINK\"}," +
+        "{\"img\":\"airplane\",\"uri\":\"myapp://chooseShoeType/shoe5\",\"type\":\"DEEPLINK\"}" +
+        "]"
+const val MOCK_MULTI_ICON_ITEM_PAYLOAD_INCOMPLETE_JSON = "[" +
+        "{\"img\":\"train\",\"uri\":\"\",\"type\":\"DEEPLINK\"}," +
+        "{\"img\":\"bus\",\"uri\":\"myapp://chooseShoeType/shoe2\",\"type\":\"DEEPLINK\"}," +
         "{\"img\":\"tempo\",\"uri\":\"myapp://chooseShoeType/shoe4\",\"type\":\"DEEPLINK\"}," +
         "{\"img\":\"airplane\",\"uri\":\"myapp://chooseShoeType/shoe5\",\"type\":\"DEEPLINK\"}" +
         "]"
