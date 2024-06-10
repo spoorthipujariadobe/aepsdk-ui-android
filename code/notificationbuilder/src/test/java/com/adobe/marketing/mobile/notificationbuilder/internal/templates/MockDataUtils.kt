@@ -68,7 +68,6 @@ const val MOCK_MULTI_ICON_ITEM_PAYLOAD_INCOMPLETE_JSON = "[" +
     "{\"img\":\"airplane\",\"uri\":\"myapp://chooseShoeType/shoe5\",\"type\":\"DEEPLINK\"}" +
     "]"
 
-
 fun <K, V> MutableMap<K, V>.removeKeysFromMap(listOfKeys: List<K>) {
     for (key in listOfKeys) {
         this.remove(key)
