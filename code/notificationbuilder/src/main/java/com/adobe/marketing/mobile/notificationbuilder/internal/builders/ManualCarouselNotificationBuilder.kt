@@ -263,7 +263,7 @@ internal object ManualCarouselNotificationBuilder {
      * @param trackerActivityClass the [Class] of the activity that will be used for tracking interactions with the carousel item
      * @param expandedLayout the [RemoteViews] containing the expanded layout of the notification
      */
-    private fun populateManualCarouselImages(
+    internal fun populateManualCarouselImages(
         context: Context,
         items: List<CarouselPushTemplate.CarouselItem>,
         packageName: String?,
@@ -324,7 +324,7 @@ internal object ManualCarouselNotificationBuilder {
      * @param trackerActivityClass the [Class] of the activity that will be used for tracking interactions with the carousel item
      * @param expandedLayout the [RemoteViews] containing the expanded layout of the notification
      */
-    private fun populateFilmstripCarouselImages(
+    internal fun populateFilmstripCarouselImages(
         context: Context,
         validCarouselItems: List<CarouselPushTemplate.CarouselItem>,
         newIndices: Triple<Int, Int, Int>,
