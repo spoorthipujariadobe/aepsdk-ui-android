@@ -45,6 +45,7 @@ const val MOCKED_MALFORMED_JSON_ACTION_BUTTON = "[" +
     "{}," +
     "{\"label\":\"Open the app\",\"uri\":\"\",\"type\":\"GO_TO_WEB_PAGE\"}," +
     "{\"label\":\"Go to chess.com\",\"uri\":\"https://chess.com/games/552\",\"type\":\"DEEPLINK\"}]"
+const val MOCKED_CHANNEL_ID = "AEPSDKPushChannel1"
 
 const val MOCK_MULTI_ICON_ITEM_PAYLOAD = "[" +
     "{\"img\":\"train\",\"uri\":\"myapp://chooseShoeType/shoe1\",\"type\":\"DEEPLINK\"}," +
@@ -67,7 +68,6 @@ const val MOCK_MULTI_ICON_ITEM_PAYLOAD_INCOMPLETE_JSON = "[" +
     "{\"img\":\"airplane\",\"uri\":\"myapp://chooseShoeType/shoe5\",\"type\":\"DEEPLINK\"}" +
     "]"
 
-const val MOCKED_CHANNEL_ID = "AEPSDKPushChannel"
 
 fun <K, V> MutableMap<K, V>.removeKeysFromMap(listOfKeys: List<K>) {
     for (key in listOfKeys) {
