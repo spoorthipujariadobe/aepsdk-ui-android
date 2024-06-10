@@ -149,7 +149,7 @@ internal object ManualCarouselNotificationBuilder {
         return validCarouselItems
     }
 
-    private fun getCarouselIndices(
+    internal fun getCarouselIndices(
         pushTemplate: ManualCarouselPushTemplate,
         carouselSize: Int
     ): Triple<Int, Int, Int> {

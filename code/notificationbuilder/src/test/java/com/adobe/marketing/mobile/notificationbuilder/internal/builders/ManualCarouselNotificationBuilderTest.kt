@@ -15,15 +15,18 @@ import android.app.Activity
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.graphics.Bitmap
+import com.adobe.marketing.mobile.notificationbuilder.PushTemplateConstants
 import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateImageUtils
 import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateImageUtils.cacheImages
 import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateImageUtils.getCachedImage
+import com.adobe.marketing.mobile.notificationbuilder.internal.builders.ManualCarouselNotificationBuilder.getCarouselIndices
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.ManualCarouselPushTemplate
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.provideMockedManualCarousalTemplate
 import io.mockk.every
 import io.mockk.mockkClass
 import io.mockk.mockkObject
 import io.mockk.verify
+import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
 import org.junit.Before
@@ -107,5 +110,36 @@ class ManualCarouselNotificationBuilderTest {
         val imagesList =
             ManualCarouselNotificationBuilder.downloadCarouselItems(pushTemplate.carouselItems)
         assertFalse(imagesList.isEmpty())
+    }
+
+    @Test
+    fun `test getCarouselIndices with left click intent action`() {
+        pushTemplate.intentAction = PushTemplateConstants.IntentActions.MANUAL_CAROUSEL_LEFT_CLICKED
+        val imageUris = listOf("image1", "image2", "image3")
+        val result = getCarouselIndices(pushTemplate, imageUris)
+        assertEquals(Triple(1, 2, 0), result)
+    }
+
+    @Test
+    fun `test getCarouselIndices with filmstrip left click intent action`() {
+        pushTemplate.intentAction = PushTemplateConstants.IntentActions.FILMSTRIP_LEFT_CLICKED
+        val imageUris = listOf("image1", "image2", "image3")
+        val result = getCarouselIndices(pushTemplate, imageUris)
+        assertEquals(Triple(1, 2, 0), result)
+    }
+
+    @Test
+    fun `test getCarouselIndices with no intent action and filmstrip layout`() {
+        pushTemplate.intentAction = PushTemplateConstants.DefaultValues.FILMSTRIP_CAROUSEL_MODE
+        val imageUris = listOf("image1", "image2", "image3")
+        val result = getCarouselIndices(pushTemplate, imageUris)
+        assertEquals(
+            Triple(
+                PushTemplateConstants.DefaultValues.FILMSTRIP_CAROUSEL_CENTER_INDEX - 1,
+                PushTemplateConstants.DefaultValues.FILMSTRIP_CAROUSEL_CENTER_INDEX,
+                PushTemplateConstants.DefaultValues.FILMSTRIP_CAROUSEL_CENTER_INDEX + 1
+            ),
+            result
+        )
     }
 }
