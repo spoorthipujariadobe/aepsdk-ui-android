@@ -131,8 +131,8 @@ class ManualCarouselNotificationBuilderTest {
     fun `test getCarouselIndices with left click intent action`() {
         val mockBundle = MockCarousalTemplateDataProvider.getMockedBundleWithManualCarouselData()
         val data = IntentData(mockBundle, PushTemplateConstants.IntentActions.MANUAL_CAROUSEL_LEFT_CLICKED)
-        val imageUris = listOf("image1", "image2", "image3")
-        val result = getCarouselIndices(CarouselPushTemplate(data) as ManualCarouselPushTemplate, imageUris)
+        val mcPushTemplate = CarouselPushTemplate(data) as ManualCarouselPushTemplate
+        val result = getCarouselIndices(mcPushTemplate, 3)
         assertEquals(Triple(1, 2, 0), result)
     }
 
@@ -140,8 +140,8 @@ class ManualCarouselNotificationBuilderTest {
     fun `test getCarouselIndices with filmstrip left click intent action`() {
         val mockBundle = MockCarousalTemplateDataProvider.getMockedBundleWithManualCarouselData()
         val data = IntentData(mockBundle, PushTemplateConstants.IntentActions.FILMSTRIP_LEFT_CLICKED)
-        val imageUris = listOf("image1", "image2", "image3")
-        val result = getCarouselIndices(CarouselPushTemplate(data) as ManualCarouselPushTemplate, imageUris)
+        val mcPushTemplate = CarouselPushTemplate(data) as ManualCarouselPushTemplate
+        val result = getCarouselIndices(mcPushTemplate, 3)
         assertEquals(Triple(1, 2, 0), result)
     }
 
@@ -149,8 +149,8 @@ class ManualCarouselNotificationBuilderTest {
     fun `test getCarouselIndices with no intent action and filmstrip layout`() {
         val mockBundle = MockCarousalTemplateDataProvider.getMockedBundleWithManualCarouselData()
         val data = IntentData(mockBundle, PushTemplateConstants.DefaultValues.FILMSTRIP_CAROUSEL_MODE)
-        val imageUris = listOf("image1", "image2", "image3")
-        val result = getCarouselIndices(CarouselPushTemplate(data) as ManualCarouselPushTemplate, imageUris)
+        val mcPushTemplate = CarouselPushTemplate(data) as ManualCarouselPushTemplate
+        val result = getCarouselIndices(mcPushTemplate, 3)
         assertEquals(
             Triple(
                 PushTemplateConstants.DefaultValues.FILMSTRIP_CAROUSEL_CENTER_INDEX - 1,
@@ -163,11 +163,10 @@ class ManualCarouselNotificationBuilderTest {
 
     @Test
     fun `test getCarouselIndices with no intent action and manual layout`() {
-        val imageUris = listOf("image1", "image2", "image3")
-        val result = getCarouselIndices(pushTemplate, imageUris)
+        val result = getCarouselIndices(pushTemplate, pushTemplate.carouselItems.size)
         assertEquals(
             Triple(
-                imageUris.size - 1,
+                pushTemplate.carouselItems.size - 1,
                 PushTemplateConstants.DefaultValues.MANUAL_CAROUSEL_START_INDEX,
                 PushTemplateConstants.DefaultValues.MANUAL_CAROUSEL_START_INDEX + 1
             ),
@@ -226,12 +225,10 @@ class ManualCarouselNotificationBuilderTest {
     @Test
     fun `test populateFilmstripCarouselImages with valid images`() {
         val mockBitmap = mockkClass(Bitmap::class)
-        val imageCaptions = listOf("Caption 1", "Caption 2", "Caption 3")
-        val imageClickActions = listOf("Action 1", "Action 2", "Action 3")
         val newIndices = Triple(0, 1, 2)
         every { getAssetCacheLocation() } answers { "assetCacheLocation" }
         every { getCachedImage(any()) } answers { mockBitmap }
-        every { expandedLayout.setTextViewText(any(), "Caption 2") } returns Unit
+        every { expandedLayout.setTextViewText(any(), any()) } returns Unit
         every { expandedLayout.setImageViewBitmap(any(), any()) } just Runs
         every {
             expandedLayout.setRemoteViewClickAction(
@@ -245,13 +242,14 @@ class ManualCarouselNotificationBuilderTest {
         } returns Unit
         populateFilmstripCarouselImages(
             context,
-            imageCaptions,
-            imageClickActions,
+            pushTemplate.carouselItems,
             newIndices,
             pushTemplate,
             trackerActivityClass,
             expandedLayout
         )
+
+        verify(exactly = 1) { expandedLayout.setTextViewText(any(), any()) }
         verify(exactly = 3) { expandedLayout.setImageViewBitmap(any(), any()) }
         verify(exactly = 1) {
             expandedLayout.setRemoteViewClickAction(
@@ -268,12 +266,10 @@ class ManualCarouselNotificationBuilderTest {
     @Test
     fun `test populateFilmstripCarouselImages with null asset cached location`() {
         val mockBitmap = mockkClass(Bitmap::class)
-        val imageCaptions = listOf("Caption 1", "Caption 2", "Caption 3")
-        val imageClickActions = listOf("Action 1", "Action 2", "Action 3")
         val newIndices = Triple(0, 1, 2)
         every { getAssetCacheLocation() } answers { null }
         every { getCachedImage(any()) } answers { mockBitmap }
-        every { expandedLayout.setTextViewText(any(), "Caption 2") } returns Unit
+        every { expandedLayout.setTextViewText(any(), any()) } returns Unit
         every { expandedLayout.setImageViewBitmap(any(), mockBitmap) } returns Unit
         every {
             expandedLayout.setRemoteViewClickAction(
@@ -287,8 +283,7 @@ class ManualCarouselNotificationBuilderTest {
         } returns Unit
         populateFilmstripCarouselImages(
             context,
-            imageCaptions,
-            imageClickActions,
+            pushTemplate.carouselItems,
             newIndices,
             pushTemplate,
             trackerActivityClass,
