@@ -19,6 +19,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.widget.RemoteViews
+import androidx.annotation.VisibleForTesting
 import androidx.core.app.NotificationCompat
 import com.adobe.marketing.mobile.notificationbuilder.NotificationConstructionFailedException
 import com.adobe.marketing.mobile.notificationbuilder.PushTemplateConstants
@@ -129,6 +130,7 @@ internal object ManualCarouselNotificationBuilder {
      * @param items the list of [CarouselPushTemplate.CarouselItem] objects to be displayed in the filmstrip carousel
      * @return a list of `CarouselPushTemplate.CarouselItem` objects that were successfully downloaded
      */
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     internal fun downloadCarouselItems(
         items: List<CarouselPushTemplate.CarouselItem>
     ): List<CarouselPushTemplate.CarouselItem> {
@@ -149,6 +151,7 @@ internal object ManualCarouselNotificationBuilder {
         return validCarouselItems
     }
 
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     internal fun getCarouselIndices(
         pushTemplate: ManualCarouselPushTemplate,
         carouselSize: Int
@@ -263,6 +266,7 @@ internal object ManualCarouselNotificationBuilder {
      * @param trackerActivityClass the [Class] of the activity that will be used for tracking interactions with the carousel item
      * @param expandedLayout the [RemoteViews] containing the expanded layout of the notification
      */
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     internal fun populateManualCarouselImages(
         context: Context,
         items: List<CarouselPushTemplate.CarouselItem>,
@@ -324,6 +328,7 @@ internal object ManualCarouselNotificationBuilder {
      * @param trackerActivityClass the [Class] of the activity that will be used for tracking interactions with the carousel item
      * @param expandedLayout the [RemoteViews] containing the expanded layout of the notification
      */
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     internal fun populateFilmstripCarouselImages(
         context: Context,
         validCarouselItems: List<CarouselPushTemplate.CarouselItem>,

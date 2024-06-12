@@ -26,17 +26,21 @@ import com.adobe.marketing.mobile.notificationbuilder.internal.builders.ManualCa
 import com.adobe.marketing.mobile.notificationbuilder.internal.builders.ManualCarouselNotificationBuilder.populateFilmstripCarouselImages
 import com.adobe.marketing.mobile.notificationbuilder.internal.builders.ManualCarouselNotificationBuilder.populateManualCarouselImages
 import com.adobe.marketing.mobile.notificationbuilder.internal.extensions.setRemoteViewClickAction
+import com.adobe.marketing.mobile.notificationbuilder.internal.templates.CarouselPushTemplate
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.ManualCarouselPushTemplate
+import com.adobe.marketing.mobile.notificationbuilder.internal.templates.MockCarousalTemplateDataProvider
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.provideMockedManualCarousalTemplate
+import com.adobe.marketing.mobile.notificationbuilder.internal.util.IntentData
 import io.mockk.Runs
 import io.mockk.every
 import io.mockk.just
 import io.mockk.mockkClass
+import io.mockk.mockkConstructor
 import io.mockk.mockkObject
 import io.mockk.verify
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -63,6 +67,7 @@ class ManualCarouselNotificationBuilderTest {
         mockkObject(PushTemplateImageUtils)
         mockkObject(BasicNotificationBuilder)
         mockkObject(PendingIntentUtils)
+        mockkConstructor(RemoteViews::class)
         expandedLayout = mockkClass(RemoteViews::class)
     }
 
@@ -97,7 +102,7 @@ class ManualCarouselNotificationBuilderTest {
     }
 
     @Test
-    fun `construct returns AEPPushNotificationBuilder if download image count is greater than equal to 3`() {
+    fun `construct returns ManualCarouselNotificationBuilder if download image count is greater than equal to 3`() {
         every { cacheImages(any()) } answers { 3 }
         ManualCarouselNotificationBuilder.construct(
             context,
@@ -116,34 +121,36 @@ class ManualCarouselNotificationBuilderTest {
     }
 
     @Test
-    fun `test downloadCarouselItems return non empty list for it retrieve the image bitmap from cache successfully`() {
+    fun `test downloadCarouselItems returns non empty list when image bitmap is present in the cache`() {
         every { getCachedImage(any()) } answers { mockkClass(Bitmap::class) }
-        val imagesList =
-            ManualCarouselNotificationBuilder.downloadCarouselItems(pushTemplate.carouselItems)
-        assertFalse(imagesList.isEmpty())
+        val imagesList = ManualCarouselNotificationBuilder.downloadCarouselItems(pushTemplate.carouselItems)
+        assertTrue(imagesList == pushTemplate.carouselItems)
     }
 
     @Test
     fun `test getCarouselIndices with left click intent action`() {
-        pushTemplate.intentAction = PushTemplateConstants.IntentActions.MANUAL_CAROUSEL_LEFT_CLICKED
+        val mockBundle = MockCarousalTemplateDataProvider.getMockedBundleWithManualCarouselData()
+        val data = IntentData(mockBundle, PushTemplateConstants.IntentActions.MANUAL_CAROUSEL_LEFT_CLICKED)
         val imageUris = listOf("image1", "image2", "image3")
-        val result = getCarouselIndices(pushTemplate, imageUris)
+        val result = getCarouselIndices(CarouselPushTemplate(data) as ManualCarouselPushTemplate, imageUris)
         assertEquals(Triple(1, 2, 0), result)
     }
 
     @Test
     fun `test getCarouselIndices with filmstrip left click intent action`() {
-        pushTemplate.intentAction = PushTemplateConstants.IntentActions.FILMSTRIP_LEFT_CLICKED
+        val mockBundle = MockCarousalTemplateDataProvider.getMockedBundleWithManualCarouselData()
+        val data = IntentData(mockBundle, PushTemplateConstants.IntentActions.FILMSTRIP_LEFT_CLICKED)
         val imageUris = listOf("image1", "image2", "image3")
-        val result = getCarouselIndices(pushTemplate, imageUris)
+        val result = getCarouselIndices(CarouselPushTemplate(data) as ManualCarouselPushTemplate, imageUris)
         assertEquals(Triple(1, 2, 0), result)
     }
 
     @Test
     fun `test getCarouselIndices with no intent action and filmstrip layout`() {
-        pushTemplate.intentAction = PushTemplateConstants.DefaultValues.FILMSTRIP_CAROUSEL_MODE
+        val mockBundle = MockCarousalTemplateDataProvider.getMockedBundleWithManualCarouselData()
+        val data = IntentData(mockBundle, PushTemplateConstants.DefaultValues.FILMSTRIP_CAROUSEL_MODE)
         val imageUris = listOf("image1", "image2", "image3")
-        val result = getCarouselIndices(pushTemplate, imageUris)
+        val result = getCarouselIndices(CarouselPushTemplate(data) as ManualCarouselPushTemplate, imageUris)
         assertEquals(
             Triple(
                 PushTemplateConstants.DefaultValues.FILMSTRIP_CAROUSEL_CENTER_INDEX - 1,
@@ -155,13 +162,29 @@ class ManualCarouselNotificationBuilderTest {
     }
 
     @Test
+    fun `test getCarouselIndices with no intent action and manual layout`() {
+        val imageUris = listOf("image1", "image2", "image3")
+        val result = getCarouselIndices(pushTemplate, imageUris)
+        assertEquals(
+            Triple(
+                imageUris.size - 1,
+                PushTemplateConstants.DefaultValues.MANUAL_CAROUSEL_START_INDEX,
+                PushTemplateConstants.DefaultValues.MANUAL_CAROUSEL_START_INDEX + 1
+            ),
+            result
+        )
+    }
+
+    @Test
     fun `test populateManualCarouselImages with valid images`() {
         val packageName = context.packageName
         val centerIndex = 1
         every { getCachedImage(any()) } answers { mockkClass(Bitmap::class) }
+        every { anyConstructed<RemoteViews>().setTextViewText(any(), any()) } just Runs
+        every { anyConstructed<RemoteViews>().setImageViewBitmap(any(), any()) } just Runs
+        every { anyConstructed<RemoteViews>().setRemoteViewClickAction(context, trackerActivityClass, any(), any(), null, any()) } just Runs
         every { expandedLayout.addView(any(), any<RemoteViews>()) } just Runs
         every { expandedLayout.setDisplayedChild(any(), any()) } just Runs
-
         populateManualCarouselImages(
             context,
             pushTemplate.carouselItems,
@@ -171,17 +194,18 @@ class ManualCarouselNotificationBuilderTest {
             trackerActivityClass,
             expandedLayout
         )
-
-        verify { expandedLayout.addView(any(), any<RemoteViews>()) }
-        verify { expandedLayout.setDisplayedChild(any(), centerIndex) }
+        val carouselItemsCount = pushTemplate.carouselItems.size
+        verify(exactly = carouselItemsCount) { anyConstructed<RemoteViews>().setTextViewText(any(), any()) }
+        verify(exactly = carouselItemsCount) { anyConstructed<RemoteViews>().setImageViewBitmap(any(), any()) }
+        verify(exactly = carouselItemsCount) { anyConstructed<RemoteViews>().setRemoteViewClickAction(context, trackerActivityClass, any(), any(), null, any()) }
+        verify(exactly = carouselItemsCount) { expandedLayout.addView(any(), any<RemoteViews>()) }
+        verify(exactly = carouselItemsCount) { expandedLayout.setDisplayedChild(any(), centerIndex) }
     }
 
     @Test
     fun `test populateManualCarouselImages with null images`() {
         val packageName = context.packageName
         val centerIndex = 1
-        every { getCachedImage(any()) } returns null
-
         populateManualCarouselImages(
             context,
             pushTemplate.carouselItems,
@@ -192,6 +216,9 @@ class ManualCarouselNotificationBuilderTest {
             expandedLayout
         )
 
+        verify(exactly = 0) { anyConstructed<RemoteViews>().setTextViewText(any(), any()) }
+        verify(exactly = 0) { anyConstructed<RemoteViews>().setImageViewBitmap(any(), any()) }
+        verify(exactly = 0) { anyConstructed<RemoteViews>().setRemoteViewClickAction(context, trackerActivityClass, any(), any(), null, any()) }
         verify(exactly = 0) { expandedLayout.addView(any(), any<RemoteViews>()) }
         verify(exactly = 0) { expandedLayout.setDisplayedChild(any(), centerIndex) }
     }
@@ -205,7 +232,7 @@ class ManualCarouselNotificationBuilderTest {
         every { getAssetCacheLocation() } answers { "assetCacheLocation" }
         every { getCachedImage(any()) } answers { mockBitmap }
         every { expandedLayout.setTextViewText(any(), "Caption 2") } returns Unit
-        every { expandedLayout.setImageViewBitmap(any(), mockBitmap) } returns Unit
+        every { expandedLayout.setImageViewBitmap(any(), any()) } just Runs
         every {
             expandedLayout.setRemoteViewClickAction(
                 context,
@@ -225,6 +252,7 @@ class ManualCarouselNotificationBuilderTest {
             trackerActivityClass,
             expandedLayout
         )
+        verify(exactly = 3) { expandedLayout.setImageViewBitmap(any(), any()) }
         verify(exactly = 1) {
             expandedLayout.setRemoteViewClickAction(
                 context,
