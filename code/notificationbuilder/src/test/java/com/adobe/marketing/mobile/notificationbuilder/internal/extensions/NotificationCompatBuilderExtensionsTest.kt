@@ -31,7 +31,9 @@ import io.mockk.mockkObject
 import io.mockk.mockkStatic
 import io.mockk.slot
 import io.mockk.spyk
+import io.mockk.unmockkAll
 import io.mockk.verify
+import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
@@ -60,6 +62,11 @@ class NotificationCompatBuilderExtensionsTest {
         mockkObject(PushTemplateImageUtils)
         mockBitmap = mockkClass(Bitmap::class, relaxed = true)
         trackerActivityClass = DummyActivity::class.java
+    }
+
+    @After
+    fun tearDown() {
+        unmockkAll()
     }
 
     @Test
