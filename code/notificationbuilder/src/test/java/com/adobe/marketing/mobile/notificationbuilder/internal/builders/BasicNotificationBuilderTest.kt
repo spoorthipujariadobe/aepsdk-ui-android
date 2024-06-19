@@ -28,7 +28,9 @@ import com.adobe.marketing.mobile.notificationbuilder.internal.templates.MockAEP
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.provideMockedBasicPushTemplateWithAllKeys
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.provideMockedBasicPushTemplateWithRequiredData
 import com.adobe.marketing.mobile.notificationbuilder.internal.util.MapData
+import io.mockk.clearAllMocks
 import junit.framework.TestCase.assertEquals
+import org.junit.After
 import org.junit.Assert.assertNull
 import org.junit.Before
 import org.junit.Test
@@ -57,6 +59,11 @@ class BasicNotificationBuilderTest {
         context = RuntimeEnvironment.getApplication()
         trackerActivityClass = DummyActivity::class.java
         broadcastReceiverClass = DummyBroadcastReceiver::class.java
+    }
+
+    @After
+    fun cleanup() {
+        clearAllMocks()
     }
 
     @Test

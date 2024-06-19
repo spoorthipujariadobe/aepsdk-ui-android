@@ -32,12 +32,14 @@ import com.adobe.marketing.mobile.notificationbuilder.internal.templates.MockCar
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.provideMockedManualCarousalTemplate
 import com.adobe.marketing.mobile.notificationbuilder.internal.util.IntentData
 import io.mockk.Runs
+import io.mockk.clearAllMocks
 import io.mockk.every
 import io.mockk.just
 import io.mockk.mockkClass
 import io.mockk.mockkConstructor
 import io.mockk.mockkObject
 import io.mockk.verify
+import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
@@ -69,6 +71,11 @@ class ManualCarouselNotificationBuilderTest {
         mockkObject(PendingIntentUtils)
         mockkConstructor(RemoteViews::class)
         expandedLayout = mockkClass(RemoteViews::class)
+    }
+
+    @After
+    fun cleanup() {
+        clearAllMocks()
     }
 
     @Test

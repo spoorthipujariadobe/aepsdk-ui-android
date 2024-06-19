@@ -38,8 +38,8 @@ const val MOCKED_ACTION_BUTTON_DATA =
     "[{\"label\":\"Go to chess.com\",\"uri\":\"https://chess.com/games/552\",\"type\":\"DEEPLINK\"},{\"label\":\"Open the app\",\"uri\":\"\",\"type\":\"OPENAPP\"}]"
 const val MOCKED_BASIC_TEMPLATE_BODY = "Shall we play a game?"
 const val MOCK_REMIND_LATER_TEXT = "remind me"
-const val MOCK_REMIND_LATER_TIME = "1234567890"
-const val MOCK_REMIND_LATER_DURATION = "6000"
+const val MOCK_REMIND_LATER_TIME = "4085583547"
+const val MOCK_REMIND_LATER_DURATION = "60"
 const val MOCKED_MALFORMED_JSON_ACTION_BUTTON = "[" +
     "{\"label\":\"\",\"uri\":\"https://chess.com/games/552\",\"type\":\"DEEPLINK\"}," +
     "{}," +
