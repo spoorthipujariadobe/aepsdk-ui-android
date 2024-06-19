@@ -22,9 +22,17 @@ import android.widget.RemoteViews
 import com.adobe.marketing.mobile.notificationbuilder.NotificationConstructionFailedException
 import com.adobe.marketing.mobile.notificationbuilder.internal.PendingIntentUtils
 import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateImageUtils
+import com.adobe.marketing.mobile.notificationbuilder.internal.extensions.setRemoteViewImage
+import com.adobe.marketing.mobile.notificationbuilder.internal.extensions.setTimerTextColor
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.MOCKED_ALT_BODY
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.MOCKED_ALT_EXPANDED_BODY
+import com.adobe.marketing.mobile.notificationbuilder.internal.templates.MOCKED_ALT_IMAGE_URI
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.MOCKED_ALT_TITLE
+import com.adobe.marketing.mobile.notificationbuilder.internal.templates.MOCKED_BODY
+import com.adobe.marketing.mobile.notificationbuilder.internal.templates.MOCKED_EXPANDED_BODY
+import com.adobe.marketing.mobile.notificationbuilder.internal.templates.MOCKED_IMAGE_URI
+import com.adobe.marketing.mobile.notificationbuilder.internal.templates.MOCKED_TIMER_COLOR
+import com.adobe.marketing.mobile.notificationbuilder.internal.templates.MOCKED_TITLE
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.TimerPushTemplate
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.provideMockedTimerTemplate
 import io.mockk.Runs
@@ -34,6 +42,7 @@ import io.mockk.mockk
 import io.mockk.mockkClass
 import io.mockk.mockkConstructor
 import io.mockk.mockkObject
+import io.mockk.mockkStatic
 import io.mockk.verify
 import org.junit.Assert.assertNotNull
 import org.junit.Before
@@ -70,12 +79,14 @@ class TimerNotificationBuilderTests {
         mockkObject(PushTemplateImageUtils)
         mockkObject(PendingIntentUtils)
         mockkConstructor(RemoteViews::class)
+        mockkStatic(RemoteViews::setTimerTextColor)
+        mockkStatic(RemoteViews::setRemoteViewImage)
         every { anyConstructed<RemoteViews>().setTextViewText(any(), any()) } just Runs
         every { anyConstructed<RemoteViews>().setImageViewBitmap(any(), any()) } just Runs
     }
 
     @Test(expected = NotificationConstructionFailedException::class)
-    fun `construct throws exception when schedule exact alarm permission false`() {
+    fun `construct throws exception when schedule exact alarm permission not given`() {
         every { alarmManager.canScheduleExactAlarms() } returns false
         val result = TimerNotificationBuilder.construct(
             context,
@@ -107,18 +118,47 @@ class TimerNotificationBuilderTests {
             broadcastReceiverClass
         )
         assertNotNull(result)
-    }
-
-    @Test
-    fun `construct returns NotificationCompat Builder when using Intent for TimerTemplate`() {
-        pushTemplate = provideMockedTimerTemplate(true, false)
-        val result = TimerNotificationBuilder.construct(
-            context,
-            pushTemplate,
-            trackerActivityClass,
-            broadcastReceiverClass
-        )
-        assertNotNull(result)
+        verify(exactly = 4) { // 4 calls expected, 2 from TimerNotificationBuilder and 2 from AEPPushNotificationBuilder
+            anyConstructed<RemoteViews>().setTextViewText(
+                any(),
+                MOCKED_TITLE
+            )
+        }
+        verify(exactly = 2) { // 2 calls expected, 1 from TimerNotificationBuilder and 1 from AEPPushNotificationBuilder
+            anyConstructed<RemoteViews>().setTextViewText(
+                any(),
+                MOCKED_BODY
+            )
+        }
+        verify(exactly = 2) { // 2 calls expected, 1 from TimerNotificationBuilder and 1 from AEPPushNotificationBuilder
+            anyConstructed<RemoteViews>().setTextViewText(
+                any(),
+                MOCKED_EXPANDED_BODY
+            )
+        }
+        verify(exactly = 1) {
+            (RemoteViews::setRemoteViewImage)(
+                any(),
+                MOCKED_IMAGE_URI,
+                any()
+            )
+        }
+        val expectedTime: Long = (60 * 1000) // using the duration present in the TimerTemplate
+        verify(exactly = 2) {
+            anyConstructed<RemoteViews>().setChronometer(
+                any(),
+                range(expectedTime - 5000, expectedTime, true, true),
+                any(),
+                true
+            )
+        }
+        verify(exactly = 2) {
+            (RemoteViews::setTimerTextColor)(
+                any(),
+                MOCKED_TIMER_COLOR,
+                any()
+            )
+        }
     }
 
     @Test
@@ -152,6 +192,28 @@ class TimerNotificationBuilderTests {
             anyConstructed<RemoteViews>().setTextViewText(
                 any(),
                 MOCKED_ALT_EXPANDED_BODY
+            )
+        }
+        verify(exactly = 1) {
+            (RemoteViews::setRemoteViewImage)(
+                any(),
+                MOCKED_ALT_IMAGE_URI,
+                any()
+            )
+        }
+        verify(exactly = 0) {
+            anyConstructed<RemoteViews>().setChronometer(
+                any(),
+                any(),
+                any(),
+                any()
+            )
+        }
+        verify(exactly = 0) {
+            (RemoteViews::setTimerTextColor)(
+                any(),
+                any(),
+                any()
             )
         }
     }
@@ -189,7 +251,7 @@ class TimerNotificationBuilderTests {
     }
 
     @Test
-    fun `construct returns NotificationCompat Builder and alarm is set if duration present in TimerTemplate`() {
+    fun `construct returns NotificationCompat Builder and an alarm is set if duration present in TimerTemplate`() {
         val result = TimerNotificationBuilder.construct(
             context,
             pushTemplate,
@@ -209,7 +271,7 @@ class TimerNotificationBuilderTests {
     }
 
     @Test
-    fun `construct returns NotificationCompat Builder and alarm is set using future timestamp if no duration in TimerTemplate`() {
+    fun `construct returns NotificationCompat Builder and an alarm is set using future timestamp if no duration in TimerTemplate`() {
         pushTemplate = provideMockedTimerTemplate(true, false)
         val result = TimerNotificationBuilder.construct(
             context,

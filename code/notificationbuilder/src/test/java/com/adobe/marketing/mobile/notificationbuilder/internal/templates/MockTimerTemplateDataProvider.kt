@@ -23,6 +23,8 @@ object MockTimerTemplateDataProvider {
         val map = mutableMapOf(
             PushTemplateConstants.PushPayloadKeys.TITLE to MOCKED_TITLE,
             PushTemplateConstants.PushPayloadKeys.BODY to MOCKED_BODY,
+            PushTemplateConstants.PushPayloadKeys.EXPANDED_BODY_TEXT to MOCKED_EXPANDED_BODY,
+            PushTemplateConstants.PushPayloadKeys.IMAGE_URL to MOCKED_IMAGE_URI,
             PushTemplateConstants.PushPayloadKeys.VERSION to MOCKED_PAYLOAD_VERSION,
             PushTemplateConstants.PushPayloadKeys.TEMPLATE_TYPE to PushTemplateType.TIMER.value,
             PushTemplateConstants.PushPayloadKeys.BODY_TEXT_COLOR to MOCKED_BODY_TEXT_COLOR,
@@ -53,7 +55,9 @@ object MockTimerTemplateDataProvider {
     internal fun getMockedBundleWithTimerData(isUsingDuration: Boolean, duration: String): Bundle {
         val mockBundle = Bundle()
         mockBundle.putString(PushTemplateConstants.PushPayloadKeys.TITLE, MOCKED_TITLE)
-        mockBundle.putString(PushTemplateConstants.PushPayloadKeys.BODY, MOCKED_BODY)
+        mockBundle.putString(PushTemplateConstants.PushPayloadKeys.BODY, MOCKED_EXPANDED_BODY)
+        mockBundle.putString(PushTemplateConstants.PushPayloadKeys.EXPANDED_BODY_TEXT, MOCKED_BODY)
+        mockBundle.putString(PushTemplateConstants.PushPayloadKeys.IMAGE_URL, MOCKED_IMAGE_URI)
         mockBundle.putString(PushTemplateConstants.PushPayloadKeys.VERSION, MOCKED_PAYLOAD_VERSION)
         mockBundle.putString(
             PushTemplateConstants.PushPayloadKeys.TEMPLATE_TYPE,
