@@ -240,12 +240,12 @@ class NotificationCompatBuilderExtensionsTest {
         testIntentExtras.putString("testKey", "testValue")
         every { mockContext.applicationContext } returns mockContext
         val mockBuilder = mockkClass(NotificationCompat.Builder::class, relaxed = true)
-        val pendingIntentCapture = slot<PendingIntent>()
-        every { mockBuilder.setContentIntent(capture(pendingIntentCapture)) } returns mockBuilder
+        every { mockBuilder.setContentIntent(any()) } returns mockBuilder
 
         mockBuilder.setNotificationClickAction(mockContext, trackerActivityClass, testActionUri, testIntentExtras)
 
-        verify(exactly = 1) { mockBuilder.setContentIntent(any()) }
+        val pendingIntentCapture = slot<PendingIntent>()
+        verify(exactly = 1) { mockBuilder.setContentIntent(capture(pendingIntentCapture)) }
         val pendingIntent = pendingIntentCapture.captured
         assertNotNull(pendingIntent)
         val shadowPendingIntent = Shadows.shadowOf(pendingIntent)
@@ -267,12 +267,12 @@ class NotificationCompatBuilderExtensionsTest {
     fun `setNotificationClickAction sets content intent when trackerActivityClass, actionUri and intentExtras are null`() {
         every { mockContext.applicationContext } returns mockContext
         val mockBuilder = mockkClass(NotificationCompat.Builder::class, relaxed = true)
-        val pendingIntentCapture = slot<PendingIntent>()
-        every { mockBuilder.setContentIntent(capture(pendingIntentCapture)) } returns mockBuilder
+        every { mockBuilder.setContentIntent(any()) } returns mockBuilder
 
         mockBuilder.setNotificationClickAction(mockContext, null, null, null)
 
-        verify(exactly = 1) { mockBuilder.setContentIntent(any()) }
+        val pendingIntentCapture = slot<PendingIntent>()
+        verify(exactly = 1) { mockBuilder.setContentIntent(capture(pendingIntentCapture)) }
         val pendingIntent = pendingIntentCapture.captured
         assertNotNull(pendingIntent)
         val shadowPendingIntent = Shadows.shadowOf(pendingIntent)
@@ -292,12 +292,12 @@ class NotificationCompatBuilderExtensionsTest {
     fun `setNotificationDeleteAction sets delete intent when trackerActivityClass is not null`() {
         every { mockContext.applicationContext } returns mockContext
         val mockBuilder = mockkClass(NotificationCompat.Builder::class, relaxed = true)
-        val pendingIntentCapture = slot<PendingIntent>()
-        every { mockBuilder.setDeleteIntent(capture(pendingIntentCapture)) } returns mockBuilder
+        every { mockBuilder.setDeleteIntent(any()) } returns mockBuilder
 
         mockBuilder.setNotificationDeleteAction(mockContext, trackerActivityClass)
 
-        verify(exactly = 1) { mockBuilder.setDeleteIntent(any()) }
+        val pendingIntentCapture = slot<PendingIntent>()
+        verify(exactly = 1) { mockBuilder.setDeleteIntent(capture(pendingIntentCapture)) }
         val pendingIntent = pendingIntentCapture.captured
         assertNotNull(pendingIntent)
         val shadowPendingIntent = Shadows.shadowOf(pendingIntent)
@@ -317,12 +317,12 @@ class NotificationCompatBuilderExtensionsTest {
     fun `setNotificationDeleteAction sets delete intent when trackerActivityClass is null`() {
         every { mockContext.applicationContext } returns mockContext
         val mockBuilder = mockkClass(NotificationCompat.Builder::class, relaxed = true)
-        val pendingIntentCapture = slot<PendingIntent>()
-        every { mockBuilder.setDeleteIntent(capture(pendingIntentCapture)) } returns mockBuilder
+        every { mockBuilder.setDeleteIntent(any()) } returns mockBuilder
 
         mockBuilder.setNotificationDeleteAction(mockContext, null)
 
-        verify(exactly = 1) { mockBuilder.setDeleteIntent(any()) }
+        val pendingIntentCapture = slot<PendingIntent>()
+        verify(exactly = 1) { mockBuilder.setDeleteIntent(capture(pendingIntentCapture)) }
         val pendingIntent = pendingIntentCapture.captured
         assertNotNull(pendingIntent)
         val shadowPendingIntent = Shadows.shadowOf(pendingIntent)
@@ -344,10 +344,7 @@ class NotificationCompatBuilderExtensionsTest {
         testIntentExtras.putString("testKey", "testValue")
         every { mockContext.applicationContext } returns mockContext
         val mockBuilder = mockkClass(NotificationCompat.Builder::class, relaxed = true)
-        val iconCapture = slot<Int>()
-        val labelCapture = slot<CharSequence>()
-        val pendingIntentCapture = slot<PendingIntent>()
-        every { mockBuilder.addAction(capture(iconCapture), capture(labelCapture), capture(pendingIntentCapture)) } returns mockBuilder
+        every { mockBuilder.addAction(any(), any(), any()) } returns mockBuilder
 
         mockBuilder.addActionButtons(
             mockContext, trackerActivityClass,
@@ -357,7 +354,10 @@ class NotificationCompatBuilderExtensionsTest {
             testIntentExtras
         )
 
-        verify(exactly = 1) { mockBuilder.addAction(any(), any(), any()) }
+        val iconCapture = slot<Int>()
+        val labelCapture = slot<CharSequence>()
+        val pendingIntentCapture = slot<PendingIntent>()
+        verify(exactly = 1) { mockBuilder.addAction(capture(iconCapture), capture(labelCapture), capture(pendingIntentCapture)) }
         val pendingIntent = pendingIntentCapture.captured
         assertNotNull(pendingIntent)
         val shadowPendingIntent = Shadows.shadowOf(pendingIntent)
@@ -381,10 +381,7 @@ class NotificationCompatBuilderExtensionsTest {
         testIntentExtras.putString("testKey", "testValue")
         every { mockContext.applicationContext } returns mockContext
         val mockBuilder = mockkClass(NotificationCompat.Builder::class, relaxed = true)
-        val iconCapture = slot<Int>()
-        val labelCapture = slot<CharSequence>()
-        val pendingIntentCapture = slot<PendingIntent>()
-        every { mockBuilder.addAction(capture(iconCapture), capture(labelCapture), capture(pendingIntentCapture)) } returns mockBuilder
+        every { mockBuilder.addAction(any(), any(), any()) } returns mockBuilder
 
         mockBuilder.addActionButtons(
             mockContext, trackerActivityClass,
@@ -394,7 +391,10 @@ class NotificationCompatBuilderExtensionsTest {
             testIntentExtras
         )
 
-        verify(exactly = 1) { mockBuilder.addAction(any(), any(), any()) }
+        val iconCapture = slot<Int>()
+        val labelCapture = slot<CharSequence>()
+        val pendingIntentCapture = slot<PendingIntent>()
+        verify(exactly = 1) { mockBuilder.addAction(capture(iconCapture), capture(labelCapture), capture(pendingIntentCapture)) }
         val pendingIntent = pendingIntentCapture.captured
         assertNotNull(pendingIntent)
         val shadowPendingIntent = Shadows.shadowOf(pendingIntent)
@@ -418,10 +418,7 @@ class NotificationCompatBuilderExtensionsTest {
         testIntentExtras.putString("testKey", "testValue")
         every { mockContext.applicationContext } returns mockContext
         val mockBuilder = mockkClass(NotificationCompat.Builder::class, relaxed = true)
-        val iconCapture = slot<Int>()
-        val labelCapture = slot<CharSequence>()
-        val pendingIntentCapture = slot<PendingIntent>()
-        every { mockBuilder.addAction(capture(iconCapture), capture(labelCapture), capture(pendingIntentCapture)) } returns mockBuilder
+        every { mockBuilder.addAction(any(), any(), any()) } returns mockBuilder
 
         mockBuilder.addActionButtons(
             mockContext, trackerActivityClass,
@@ -431,7 +428,10 @@ class NotificationCompatBuilderExtensionsTest {
             testIntentExtras
         )
 
-        verify(exactly = 1) { mockBuilder.addAction(any(), any(), any()) }
+        val iconCapture = slot<Int>()
+        val labelCapture = slot<CharSequence>()
+        val pendingIntentCapture = slot<PendingIntent>()
+        verify(exactly = 1) { mockBuilder.addAction(capture(iconCapture), capture(labelCapture), capture(pendingIntentCapture)) }
         val pendingIntent = pendingIntentCapture.captured
         assertNotNull(pendingIntent)
         val shadowPendingIntent = Shadows.shadowOf(pendingIntent)
@@ -455,10 +455,7 @@ class NotificationCompatBuilderExtensionsTest {
         testIntentExtras.putString("testKey", "testValue")
         every { mockContext.applicationContext } returns mockContext
         val mockBuilder = mockkClass(NotificationCompat.Builder::class, relaxed = true)
-        val iconCapture = slot<Int>()
-        val labelCapture = slot<CharSequence>()
-        val pendingIntentCapture = slot<PendingIntent>()
-        every { mockBuilder.addAction(capture(iconCapture), capture(labelCapture), capture(pendingIntentCapture)) } returns mockBuilder
+        every { mockBuilder.addAction(any(), any(), any()) } returns mockBuilder
 
         mockBuilder.addActionButtons(
             mockContext, trackerActivityClass,
@@ -468,7 +465,10 @@ class NotificationCompatBuilderExtensionsTest {
             testIntentExtras
         )
 
-        verify(exactly = 1) { mockBuilder.addAction(any(), any(), any()) }
+        val iconCapture = slot<Int>()
+        val labelCapture = slot<CharSequence>()
+        val pendingIntentCapture = slot<PendingIntent>()
+        verify(exactly = 1) { mockBuilder.addAction(capture(iconCapture), capture(labelCapture), capture(pendingIntentCapture)) }
         val pendingIntent = pendingIntentCapture.captured
         assertNotNull(pendingIntent)
         val shadowPendingIntent = Shadows.shadowOf(pendingIntent)
