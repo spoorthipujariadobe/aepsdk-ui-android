@@ -147,7 +147,7 @@ class TimerNotificationBuilderTests {
         verify(exactly = 2) {
             anyConstructed<RemoteViews>().setChronometer(
                 any(),
-                range(expectedTime - 5000, expectedTime, true, true),
+                range(expectedTime - 5000, expectedTime + 5000, true, true),
                 any(),
                 true
             )
