@@ -49,32 +49,32 @@ const val MOCK_REMIND_LATER_TEXT = "remind me"
 const val MOCK_REMIND_LATER_TIME = "1234567890"
 const val MOCK_REMIND_LATER_DURATION = "6000"
 const val MOCKED_MALFORMED_JSON_ACTION_BUTTON = "[" +
-        "{\"label\":\"\",\"uri\":\"https://chess.com/games/552\",\"type\":\"DEEPLINK\"}," +
-        "{}," +
-        "{\"label\":\"Open the app\",\"uri\":\"\",\"type\":\"GO_TO_WEB_PAGE\"}," +
-        "{\"label\":\"Go to chess.com\",\"uri\":\"https://chess.com/games/552\",\"type\":\"DEEPLINK\"}]"
+    "{\"label\":\"\",\"uri\":\"https://chess.com/games/552\",\"type\":\"DEEPLINK\"}," +
+    "{}," +
+    "{\"label\":\"Open the app\",\"uri\":\"\",\"type\":\"GO_TO_WEB_PAGE\"}," +
+    "{\"label\":\"Go to chess.com\",\"uri\":\"https://chess.com/games/552\",\"type\":\"DEEPLINK\"}]"
 const val MOCKED_CHANNEL_ID = "AEPSDKPushChannel1"
 
 const val MOCK_MULTI_ICON_ITEM_PAYLOAD = "[" +
-        "{\"img\":\"train\",\"uri\":\"myapp://chooseShoeType/shoe1\",\"type\":\"DEEPLINK\"}," +
-        "{\"img\":\"bus\",\"uri\":\"myapp://chooseShoeType/shoe2\",\"type\":\"DEEPLINK\"}," +
-        "{\"img\":\"car\",\"uri\":\"myapp://chooseShoeType/shoe3\",\"type\":\"DEEPLINK\"}," +
-        "{\"img\":\"tempo\",\"uri\":\"myapp://chooseShoeType/shoe4\",\"type\":\"DEEPLINK\"}," +
-        "{\"img\":\"airplane\",\"uri\":\"myapp://chooseShoeType/shoe5\",\"type\":\"DEEPLINK\"}" +
-        "]"
+    "{\"img\":\"train\",\"uri\":\"myapp://chooseShoeType/shoe1\",\"type\":\"DEEPLINK\"}," +
+    "{\"img\":\"bus\",\"uri\":\"myapp://chooseShoeType/shoe2\",\"type\":\"DEEPLINK\"}," +
+    "{\"img\":\"car\",\"uri\":\"myapp://chooseShoeType/shoe3\",\"type\":\"DEEPLINK\"}," +
+    "{\"img\":\"tempo\",\"uri\":\"myapp://chooseShoeType/shoe4\",\"type\":\"DEEPLINK\"}," +
+    "{\"img\":\"airplane\",\"uri\":\"myapp://chooseShoeType/shoe5\",\"type\":\"DEEPLINK\"}" +
+    "]"
 const val MOCK_MULTI_ICON_ITEM_PAYLOAD_INVALID_IMAGE = "[" +
-        "{\"img\":\"\",\"uri\":\"myapp://chooseShoeType/shoe1\",\"type\":\"DEEPLINK\"}," +
-        "{\"img\":\"bus\",\"uri\":\"myapp://chooseShoeType/shoe2\",\"type\":\"\"}," +
-        "{\"img\":\"\",\"uri\":\"myapp://chooseShoeType/shoe3\",\"type\":\"DEEPLINK\"}," +
-        "{\"img\":\"tempo\",\"uri\":\"myapp://chooseShoeType/shoe4\",\"type\":\"DEEPLINK\"}," +
-        "{\"img\":\"airplane\",\"uri\":\"myapp://chooseShoeType/shoe5\",\"type\":\"DEEPLINK\"}" +
-        "]"
+    "{\"img\":\"\",\"uri\":\"myapp://chooseShoeType/shoe1\",\"type\":\"DEEPLINK\"}," +
+    "{\"img\":\"bus\",\"uri\":\"myapp://chooseShoeType/shoe2\",\"type\":\"\"}," +
+    "{\"img\":\"\",\"uri\":\"myapp://chooseShoeType/shoe3\",\"type\":\"DEEPLINK\"}," +
+    "{\"img\":\"tempo\",\"uri\":\"myapp://chooseShoeType/shoe4\",\"type\":\"DEEPLINK\"}," +
+    "{\"img\":\"airplane\",\"uri\":\"myapp://chooseShoeType/shoe5\",\"type\":\"DEEPLINK\"}" +
+    "]"
 const val MOCK_MULTI_ICON_ITEM_PAYLOAD_INCOMPLETE_JSON = "[" +
-        "{\"img\":\"train\",\"uri\":\"\",\"type\":\"DEEPLINK\"}," +
-        "{\"img\":\"bus\",\"uri\":\"myapp://chooseShoeType/shoe2\",\"type\":\"DEEPLINK\"}," +
-        "{\"img\":\"tempo\",\"uri\":\"myapp://chooseShoeType/shoe4\",\"type\":\"DEEPLINK\"}," +
-        "{\"img\":\"airplane\",\"uri\":\"myapp://chooseShoeType/shoe5\",\"type\":\"DEEPLINK\"}" +
-        "]"
+    "{\"img\":\"train\",\"uri\":\"\",\"type\":\"DEEPLINK\"}," +
+    "{\"img\":\"bus\",\"uri\":\"myapp://chooseShoeType/shoe2\",\"type\":\"DEEPLINK\"}," +
+    "{\"img\":\"tempo\",\"uri\":\"myapp://chooseShoeType/shoe4\",\"type\":\"DEEPLINK\"}," +
+    "{\"img\":\"airplane\",\"uri\":\"myapp://chooseShoeType/shoe5\",\"type\":\"DEEPLINK\"}" +
+    "]"
 
 fun <K, V> MutableMap<K, V>.removeKeysFromMap(listOfKeys: List<K>) {
     for (key in listOfKeys) {

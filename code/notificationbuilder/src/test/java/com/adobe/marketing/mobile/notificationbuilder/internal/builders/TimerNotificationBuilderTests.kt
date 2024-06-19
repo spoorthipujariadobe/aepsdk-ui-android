@@ -44,7 +44,6 @@ import org.robolectric.annotation.Config
 import org.robolectric.util.ReflectionHelpers
 import kotlin.test.assertNull
 
-
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [31])
 class TimerNotificationBuilderTests {
