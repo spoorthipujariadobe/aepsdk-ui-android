@@ -40,12 +40,16 @@ class PendingIntentUtilsTest {
     private lateinit var mockContext: Context
     private lateinit var scheduledIntent: Intent
     private lateinit var broadcastReceiverClass: Class<out BroadcastReceiver>
+    private lateinit var mockAlarmManager: AlarmManager
+    private val triggerAtSeconds = 1000L
 
     @Before
     fun setup() {
         mockContext = mockk<Context>(relaxed = true)
         scheduledIntent = Intent()
         broadcastReceiverClass = BroadcastReceiver::class.java
+        mockAlarmManager = mockk<AlarmManager>(relaxed = true)
+        every { mockContext.getSystemService(Context.ALARM_SERVICE) } returns mockAlarmManager
     }
 
     @After
@@ -57,9 +61,6 @@ class PendingIntentUtilsTest {
     @Test
     @Config(sdk = [31])
     fun `scheduleNotification schedules exact alarm when exact alarms are allowed`() {
-        val triggerAtSeconds = 1000L
-        val mockAlarmManager = mockk<AlarmManager>(relaxed = true)
-        every { mockContext.getSystemService(Context.ALARM_SERVICE) } returns mockAlarmManager
         every { mockAlarmManager.canScheduleExactAlarms() } returns true
 
         PendingIntentUtils.scheduleNotification(
@@ -83,9 +84,6 @@ class PendingIntentUtilsTest {
     @Test
     @Config(sdk = [31])
     fun `scheduleNotification schedules inexact alarm when exact alarms are not allowed`() {
-        val triggerAtSeconds = 1000L
-        val mockAlarmManager = mockk<AlarmManager>(relaxed = true)
-        every { mockContext.getSystemService(Context.ALARM_SERVICE) } returns mockAlarmManager
         every { mockAlarmManager.canScheduleExactAlarms() } returns false
 
         PendingIntentUtils.scheduleNotification(
@@ -110,10 +108,6 @@ class PendingIntentUtilsTest {
     @Test
     @Config(sdk = [30])
     fun `scheduleNotification schedules exact alarm when version is less than 31`() {
-        val triggerAtSeconds = 1000L
-        val mockAlarmManager = mockk<AlarmManager>(relaxed = true)
-        every { mockContext.getSystemService(Context.ALARM_SERVICE) } returns mockAlarmManager
-
         PendingIntentUtils.scheduleNotification(
             mockContext,
             scheduledIntent,
@@ -136,8 +130,6 @@ class PendingIntentUtilsTest {
     @Config(sdk = [22])
     fun `scheduleNotification schedules exact alarm when version is less than 23`() {
         val triggerAtSeconds = 1000L
-        val mockAlarmManager = mockk<AlarmManager>(relaxed = true)
-        every { mockContext.getSystemService(Context.ALARM_SERVICE) } returns mockAlarmManager
 
         PendingIntentUtils.scheduleNotification(
             mockContext,
@@ -161,8 +153,6 @@ class PendingIntentUtilsTest {
     @Config(sdk = [31])
     fun `scheduleNotification schedules exact alarm when broadcastReceiverClass is null`() {
         val triggerAtSeconds = 1000L
-        val mockAlarmManager = mockk<AlarmManager>(relaxed = true)
-        every { mockContext.getSystemService(Context.ALARM_SERVICE) } returns mockAlarmManager
         every { mockAlarmManager.canScheduleExactAlarms() } returns true
 
         PendingIntentUtils.scheduleNotification(
@@ -199,7 +189,6 @@ class PendingIntentUtilsTest {
     @Config(sdk = [22])
     fun `scheduleNotification does not schedule alarm when AlarmManager is null`() {
         val triggerAtSeconds = 1000L
-        val mockAlarmManager = mockk<AlarmManager>(relaxed = true)
         every { mockContext.getSystemService(Context.ALARM_SERVICE) } returns null
 
         PendingIntentUtils.scheduleNotification(
@@ -231,10 +220,9 @@ class PendingIntentUtilsTest {
     @Test
     @Config(sdk = [31])
     fun `isExactAlarmsAllowed returns true when canScheduleExactAlarms is true`() {
-        val alarmManager = mockk<AlarmManager>()
-        every { alarmManager.canScheduleExactAlarms() } returns true
+        every { mockAlarmManager.canScheduleExactAlarms() } returns true
 
-        val result = PendingIntentUtils.isExactAlarmsAllowed(alarmManager)
+        val result = PendingIntentUtils.isExactAlarmsAllowed(mockAlarmManager)
 
         assertTrue(result)
     }
@@ -242,10 +230,9 @@ class PendingIntentUtilsTest {
     @Test
     @Config(sdk = [31])
     fun `isExactAlarmsAllowed returns false when canScheduleExactAlarms is false`() {
-        val alarmManager = mockk<AlarmManager>()
-        every { alarmManager.canScheduleExactAlarms() } returns false
+        every { mockAlarmManager.canScheduleExactAlarms() } returns false
 
-        val result = PendingIntentUtils.isExactAlarmsAllowed(alarmManager)
+        val result = PendingIntentUtils.isExactAlarmsAllowed(mockAlarmManager)
 
         assertFalse(result)
     }
