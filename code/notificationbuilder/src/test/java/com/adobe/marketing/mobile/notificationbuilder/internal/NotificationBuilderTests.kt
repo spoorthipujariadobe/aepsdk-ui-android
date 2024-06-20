@@ -22,6 +22,7 @@ import androidx.core.app.NotificationManagerCompat
 import com.adobe.marketing.mobile.notificationbuilder.NotificationBuilder
 import com.adobe.marketing.mobile.notificationbuilder.NotificationConstructionFailedException
 import com.adobe.marketing.mobile.notificationbuilder.PushTemplateConstants
+import com.adobe.marketing.mobile.notificationbuilder.RemindLaterHandler
 import com.adobe.marketing.mobile.notificationbuilder.internal.builders.AutoCarouselNotificationBuilder
 import com.adobe.marketing.mobile.notificationbuilder.internal.builders.BasicNotificationBuilder
 import com.adobe.marketing.mobile.notificationbuilder.internal.builders.InputBoxNotificationBuilder
@@ -79,6 +80,11 @@ class NotificationBuilderTests {
         mockkObject(PushTemplateImageUtils)
     }
 
+    @After
+    fun tearDown() {
+        unmockkAll()
+    }
+
     private fun setupNotificationBuilderMocks() {
         mockkObject(BasicNotificationBuilder)
         mockkObject(ManualCarouselNotificationBuilder)
@@ -107,11 +113,6 @@ class NotificationBuilderTests {
         every { context.packageName } answers { callOriginal() }
         every { application.applicationContext } returns context
         ServiceProvider.getInstance().appContextService.setApplication(application)
-    }
-
-    @After
-    fun tearDown() {
-        unmockkAll()
     }
 
     @Test
@@ -208,7 +209,7 @@ class NotificationBuilderTests {
         val remindIntent = Intent()
         remindIntent.putExtras(bundle)
         remindIntent.action = PushTemplateConstants.IntentActions.REMIND_LATER_CLICKED
-        NotificationBuilder.handleRemindIntent(
+        RemindLaterHandler.handleRemindIntent(
             remindIntent,
             broadcastReceiverClass
         )
@@ -223,7 +224,7 @@ class NotificationBuilderTests {
         val remindIntent = Intent()
         remindIntent.putExtras(bundle)
         remindIntent.action = PushTemplateConstants.IntentActions.REMIND_LATER_CLICKED
-        NotificationBuilder.handleRemindIntent(
+        RemindLaterHandler.handleRemindIntent(
             remindIntent,
             null
         )
@@ -239,7 +240,7 @@ class NotificationBuilderTests {
         val remindIntent = Intent()
         remindIntent.putExtras(bundle)
         remindIntent.action = PushTemplateConstants.IntentActions.REMIND_LATER_CLICKED
-        NotificationBuilder.handleRemindIntent(
+        RemindLaterHandler.handleRemindIntent(
             remindIntent,
             null
         )
@@ -255,7 +256,7 @@ class NotificationBuilderTests {
         val remindIntent = Intent()
         remindIntent.putExtras(bundle)
         remindIntent.action = PushTemplateConstants.IntentActions.REMIND_LATER_CLICKED
-        NotificationBuilder.handleRemindIntent(
+        RemindLaterHandler.handleRemindIntent(
             remindIntent,
             broadcastReceiverClass
         )
@@ -272,7 +273,7 @@ class NotificationBuilderTests {
         val remindIntent = Intent()
         remindIntent.putExtras(bundle)
         remindIntent.action = PushTemplateConstants.IntentActions.REMIND_LATER_CLICKED
-        NotificationBuilder.handleRemindIntent(
+        RemindLaterHandler.handleRemindIntent(
             remindIntent,
             broadcastReceiverClass
         )
@@ -289,7 +290,7 @@ class NotificationBuilderTests {
         val remindIntent = Intent()
         remindIntent.putExtras(bundle)
         remindIntent.action = PushTemplateConstants.IntentActions.REMIND_LATER_CLICKED
-        NotificationBuilder.handleRemindIntent(
+        RemindLaterHandler.handleRemindIntent(
             remindIntent,
             broadcastReceiverClass
         )
@@ -307,7 +308,7 @@ class NotificationBuilderTests {
         val remindIntent = Intent()
         remindIntent.putExtras(bundle)
         remindIntent.action = PushTemplateConstants.IntentActions.REMIND_LATER_CLICKED
-        NotificationBuilder.handleRemindIntent(
+        RemindLaterHandler.handleRemindIntent(
             remindIntent,
             broadcastReceiverClass
         )
@@ -324,7 +325,7 @@ class NotificationBuilderTests {
         val remindIntent = Intent()
         remindIntent.putExtras(bundle)
         remindIntent.action = PushTemplateConstants.IntentActions.REMIND_LATER_CLICKED
-        NotificationBuilder.handleRemindIntent(
+        RemindLaterHandler.handleRemindIntent(
             remindIntent,
             broadcastReceiverClass
         )
@@ -341,7 +342,7 @@ class NotificationBuilderTests {
         val remindIntent = Intent()
         remindIntent.putExtras(bundle)
         remindIntent.action = PushTemplateConstants.IntentActions.REMIND_LATER_CLICKED
-        NotificationBuilder.handleRemindIntent(
+        RemindLaterHandler.handleRemindIntent(
             remindIntent,
             broadcastReceiverClass
         )
@@ -357,7 +358,7 @@ class NotificationBuilderTests {
         val remindIntent = Intent()
         remindIntent.putExtras(bundle)
         remindIntent.action = PushTemplateConstants.IntentActions.REMIND_LATER_CLICKED
-        NotificationBuilder.handleRemindIntent(
+        RemindLaterHandler.handleRemindIntent(
             remindIntent,
             broadcastReceiverClass
         )
@@ -370,7 +371,7 @@ class NotificationBuilderTests {
     fun `handleRemindIntent given an intent with no bundle should throw an exception`() {
         val remindIntent = Intent()
         remindIntent.action = PushTemplateConstants.IntentActions.REMIND_LATER_CLICKED
-        NotificationBuilder.handleRemindIntent(
+        RemindLaterHandler.handleRemindIntent(
             remindIntent,
             broadcastReceiverClass
         )

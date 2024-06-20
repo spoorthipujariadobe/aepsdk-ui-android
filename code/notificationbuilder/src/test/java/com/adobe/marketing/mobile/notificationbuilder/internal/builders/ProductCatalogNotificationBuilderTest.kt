@@ -28,10 +28,10 @@ import com.adobe.marketing.mobile.notificationbuilder.internal.templates.Product
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.provideMockedProductCatalogTemplate
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.replaceValueInMap
 import com.adobe.marketing.mobile.notificationbuilder.internal.util.MapData
-import io.mockk.clearAllMocks
 import io.mockk.every
 import io.mockk.mockkClass
 import io.mockk.mockkObject
+import io.mockk.unmockkAll
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -63,8 +63,8 @@ class ProductCatalogNotificationBuilderTest {
     }
 
     @After
-    fun cleanup() {
-        clearAllMocks()
+    fun tearDown() {
+        unmockkAll()
     }
 
     @Test

@@ -31,9 +31,11 @@ import com.adobe.marketing.mobile.notificationbuilder.internal.templates.MockAEP
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.replaceValueInMap
 import com.adobe.marketing.mobile.notificationbuilder.internal.util.IntentData
 import com.adobe.marketing.mobile.notificationbuilder.internal.util.MapData
+import io.mockk.unmockkAll
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertNotNull
 import junit.framework.TestCase.assertNull
+import org.junit.After
 import org.junit.Assert.assertArrayEquals
 import org.junit.Before
 import org.junit.Test
@@ -68,6 +70,11 @@ class AEPPushNotificationBuilderTest {
         dataMap = MockAEPPushTemplateDataProvider.getMockedAEPDataMapWithAllKeys()
         trackerActivityClass = DummyActivity::class.java
         mockBundle = MockAEPPushTemplateDataProvider.getMockedAEPBundleWithAllKeys()
+    }
+
+    @After
+    fun tearDown() {
+        unmockkAll()
     }
 
     @Test
