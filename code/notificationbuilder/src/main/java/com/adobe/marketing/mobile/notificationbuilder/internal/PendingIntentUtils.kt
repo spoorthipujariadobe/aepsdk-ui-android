@@ -47,17 +47,21 @@ internal object PendingIntentUtils {
         val alarmManager =
             context.getSystemService(Context.ALARM_SERVICE) as AlarmManager? ?: return
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S &&
-            isExactAlarmsAllowed(alarmManager)
-        ) {
+        if (isExactAlarmsAllowed(alarmManager)) {
             Log.trace(
                 PushTemplateConstants.LOG_TAG,
                 SELF_TAG,
                 "Exact alarms are permitted, scheduling an exact alarm for the current notification."
             )
-            alarmManager.setExactAndAllowWhileIdle(
-                AlarmManager.RTC_WAKEUP, triggerAtSeconds * 1000, pendingIntent
-            )
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, triggerAtSeconds * 1000, pendingIntent)
+            } else {
+                alarmManager.setExact(
+                    AlarmManager.RTC_WAKEUP,
+                    triggerAtSeconds * 1000,
+                    pendingIntent
+                )
+            }
         } else {
             // schedule an inexact alarm for the current notification
             Log.trace(
@@ -65,8 +69,11 @@ internal object PendingIntentUtils {
                 SELF_TAG,
                 "Exact alarms are not permitted, scheduling an inexact alarm for the current notification."
             )
-            alarmManager[AlarmManager.RTC_WAKEUP, triggerAtSeconds * 1000] =
+            alarmManager.setAndAllowWhileIdle(
+                AlarmManager.RTC_WAKEUP,
+                triggerAtSeconds * 1000,
                 pendingIntent
+            )
         }
     }
 

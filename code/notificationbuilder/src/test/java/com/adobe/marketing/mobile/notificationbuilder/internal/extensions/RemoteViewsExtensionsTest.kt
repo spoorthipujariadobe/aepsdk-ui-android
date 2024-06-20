@@ -28,7 +28,7 @@ import com.adobe.marketing.mobile.services.ServiceProvider
 import io.mockk.Runs
 import io.mockk.every
 import io.mockk.just
-import io.mockk.mockkClass
+import io.mockk.mockk
 import io.mockk.mockkObject
 import io.mockk.mockkStatic
 import io.mockk.slot
@@ -58,9 +58,9 @@ class RemoteViewsExtensionsTest {
 
     @Before
     fun setup() {
-        remoteViews = mockkClass(RemoteViews::class)
+        remoteViews = mockk<RemoteViews>(relaxed = true)
         mockkObject(PushTemplateImageUtils)
-        mockBitmap = mockkClass(Bitmap::class, relaxed = true)
+        mockBitmap = mockk<Bitmap>(relaxed = true)
         trackerActivityClass = DummyActivity::class.java
     }
 
@@ -118,8 +118,6 @@ class RemoteViewsExtensionsTest {
     @Test
     fun `setNotificationBackgroundColor applies color when valid hex string provided`() {
         val colorHex = "FFFFFF"
-        mockkStatic(RemoteViews::setElementColor)
-        every { remoteViews.setElementColor(any(), any(), any(), any()) } just Runs
 
         remoteViews.setNotificationBackgroundColor(colorHex, 1)
 
@@ -136,8 +134,6 @@ class RemoteViewsExtensionsTest {
     @Test
     fun `setTimerTextColor applies color when valid hex string provided`() {
         val colorHex = "FFFFFF"
-        mockkStatic(RemoteViews::setElementColor)
-        every { remoteViews.setElementColor(any(), any(), any(), any()) } just Runs
 
         remoteViews.setTimerTextColor(colorHex, 1)
 
@@ -154,8 +150,6 @@ class RemoteViewsExtensionsTest {
     @Test
     fun `setNotificationTitleTextColor applies color when valid hex string provided`() {
         val colorHex = "FFFFFF"
-        mockkStatic(RemoteViews::setElementColor)
-        every { remoteViews.setElementColor(any(), any(), any(), any()) } just Runs
 
         remoteViews.setNotificationTitleTextColor(colorHex, 1)
 
@@ -172,8 +166,6 @@ class RemoteViewsExtensionsTest {
     @Test
     fun `setNotificationBodyTextColor applies color when valid hex string provided`() {
         val colorHex = "FFFFFF"
-        mockkStatic(RemoteViews::setElementColor)
-        every { remoteViews.setElementColor(any(), any(), any(), any()) } just Runs
 
         remoteViews.setNotificationBodyTextColor(colorHex, 1)
 
@@ -190,7 +182,6 @@ class RemoteViewsExtensionsTest {
     @Test
     fun `setRemoteViewImage applies image when valid URL provided`() {
         val imageUrl = "http://example.com/image.png"
-        every { remoteViews.setImageViewBitmap(any(), any()) } just Runs
         every { PushTemplateImageUtils.cacheImages(listOf(imageUrl)) } returns 1
         every { PushTemplateImageUtils.getCachedImage(imageUrl) } returns mockBitmap
 
@@ -204,7 +195,6 @@ class RemoteViewsExtensionsTest {
     @Test
     fun `setRemoteViewImage applies image when valid resource name provided`() {
         val imageName = "valid_image"
-        every { remoteViews.setImageViewResource(any(), any()) } just Runs
         mockkStatic(ServiceProvider::class)
         mockkStatic(Context::getIconWithResourceName)
         every {
@@ -281,7 +271,7 @@ class RemoteViewsExtensionsTest {
                 imageName
             )
         } returns 0
-        every { ServiceProvider.getInstance().loggingService } returns mockkClass(Logging::class, relaxed = true)
+        every { ServiceProvider.getInstance().loggingService } returns mockk<Logging>(relaxed = true)
 
         val result = remoteViews.setRemoteViewImage(imageName, 1)
 
@@ -336,7 +326,6 @@ class RemoteViewsExtensionsTest {
     @Test
     fun `setRemoteViewClickAction sets click action when when trackerActivityClass, actionUri, actionID and intentExtras are null`() {
         val context = RuntimeEnvironment.getApplication()
-        every { remoteViews.setOnClickPendingIntent(any(), any()) } just Runs
 
         remoteViews.setRemoteViewClickAction(context, null, 1, null, null, null)
 
