@@ -9,11 +9,10 @@
   governing permissions and limitations under the License.
 */
 
-package com.adobe.marketing.mobile.notificationbuilder.internal;
+package com.adobe.marketing.mobile.notificationbuilder;
 
 import static org.junit.Assert.assertEquals;
 
-import com.adobe.marketing.mobile.notificationbuilder.NotificationBuilder;
 import org.junit.Test;
 
 public class NotificationBuilderTests {

@@ -9,8 +9,9 @@
   governing permissions and limitations under the License.
 */
 
-package com.adobe.marketing.mobile.notificationbuilder.internal
+package com.adobe.marketing.mobile.notificationbuilder
 
+import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateType
 import org.junit.Test
 import kotlin.test.assertEquals
 
