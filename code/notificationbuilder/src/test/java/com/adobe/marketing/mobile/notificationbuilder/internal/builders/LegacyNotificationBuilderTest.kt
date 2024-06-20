@@ -26,7 +26,7 @@ import com.adobe.marketing.mobile.notificationbuilder.internal.templates.removeK
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.replaceValueInMap
 import com.adobe.marketing.mobile.notificationbuilder.internal.util.IntentData
 import com.adobe.marketing.mobile.notificationbuilder.internal.util.MapData
-import io.mockk.clearAllMocks
+import io.mockk.unmockkAll
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertNotNull
 import junit.framework.TestCase.assertNull
@@ -58,8 +58,8 @@ class LegacyNotificationBuilderTest {
     }
 
     @After
-    fun cleanup() {
-        clearAllMocks()
+    fun tearDown() {
+        unmockkAll()
     }
 
     @Test

@@ -32,12 +32,12 @@ import com.adobe.marketing.mobile.notificationbuilder.internal.templates.MockCar
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.provideMockedManualCarousalTemplate
 import com.adobe.marketing.mobile.notificationbuilder.internal.util.IntentData
 import io.mockk.Runs
-import io.mockk.clearAllMocks
 import io.mockk.every
 import io.mockk.just
 import io.mockk.mockkClass
 import io.mockk.mockkConstructor
 import io.mockk.mockkObject
+import io.mockk.unmockkAll
 import io.mockk.verify
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -74,8 +74,8 @@ class ManualCarouselNotificationBuilderTest {
     }
 
     @After
-    fun cleanup() {
-        clearAllMocks()
+    fun tearDown() {
+        unmockkAll()
     }
 
     @Test
@@ -130,14 +130,16 @@ class ManualCarouselNotificationBuilderTest {
     @Test
     fun `test downloadCarouselItems returns non empty list when image bitmap is present in the cache`() {
         every { getCachedImage(any()) } answers { mockkClass(Bitmap::class) }
-        val imagesList = ManualCarouselNotificationBuilder.downloadCarouselItems(pushTemplate.carouselItems)
+        val imagesList =
+            ManualCarouselNotificationBuilder.downloadCarouselItems(pushTemplate.carouselItems)
         assertTrue(imagesList == pushTemplate.carouselItems)
     }
 
     @Test
     fun `test getCarouselIndices with left click intent action`() {
         val mockBundle = MockCarousalTemplateDataProvider.getMockedBundleWithManualCarouselData()
-        val data = IntentData(mockBundle, PushTemplateConstants.IntentActions.MANUAL_CAROUSEL_LEFT_CLICKED)
+        val data =
+            IntentData(mockBundle, PushTemplateConstants.IntentActions.MANUAL_CAROUSEL_LEFT_CLICKED)
         val mcPushTemplate = CarouselPushTemplate(data) as ManualCarouselPushTemplate
         val result = getCarouselIndices(mcPushTemplate, 3)
         assertEquals(Triple(1, 2, 0), result)
@@ -146,7 +148,8 @@ class ManualCarouselNotificationBuilderTest {
     @Test
     fun `test getCarouselIndices with filmstrip left click intent action`() {
         val mockBundle = MockCarousalTemplateDataProvider.getMockedBundleWithManualCarouselData()
-        val data = IntentData(mockBundle, PushTemplateConstants.IntentActions.FILMSTRIP_LEFT_CLICKED)
+        val data =
+            IntentData(mockBundle, PushTemplateConstants.IntentActions.FILMSTRIP_LEFT_CLICKED)
         val mcPushTemplate = CarouselPushTemplate(data) as ManualCarouselPushTemplate
         val result = getCarouselIndices(mcPushTemplate, 3)
         assertEquals(Triple(1, 2, 0), result)
@@ -155,7 +158,8 @@ class ManualCarouselNotificationBuilderTest {
     @Test
     fun `test getCarouselIndices with no intent action and filmstrip layout`() {
         val mockBundle = MockCarousalTemplateDataProvider.getMockedBundleWithManualCarouselData()
-        val data = IntentData(mockBundle, PushTemplateConstants.DefaultValues.FILMSTRIP_CAROUSEL_MODE)
+        val data =
+            IntentData(mockBundle, PushTemplateConstants.DefaultValues.FILMSTRIP_CAROUSEL_MODE)
         val mcPushTemplate = CarouselPushTemplate(data) as ManualCarouselPushTemplate
         val result = getCarouselIndices(mcPushTemplate, 3)
         assertEquals(
@@ -188,7 +192,16 @@ class ManualCarouselNotificationBuilderTest {
         every { getCachedImage(any()) } answers { mockkClass(Bitmap::class) }
         every { anyConstructed<RemoteViews>().setTextViewText(any(), any()) } just Runs
         every { anyConstructed<RemoteViews>().setImageViewBitmap(any(), any()) } just Runs
-        every { anyConstructed<RemoteViews>().setRemoteViewClickAction(context, trackerActivityClass, any(), any(), null, any()) } just Runs
+        every {
+            anyConstructed<RemoteViews>().setRemoteViewClickAction(
+                context,
+                trackerActivityClass,
+                any(),
+                any(),
+                null,
+                any()
+            )
+        } just Runs
         every { expandedLayout.addView(any(), any<RemoteViews>()) } just Runs
         every { expandedLayout.setDisplayedChild(any(), any()) } just Runs
         populateManualCarouselImages(
@@ -201,11 +214,35 @@ class ManualCarouselNotificationBuilderTest {
             expandedLayout
         )
         val carouselItemsCount = pushTemplate.carouselItems.size
-        verify(exactly = carouselItemsCount) { anyConstructed<RemoteViews>().setTextViewText(any(), any()) }
-        verify(exactly = carouselItemsCount) { anyConstructed<RemoteViews>().setImageViewBitmap(any(), any()) }
-        verify(exactly = carouselItemsCount) { anyConstructed<RemoteViews>().setRemoteViewClickAction(context, trackerActivityClass, any(), any(), null, any()) }
+        verify(exactly = carouselItemsCount) {
+            anyConstructed<RemoteViews>().setTextViewText(
+                any(),
+                any()
+            )
+        }
+        verify(exactly = carouselItemsCount) {
+            anyConstructed<RemoteViews>().setImageViewBitmap(
+                any(),
+                any()
+            )
+        }
+        verify(exactly = carouselItemsCount) {
+            anyConstructed<RemoteViews>().setRemoteViewClickAction(
+                context,
+                trackerActivityClass,
+                any(),
+                any(),
+                null,
+                any()
+            )
+        }
         verify(exactly = carouselItemsCount) { expandedLayout.addView(any(), any<RemoteViews>()) }
-        verify(exactly = carouselItemsCount) { expandedLayout.setDisplayedChild(any(), centerIndex) }
+        verify(exactly = carouselItemsCount) {
+            expandedLayout.setDisplayedChild(
+                any(),
+                centerIndex
+            )
+        }
     }
 
     @Test
@@ -224,7 +261,16 @@ class ManualCarouselNotificationBuilderTest {
 
         verify(exactly = 0) { anyConstructed<RemoteViews>().setTextViewText(any(), any()) }
         verify(exactly = 0) { anyConstructed<RemoteViews>().setImageViewBitmap(any(), any()) }
-        verify(exactly = 0) { anyConstructed<RemoteViews>().setRemoteViewClickAction(context, trackerActivityClass, any(), any(), null, any()) }
+        verify(exactly = 0) {
+            anyConstructed<RemoteViews>().setRemoteViewClickAction(
+                context,
+                trackerActivityClass,
+                any(),
+                any(),
+                null,
+                any()
+            )
+        }
         verify(exactly = 0) { expandedLayout.addView(any(), any<RemoteViews>()) }
         verify(exactly = 0) { expandedLayout.setDisplayedChild(any(), centerIndex) }
     }
