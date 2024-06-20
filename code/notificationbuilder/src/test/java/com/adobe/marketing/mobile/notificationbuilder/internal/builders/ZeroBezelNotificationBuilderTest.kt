@@ -33,9 +33,11 @@ import io.mockk.just
 import io.mockk.mockk
 import io.mockk.mockkConstructor
 import io.mockk.mockkObject
+import io.mockk.unmockkAll
 import io.mockk.verify
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertNotNull
+import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -60,10 +62,15 @@ class ZeroBezelNotificationBuilderTest {
         dataMap = MockAEPPushTemplateDataProvider.getMockedAEPDataMapWithAllKeys()
         mockkObject(PushTemplateImageUtils)
         mockkConstructor(RemoteViews::class)
-        mockBitmap = mockk<Bitmap>()
+        mockBitmap = mockk<Bitmap>(relaxed = true)
         trackerActivityClass = DummyActivity::class.java
         mockBundle = MockAEPPushTemplateDataProvider.getMockedAEPBundleWithAllKeys()
         every { getCachedImage(any()) } answers { mockBitmap }
+    }
+
+    @After
+    fun tearDown() {
+        unmockkAll()
     }
 
     @Test
