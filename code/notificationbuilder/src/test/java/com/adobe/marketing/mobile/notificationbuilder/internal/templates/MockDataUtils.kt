@@ -55,6 +55,10 @@ const val MOCKED_MALFORMED_JSON_ACTION_BUTTON = "[" +
     "{\"label\":\"Open the app\",\"uri\":\"\",\"type\":\"GO_TO_WEB_PAGE\"}," +
     "{\"label\":\"Go to chess.com\",\"uri\":\"https://chess.com/games/552\",\"type\":\"DEEPLINK\"}]"
 const val MOCKED_CHANNEL_ID = "AEPSDKPushChannel1"
+const val MOCKED_RECEIVER_NAME = "receiverName"
+const val MOCKED_HINT = "hint"
+const val MOCKED_FEEDBACK_TEXT = "feedbackText"
+const val MOCKED_FEEDBACK_IMAGE = "https://i.imgur.com/7ZolaOv.jpeg"
 
 const val MOCK_MULTI_ICON_ITEM_PAYLOAD = "[" +
     "{\"img\":\"train\",\"uri\":\"myapp://chooseShoeType/shoe1\",\"type\":\"DEEPLINK\"}," +
@@ -153,6 +157,28 @@ internal fun provideMockedAutoCarousalTemplate(isFromIntent: Boolean = false): A
     return CarouselPushTemplate(data) as AutoCarouselPushTemplate
 }
 
+internal fun provideMockedInputBoxPushTemplateWithAllKeys(isFromIntent: Boolean = false): InputBoxPushTemplate {
+    val data: NotificationData = if (isFromIntent) {
+        val mockBundle = MockInputBoxPushTemplateDataProvider.getMockedInputBoxBundleWithAllKeys()
+        IntentData(mockBundle, null)
+    } else {
+        val dataMap = MockInputBoxPushTemplateDataProvider.getMockedInputBoxDataMapWithAllKeys()
+        MapData(dataMap)
+    }
+    return InputBoxPushTemplate(data)
+}
+
+internal fun provideMockedInputBoxPushTemplateWithRequiredData(isFromIntent: Boolean = false): InputBoxPushTemplate {
+    val data: NotificationData = if (isFromIntent) {
+        val mockBundle = MockInputBoxPushTemplateDataProvider.getMockedInputBoxBundleWithRequiredData()
+        IntentData(mockBundle, null)
+    } else {
+        val dataMap = MockInputBoxPushTemplateDataProvider.getMockedInputBoxDataMapWithRequiredData()
+        MapData(dataMap)
+    }
+    return InputBoxPushTemplate(data)
+}
+
 internal fun provideMockedMultiIconTemplateWithAllKeys(): MultiIconPushTemplate {
     val data: NotificationData
     val dataMap = MockMultiIconTemplateDataProvider.getMockedDataMapWithForMultiIcon()
@@ -175,4 +201,26 @@ internal fun provideMockedTimerTemplate(
         MapData(dataMap)
     }
     return TimerPushTemplate(data)
+
+internal fun provideMockedProductCatalogTemplate(isFromIntent: Boolean = false): ProductCatalogPushTemplate {
+    val data: NotificationData
+    if (isFromIntent) {
+        val mockBundle = MockProductCatalogTemplateDataProvider.getMockedBundleWithProductCatalogData()
+        data = IntentData(mockBundle, null)
+    } else {
+        data = MapData(MockProductCatalogTemplateDataProvider.getMockedMapWithProductCatalogData())
+    }
+    return ProductCatalogPushTemplate(data)
+}
+
+internal fun provideMockedProductRatingTemplate(isFromIntent: Boolean = false): ProductRatingPushTemplate {
+    val data: NotificationData
+    if (isFromIntent) {
+        val mockBundle = MockProductRatingTemplateDataProvider.getMockedBundleForRatingTemplate()
+        data = IntentData(mockBundle, null)
+    } else {
+        val dataMap = MockProductRatingTemplateDataProvider.getMockedDataMapForRatingTemplate()
+        data = MapData(dataMap)
+    }
+    return ProductRatingPushTemplate(data)
 }

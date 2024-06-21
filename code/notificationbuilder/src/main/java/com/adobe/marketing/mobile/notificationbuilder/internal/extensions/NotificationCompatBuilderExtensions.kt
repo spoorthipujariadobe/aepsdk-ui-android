@@ -24,7 +24,6 @@ import com.adobe.marketing.mobile.notificationbuilder.PushTemplateConstants
 import com.adobe.marketing.mobile.notificationbuilder.PushTemplateConstants.LOG_TAG
 import com.adobe.marketing.mobile.notificationbuilder.internal.PendingIntentUtils
 import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateImageUtils
-import com.adobe.marketing.mobile.notificationbuilder.internal.templates.AEPPushTemplate
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.BasicPushTemplate
 import com.adobe.marketing.mobile.services.Log
 import java.util.Random
@@ -91,7 +90,8 @@ private fun NotificationCompat.Builder.setSmallIconColor(
 
     try {
         // sets the icon color if provided
-        setColorized(true).color = Color.parseColor("#$iconColorHex")
+        val color = Color.parseColor("#$iconColorHex")
+        setColorized(true).color = color
     } catch (exception: IllegalArgumentException) {
         Log.warning(
             LOG_TAG,
@@ -100,40 +100,6 @@ private fun NotificationCompat.Builder.setSmallIconColor(
         )
     }
     return
-}
-
-/**
- * Sets the visibility of the notification. If a visibility is received from the payload, the
- * same is used. If a visibility is not received from the payload, the default visibility is used.
- *
- * @param pushTemplate the [AEPPushTemplate] containing the visibility value
- */
-internal fun NotificationCompat.Builder.setVisibility(
-    pushTemplate: AEPPushTemplate
-): NotificationCompat.Builder {
-    when (pushTemplate.visibility.value) {
-        NotificationCompat.VISIBILITY_PUBLIC -> setVisibility(
-            NotificationCompat.VISIBILITY_PUBLIC
-        )
-
-        NotificationCompat.VISIBILITY_PRIVATE -> setVisibility(
-            NotificationCompat.VISIBILITY_PRIVATE
-        )
-
-        NotificationCompat.VISIBILITY_SECRET -> setVisibility(
-            NotificationCompat.VISIBILITY_SECRET
-        )
-
-        else -> {
-            setVisibility(NotificationCompat.VISIBILITY_PRIVATE)
-            Log.debug(
-                LOG_TAG,
-                SELF_TAG,
-                "Invalid visibility value received from the payload. Using the default visibility value."
-            )
-        }
-    }
-    return this
 }
 
 /**
