@@ -40,6 +40,7 @@
         <TextView
             android:id="@+id/notification_body_expanded"
             style="@style/Body"
+            android:layout_marginBottom="@dimen/zero_bezel_padding_horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="start"

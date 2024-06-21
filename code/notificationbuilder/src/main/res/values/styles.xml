@@ -18,6 +18,7 @@
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">12sp</item>
         <item name="android:maxLines">1</item>
+        <item name="android:layout_marginBottom">@dimen/standard_title_bottom_margin</item>
         <item name="android:ellipsize">end</item>
     </style>
     <style name="Body" parent="android:TextAppearance.Material.Body1">
