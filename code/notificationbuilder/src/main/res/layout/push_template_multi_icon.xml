@@ -23,7 +23,6 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:weightSum="5"
         android:layout_centerVertical="true"
         android:gravity="center_vertical"
         android:layout_toStartOf="@+id/five_icon_close_button"/>
