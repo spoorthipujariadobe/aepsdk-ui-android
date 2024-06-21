@@ -94,7 +94,7 @@ internal fun RemoteViews.setTimerTextColor(
     timerTextColor: String?,
     containerViewId: Int
 ) {
-    // get custom color from hex string and set it the notification background
+    // get custom color from hex string and set it to the timer text color
     setElementColor(
         containerViewId,
         "#$timerTextColor",
@@ -113,7 +113,7 @@ internal fun RemoteViews.setNotificationTitleTextColor(
     titleTextColor: String?,
     containerViewId: Int
 ) {
-    // get custom color from hex string and set it the notification title
+    // get custom color from hex string and set it to the notification title
     setElementColor(
         containerViewId,
         "#$titleTextColor",
