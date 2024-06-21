@@ -56,11 +56,11 @@ class NotificationCompatBuilderExtensionsTest {
 
     @Before
     fun setup() {
-        mockContext = mockk(relaxed = true)
+        mockContext = mockk<Context>(relaxed = true)
         mockkStatic(Context::getIconWithResourceName)
         mockkStatic(MobileCore::class)
         mockkObject(PushTemplateImageUtils)
-        mockBitmap = mockk(relaxed = true)
+        mockBitmap = mockk<Bitmap>(relaxed = true)
         trackerActivityClass = DummyActivity::class.java
     }
 
@@ -246,7 +246,7 @@ class NotificationCompatBuilderExtensionsTest {
         val testIntentExtras = Bundle()
         testIntentExtras.putString("testKey", "testValue")
         every { mockContext.applicationContext } returns mockContext
-        val mockBuilder: NotificationCompat.Builder = mockk(relaxed = true)
+        val mockBuilder: NotificationCompat.Builder = mockk<NotificationCompat.Builder>(relaxed = true)
         every { mockBuilder.setContentIntent(any()) } returns mockBuilder
 
         mockBuilder.setNotificationClickAction(mockContext, trackerActivityClass, testActionUri, testIntentExtras)
@@ -273,7 +273,7 @@ class NotificationCompatBuilderExtensionsTest {
     @Test
     fun `setNotificationClickAction sets content intent when trackerActivityClass, actionUri and intentExtras are null`() {
         every { mockContext.applicationContext } returns mockContext
-        val mockBuilder: NotificationCompat.Builder = mockk(relaxed = true)
+        val mockBuilder: NotificationCompat.Builder = mockk<NotificationCompat.Builder>(relaxed = true)
         every { mockBuilder.setContentIntent(any()) } returns mockBuilder
 
         mockBuilder.setNotificationClickAction(mockContext, null, null, null)
@@ -298,7 +298,7 @@ class NotificationCompatBuilderExtensionsTest {
     @Test
     fun `setNotificationDeleteAction sets delete intent when trackerActivityClass is not null`() {
         every { mockContext.applicationContext } returns mockContext
-        val mockBuilder: NotificationCompat.Builder = mockk(relaxed = true)
+        val mockBuilder: NotificationCompat.Builder = mockk<NotificationCompat.Builder>(relaxed = true)
         every { mockBuilder.setDeleteIntent(any()) } returns mockBuilder
 
         mockBuilder.setNotificationDeleteAction(mockContext, trackerActivityClass)
@@ -323,7 +323,7 @@ class NotificationCompatBuilderExtensionsTest {
     @Test
     fun `setNotificationDeleteAction sets delete intent when trackerActivityClass is null`() {
         every { mockContext.applicationContext } returns mockContext
-        val mockBuilder: NotificationCompat.Builder = mockk(relaxed = true)
+        val mockBuilder: NotificationCompat.Builder = mockk<NotificationCompat.Builder>(relaxed = true)
         every { mockBuilder.setDeleteIntent(any()) } returns mockBuilder
 
         mockBuilder.setNotificationDeleteAction(mockContext, null)
@@ -350,7 +350,7 @@ class NotificationCompatBuilderExtensionsTest {
         val testIntentExtras = Bundle()
         testIntentExtras.putString("testKey", "testValue")
         every { mockContext.applicationContext } returns mockContext
-        val mockBuilder: NotificationCompat.Builder = mockk(relaxed = true)
+        val mockBuilder: NotificationCompat.Builder = mockk<NotificationCompat.Builder>(relaxed = true)
         every { mockBuilder.addAction(any(), any(), any()) } returns mockBuilder
 
         mockBuilder.addActionButtons(
@@ -387,7 +387,7 @@ class NotificationCompatBuilderExtensionsTest {
         val testIntentExtras = Bundle()
         testIntentExtras.putString("testKey", "testValue")
         every { mockContext.applicationContext } returns mockContext
-        val mockBuilder: NotificationCompat.Builder = mockk(relaxed = true)
+        val mockBuilder: NotificationCompat.Builder = mockk<NotificationCompat.Builder>(relaxed = true)
         every { mockBuilder.addAction(any(), any(), any()) } returns mockBuilder
 
         mockBuilder.addActionButtons(
@@ -424,7 +424,7 @@ class NotificationCompatBuilderExtensionsTest {
         val testIntentExtras = Bundle()
         testIntentExtras.putString("testKey", "testValue")
         every { mockContext.applicationContext } returns mockContext
-        val mockBuilder: NotificationCompat.Builder = mockk(relaxed = true)
+        val mockBuilder: NotificationCompat.Builder = mockk<NotificationCompat.Builder>(relaxed = true)
         every { mockBuilder.addAction(any(), any(), any()) } returns mockBuilder
 
         mockBuilder.addActionButtons(
@@ -461,7 +461,7 @@ class NotificationCompatBuilderExtensionsTest {
         val testIntentExtras = Bundle()
         testIntentExtras.putString("testKey", "testValue")
         every { mockContext.applicationContext } returns mockContext
-        val mockBuilder: NotificationCompat.Builder = mockk(relaxed = true)
+        val mockBuilder: NotificationCompat.Builder = mockk<NotificationCompat.Builder>(relaxed = true)
         every { mockBuilder.addAction(any(), any(), any()) } returns mockBuilder
 
         mockBuilder.addActionButtons(
@@ -496,7 +496,7 @@ class NotificationCompatBuilderExtensionsTest {
     @Test
     fun `addActionButtons adds actions when actionButtons is null`() {
         every { mockContext.applicationContext } returns mockContext
-        val mockBuilder: NotificationCompat.Builder = mockk(relaxed = true)
+        val mockBuilder: NotificationCompat.Builder = mockk<NotificationCompat.Builder>(relaxed = true)
         every { mockBuilder.addAction(any(), any(), any()) } returns mockBuilder
 
         mockBuilder.addActionButtons(
@@ -512,7 +512,7 @@ class NotificationCompatBuilderExtensionsTest {
     @Test
     fun `addActionButtons adds actions when actionButtons is empty`() {
         every { mockContext.applicationContext } returns mockContext
-        val mockBuilder: NotificationCompat.Builder = mockk(relaxed = true)
+        val mockBuilder: NotificationCompat.Builder = mockk<NotificationCompat.Builder>(relaxed = true)
         every { mockBuilder.addAction(any(), any(), any()) } returns mockBuilder
 
         mockBuilder.addActionButtons(
