@@ -1,6 +1,6 @@
 {
   "adb_version": "1",
-  "adb_template_type": "basic",
+  "adb_template_type": "input",
   "adb_title": "Game request",
   "adb_body": "Shall we play a game?",
   "adb_sound": "bells",
@@ -22,5 +22,5 @@
   "adb_input_txt": "do you have something to say?",
   "adb_feedback_txt": "thank you for the input!",
   "adb_feedback_image": "thankyou",
-  "adb_input_intent": "intent name from app"
+  "adb_input_receiver": "developer intent action name"
 }

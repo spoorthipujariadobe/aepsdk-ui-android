@@ -13,7 +13,9 @@ package com.adobe.marketing.mobile.notificationbuilder.internal.builders
 
 import android.app.Activity
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
@@ -25,6 +27,7 @@ import com.adobe.marketing.mobile.notificationbuilder.internal.extensions.setRem
 import com.adobe.marketing.mobile.notificationbuilder.internal.extensions.setRemoteViewImage
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.MultiIconPushTemplate
 import com.adobe.marketing.mobile.services.Log
+import java.util.Random
 
 internal object MultiIconNotificationBuilder {
     const val SELF_TAG = "MultiIconNotificationBuilder"
@@ -67,13 +70,20 @@ internal object MultiIconNotificationBuilder {
 
         val closeButtonIntentExtra = Bundle(pushTemplate.data.getBundle()) // copy the bundle
         closeButtonIntentExtra.putString(PushTemplateConstants.PushPayloadKeys.STICKY, "false")
-        notificationLayout.setRemoteViewClickAction(
+        val dismissIntent = Intent(PushTemplateConstants.NotificationAction.DISMISSED)
+        trackerActivityClass?.let {
+            dismissIntent.setClass(context.applicationContext, trackerActivityClass)
+        }
+        dismissIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+        val pendingIntent = PendingIntent.getActivity(
             context,
-            trackerActivityClass,
+            Random().nextInt(),
+            dismissIntent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+        notificationLayout.setOnClickPendingIntent(
             R.id.five_icon_close_button,
-            null,
-            null,
-            closeButtonIntentExtra
+            pendingIntent
         )
 
         return AEPPushNotificationBuilder.construct(

@@ -18,6 +18,7 @@ import android.content.Intent
 import androidx.core.app.NotificationManagerCompat
 import com.adobe.marketing.mobile.notificationbuilder.NotificationBuilder
 import com.adobe.marketing.mobile.notificationbuilder.NotificationConstructionFailedException
+import com.adobe.marketing.mobile.notificationbuilder.RemindLaterHandler
 import com.adobe.marketing.mobile.notificationbuilder.testapp.AppConstants.NotificationBuilderConstants
 import com.adobe.marketing.mobile.util.StringUtils
 
@@ -34,9 +35,8 @@ class NotificationBroadcastReceiver : BroadcastReceiver() {
         try {
 
             when (action) {
-                "remind_clicked" -> {}
-                "scheduled_notification_broadcast" -> {
-                    // TODO: Implement logic for scheduled notification
+                "remind_clicked" -> {
+                    RemindLaterHandler.handleRemindIntent(intent, NotificationBroadcastReceiver::class.java)
                 }
                 else -> {
                     val builder = NotificationBuilder.constructNotificationBuilder(intent, NotificationTrackerActivity::class.java ,
