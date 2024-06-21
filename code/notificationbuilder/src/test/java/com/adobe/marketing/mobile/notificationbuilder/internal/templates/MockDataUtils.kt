@@ -201,14 +201,17 @@ internal fun provideMockedTimerTemplate(
         MapData(dataMap)
     }
     return TimerPushTemplate(data)
+}
 
 internal fun provideMockedProductCatalogTemplate(isFromIntent: Boolean = false): ProductCatalogPushTemplate {
     val data: NotificationData
     if (isFromIntent) {
-        val mockBundle = MockProductCatalogTemplateDataProvider.getMockedBundleWithProductCatalogData()
+        val mockBundle =
+            MockProductCatalogTemplateDataProvider.getMockedBundleWithProductCatalogData()
         data = IntentData(mockBundle, null)
     } else {
-        data = MapData(MockProductCatalogTemplateDataProvider.getMockedMapWithProductCatalogData())
+        data =
+            MapData(MockProductCatalogTemplateDataProvider.getMockedMapWithProductCatalogData())
     }
     return ProductCatalogPushTemplate(data)
 }
@@ -216,7 +219,8 @@ internal fun provideMockedProductCatalogTemplate(isFromIntent: Boolean = false):
 internal fun provideMockedProductRatingTemplate(isFromIntent: Boolean = false): ProductRatingPushTemplate {
     val data: NotificationData
     if (isFromIntent) {
-        val mockBundle = MockProductRatingTemplateDataProvider.getMockedBundleForRatingTemplate()
+        val mockBundle =
+            MockProductRatingTemplateDataProvider.getMockedBundleForRatingTemplate()
         data = IntentData(mockBundle, null)
     } else {
         val dataMap = MockProductRatingTemplateDataProvider.getMockedDataMapForRatingTemplate()
