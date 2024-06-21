@@ -38,10 +38,22 @@ object MockProductCatalogTemplateDataProvider {
         mockBundle.putString(PushTemplateConstants.PushPayloadKeys.TITLE, MOCKED_TITLE)
         mockBundle.putString(PushTemplateConstants.PushPayloadKeys.BODY, MOCKED_BODY)
         mockBundle.putString(PushTemplateConstants.PushPayloadKeys.VERSION, MOCKED_PAYLOAD_VERSION)
-        mockBundle.putString(PushTemplateConstants.PushPayloadKeys.CATALOG_CTA_BUTTON_TEXT, "ctaButtonText")
-        mockBundle.putString(PushTemplateConstants.PushPayloadKeys.CATALOG_CTA_BUTTON_COLOR, "ctaButtonColor")
-        mockBundle.putString(PushTemplateConstants.PushPayloadKeys.CATALOG_CTA_BUTTON_TEXT_COLOR, "ctaButtonTextColor")
-        mockBundle.putString(PushTemplateConstants.PushPayloadKeys.CATALOG_CTA_BUTTON_URI, "ctaButtonUri")
+        mockBundle.putString(
+            PushTemplateConstants.PushPayloadKeys.CATALOG_CTA_BUTTON_TEXT,
+            "ctaButtonText"
+        )
+        mockBundle.putString(
+            PushTemplateConstants.PushPayloadKeys.CATALOG_CTA_BUTTON_COLOR,
+            "ctaButtonColor"
+        )
+        mockBundle.putString(
+            PushTemplateConstants.PushPayloadKeys.CATALOG_CTA_BUTTON_TEXT_COLOR,
+            "ctaButtonTextColor"
+        )
+        mockBundle.putString(
+            PushTemplateConstants.PushPayloadKeys.CATALOG_CTA_BUTTON_URI,
+            "ctaButtonUri"
+        )
         mockBundle.putString(PushTemplateConstants.PushPayloadKeys.CATALOG_LAYOUT, "horizontal")
         mockBundle.putString(
             PushTemplateConstants.PushPayloadKeys.CATALOG_ITEMS,
