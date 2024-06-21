@@ -16,5 +16,6 @@
   "adb_sound": "bells",
   "adb_n_count": "1",
   "adb_sticky": "true",
-  "adb_n_priority": "PRIORITY_HIGH"
+  "adb_n_priority": "PRIORITY_HIGH",
+  "adb_tag": "remindLater"
 }

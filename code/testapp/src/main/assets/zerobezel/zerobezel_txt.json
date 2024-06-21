@@ -10,7 +10,7 @@
   "adb_a_type": "OPENAPP",
   "adb_template_type": "zb",
   "adb_body_ex": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam auctor luctus libero, molestie posuere massa vestibulum at. Mauris consectetur mi lorem, vitae aliquet sem tristique in. Curabitur imperdiet tortor vitae nunc aliquet tincidunt. Ut pellentesque lectus sagittis dolor egestas, sit amet pretium libero lacinia.",
-  "adb_col_style": "img",
+  "adb_col_style": "txt",
   "adb_channel_id": "2024",
   "adb_sticky": "true",
   "adb_ticker": "Ticker text",

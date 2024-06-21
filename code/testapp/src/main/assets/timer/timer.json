@@ -19,5 +19,6 @@
   "adb_n_visibility": "PRIVATE",
   "adb_n_priority": "PRIORITY_DEFAULT",
   "adb_n_count": "1",
-  "adb_image": "https://i.ibb.co/QN078XB/Resize-image-project.jpg"
+  "adb_image": "https://i.ibb.co/QN078XB/Resize-image-project.jpg",
+  "adb_sticky": true
 }
