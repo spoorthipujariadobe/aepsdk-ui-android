@@ -16,13 +16,20 @@ import com.adobe.marketing.mobile.notificationbuilder.internal.util.MapData
 import com.adobe.marketing.mobile.notificationbuilder.internal.util.NotificationData
 
 const val MOCKED_TITLE = "Mocked Title"
+const val MOCKED_ALT_TITLE = "Mocked Alternate Title"
 const val MOCKED_BODY = "Mocked Body"
+const val MOCKED_ALT_BODY = "Mocked Alternate Body"
+const val MOCKED_ALT_EXPANDED_BODY = "Mocked Alternate Expanded Body"
+const val MOCKED_EXPANDED_BODY = "Mocked Expanded Body"
 const val MOCKED_PAYLOAD_VERSION = "1"
 const val MOCKED_CAROUSEL_LAYOUT = "default"
 const val MOCKED_BODY_TEXT_COLOR = "#FFFFFF"
 const val MOCKED_SMALL_ICON = "skipleft"
 const val MOCKED_LARGE_ICON = "https://cdn-icons-png.flaticon.com/128/864/864639.png"
 const val MOCKED_SMALL_ICON_COLOR = "#000000"
+const val MOCKED_TIMER_COLOR = "#FFFF00"
+const val MOCKED_TIMER_DURATION = "60"
+const val MOCKED_TIMER_EXPIRY_TIME = "2665428926" // Thursday, June 18, 2054 8:55:26 PM GMT
 const val MOCKED_VISIBILITY = "PUBLIC"
 const val MOCKED_PRIORITY = "PRIORITY_HIGH"
 const val MOCKED_TICKER = "ticker"
@@ -32,14 +39,16 @@ const val MOCKED_CAROUSEL_LAYOUT_DATA =
     "[{\"img\":\"https://i.imgur.com/7ZolaOv.jpeg\",\"txt\":\"Basketball Shoes\"},{\"img\":\"https://i.imgur.com/mZvLuzU.jpg\",\"txt\":\"Red Jersey\",\"uri\":\"https://firefly.adobe.com/red_jersey\"},{\"img\":\"https://i.imgur.com/X5yjy09.jpg\",\"txt\":\"Volleyball\", \"uri\":\"https://firefly.adobe.com/volleyball\"},{\"img\":\"https://i.imgur.com/35B0mkh.jpg\",\"txt\":\"Basketball\",\"uri\":\"https://firefly.adobe.com/basketball\"},{\"img\":\"https://i.imgur.com/Cs5hmfb.jpg\",\"txt\":\"Black Batting Helmet\",\"uri\":\"https://firefly.adobe.com/black_helmet\"}]"
 const val MOCKED_IMAGE_URI =
     "https://images.pexels.com/photos/260024/pexels-photo-260024.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+const val MOCKED_ALT_IMAGE_URI =
+    "https://images2.pexels.com/photos/260024/pexels-photo-260024.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
 const val MOCKED_ACTION_URI = "https://chess.com/games"
 const val MOCKED_BASIC_TEMPLATE_BODY_EXPANDED = "Basic push template with action buttons."
 const val MOCKED_ACTION_BUTTON_DATA =
     "[{\"label\":\"Go to chess.com\",\"uri\":\"https://chess.com/games/552\",\"type\":\"DEEPLINK\"},{\"label\":\"Open the app\",\"uri\":\"\",\"type\":\"OPENAPP\"}]"
 const val MOCKED_BASIC_TEMPLATE_BODY = "Shall we play a game?"
 const val MOCK_REMIND_LATER_TEXT = "remind me"
-const val MOCK_REMIND_LATER_TIME = "1234567890"
-const val MOCK_REMIND_LATER_DURATION = "6000"
+const val MOCK_REMIND_LATER_TIME = "4085583547"
+const val MOCK_REMIND_LATER_DURATION = "60"
 const val MOCKED_MALFORMED_JSON_ACTION_BUTTON = "[" +
     "{\"label\":\"\",\"uri\":\"https://chess.com/games/552\",\"type\":\"DEEPLINK\"}," +
     "{}," +
@@ -177,13 +186,45 @@ internal fun provideMockedMultiIconTemplateWithAllKeys(): MultiIconPushTemplate 
     return MultiIconPushTemplate(data)
 }
 
+internal fun provideMockedTimerTemplate(
+    isFromIntent: Boolean = false,
+    isUsingDuration: Boolean = false,
+    duration: String = MOCKED_TIMER_DURATION
+): TimerPushTemplate {
+    val data: NotificationData = if (isFromIntent) {
+        val mockBundle =
+            MockTimerTemplateDataProvider.getMockedBundleWithTimerData(isUsingDuration, duration)
+        IntentData(mockBundle, null)
+    } else {
+        val dataMap =
+            MockTimerTemplateDataProvider.getMockedMapWithTimerData(isUsingDuration, duration)
+        MapData(dataMap)
+    }
+    return TimerPushTemplate(data)
+}
+
 internal fun provideMockedProductCatalogTemplate(isFromIntent: Boolean = false): ProductCatalogPushTemplate {
     val data: NotificationData
     if (isFromIntent) {
-        val mockBundle = MockProductCatalogTemplateDataProvider.getMockedBundleWithProductCatalogData()
+        val mockBundle =
+            MockProductCatalogTemplateDataProvider.getMockedBundleWithProductCatalogData()
         data = IntentData(mockBundle, null)
     } else {
-        data = MapData(MockProductCatalogTemplateDataProvider.getMockedMapWithProductCatalogData())
+        data =
+            MapData(MockProductCatalogTemplateDataProvider.getMockedMapWithProductCatalogData())
     }
     return ProductCatalogPushTemplate(data)
+}
+
+internal fun provideMockedProductRatingTemplate(isFromIntent: Boolean = false): ProductRatingPushTemplate {
+    val data: NotificationData
+    if (isFromIntent) {
+        val mockBundle =
+            MockProductRatingTemplateDataProvider.getMockedBundleForRatingTemplate()
+        data = IntentData(mockBundle, null)
+    } else {
+        val dataMap = MockProductRatingTemplateDataProvider.getMockedDataMapForRatingTemplate()
+        data = MapData(dataMap)
+    }
+    return ProductRatingPushTemplate(data)
 }

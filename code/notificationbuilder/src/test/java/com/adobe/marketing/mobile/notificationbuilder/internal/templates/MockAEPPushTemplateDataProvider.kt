@@ -23,6 +23,7 @@ object MockAEPPushTemplateDataProvider {
             PushTemplateConstants.PushPayloadKeys.VERSION to MOCKED_PAYLOAD_VERSION
         )
     }
+
     /**
      * Returns a mocked data bundle with basic data.
      */
@@ -72,30 +73,54 @@ object MockAEPPushTemplateDataProvider {
         mockBundle.putString(PushTemplateConstants.PushPayloadKeys.BODY, MOCKED_BODY)
         mockBundle.putString(PushTemplateConstants.PushPayloadKeys.TAG, MOCKED_TAG)
         mockBundle.putString(PushTemplateConstants.PushPayloadKeys.TITLE, MOCKED_TITLE)
-        mockBundle.putString(PushTemplateConstants.PushPayloadKeys.TEMPLATE_TYPE, PushTemplateType.BASIC.value)
+        mockBundle.putString(
+            PushTemplateConstants.PushPayloadKeys.TEMPLATE_TYPE,
+            PushTemplateType.BASIC.value
+        )
         mockBundle.putString(PushTemplateConstants.PushPayloadKeys.ACTION_URI, MOCKED_ACTION_URI)
-        mockBundle.putString(PushTemplateConstants.PushPayloadKeys.ACTION_TYPE, PushTemplateConstants.ActionType.NONE.name)
-        mockBundle.putString(PushTemplateConstants.PushPayloadKeys.ACTION_BUTTONS, MOCKED_ACTION_BUTTON_DATA)
+        mockBundle.putString(
+            PushTemplateConstants.PushPayloadKeys.ACTION_TYPE,
+            PushTemplateConstants.ActionType.NONE.name
+        )
+        mockBundle.putString(
+            PushTemplateConstants.PushPayloadKeys.ACTION_BUTTONS,
+            MOCKED_ACTION_BUTTON_DATA
+        )
         mockBundle.putString(PushTemplateConstants.PushPayloadKeys.BADGE_COUNT, "5")
         mockBundle.putString(PushTemplateConstants.PushPayloadKeys.BODY, MOCKED_BASIC_TEMPLATE_BODY)
         mockBundle.putString(PushTemplateConstants.PushPayloadKeys.CHANNEL_ID, "2024")
-        mockBundle.putString(PushTemplateConstants.PushPayloadKeys.EXPANDED_BODY_TEXT, MOCKED_BASIC_TEMPLATE_BODY_EXPANDED)
+        mockBundle.putString(
+            PushTemplateConstants.PushPayloadKeys.EXPANDED_BODY_TEXT,
+            MOCKED_BASIC_TEMPLATE_BODY_EXPANDED
+        )
         mockBundle.putString(PushTemplateConstants.PushPayloadKeys.BODY_TEXT_COLOR, "FFD966")
         mockBundle.putString(PushTemplateConstants.PushPayloadKeys.IMAGE_URL, MOCKED_IMAGE_URI)
         mockBundle.putString(PushTemplateConstants.PushPayloadKeys.LARGE_ICON, MOCKED_LARGE_ICON)
         mockBundle.putString(PushTemplateConstants.PushPayloadKeys.BACKGROUND_COLOR, "FFD966")
         mockBundle.putString(PushTemplateConstants.PushPayloadKeys.PRIORITY, (MOCKED_PRIORITY))
         mockBundle.putString(PushTemplateConstants.PushPayloadKeys.VISIBILITY, MOCKED_VISIBILITY)
-        mockBundle.putString(PushTemplateConstants.PushPayloadKeys.REMIND_LATER_TEXT, MOCK_REMIND_LATER_TEXT)
-        mockBundle.putString(PushTemplateConstants.PushPayloadKeys.REMIND_LATER_TIMESTAMP, MOCK_REMIND_LATER_TIME)
-        mockBundle.putString(PushTemplateConstants.PushPayloadKeys.REMIND_LATER_DURATION, MOCK_REMIND_LATER_DURATION)
+        mockBundle.putString(
+            PushTemplateConstants.PushPayloadKeys.REMIND_LATER_TEXT,
+            MOCK_REMIND_LATER_TEXT
+        )
+        mockBundle.putString(
+            PushTemplateConstants.PushPayloadKeys.REMIND_LATER_TIMESTAMP,
+            MOCK_REMIND_LATER_TIME
+        )
+        mockBundle.putString(
+            PushTemplateConstants.PushPayloadKeys.REMIND_LATER_DURATION,
+            MOCK_REMIND_LATER_DURATION
+        )
         mockBundle.putString(PushTemplateConstants.PushPayloadKeys.SOUND, "bell")
         mockBundle.putString(PushTemplateConstants.PushPayloadKeys.SMALL_ICON, MOCKED_SMALL_ICON)
         mockBundle.putString(PushTemplateConstants.PushPayloadKeys.TITLE_TEXT_COLOR, "FFD966")
         mockBundle.putString(PushTemplateConstants.PushPayloadKeys.TICKER, MOCKED_TICKER)
         mockBundle.putString(PushTemplateConstants.PushPayloadKeys.VERSION, MOCKED_PAYLOAD_VERSION)
         mockBundle.putString(PushTemplateConstants.PushPayloadKeys.STICKY, "true")
-        mockBundle.putString(PushTemplateConstants.PushPayloadKeys.ZERO_BEZEL_COLLAPSED_STYLE, "img")
+        mockBundle.putString(
+            PushTemplateConstants.PushPayloadKeys.ZERO_BEZEL_COLLAPSED_STYLE,
+            "img"
+        )
         return mockBundle
     }
 }

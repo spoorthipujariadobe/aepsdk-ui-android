@@ -65,6 +65,11 @@ class AutoCarouselNotificationBuilderTest {
         mockkConstructor(RemoteViews::class)
     }
 
+    @After
+    fun tearDown() {
+        unmockkAll()
+    }
+
     @Test
     fun `construct returns NotificationCompat Builder for valid inputs`() {
         val result = AutoCarouselNotificationBuilder.construct(

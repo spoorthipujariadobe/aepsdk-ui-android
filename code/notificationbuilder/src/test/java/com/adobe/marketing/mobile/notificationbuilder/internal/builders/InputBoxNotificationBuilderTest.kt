@@ -40,7 +40,9 @@ import io.mockk.Runs
 import io.mockk.every
 import io.mockk.just
 import io.mockk.mockkConstructor
+import io.mockk.unmockkAll
 import io.mockk.verify
+import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -70,6 +72,11 @@ class InputBoxNotificationBuilderTest {
         trackerActivityClass = DummyActivity::class.java
         broadcastReceiverClass = DummyBroadcastReceiver::class.java
         mockkConstructor(RemoteViews::class)
+    }
+
+    @After
+    fun tearDown() {
+        unmockkAll()
     }
 
     @Test

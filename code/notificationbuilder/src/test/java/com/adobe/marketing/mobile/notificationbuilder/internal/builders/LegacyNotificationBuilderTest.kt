@@ -26,9 +26,11 @@ import com.adobe.marketing.mobile.notificationbuilder.internal.templates.removeK
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.replaceValueInMap
 import com.adobe.marketing.mobile.notificationbuilder.internal.util.IntentData
 import com.adobe.marketing.mobile.notificationbuilder.internal.util.MapData
+import io.mockk.unmockkAll
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertNotNull
 import junit.framework.TestCase.assertNull
+import org.junit.After
 import org.junit.Assert.assertArrayEquals
 import org.junit.Before
 import org.junit.Test
@@ -53,6 +55,11 @@ class LegacyNotificationBuilderTest {
         trackerActivityClass = DummyActivity::class.java
         dataMap = MockAEPPushTemplateDataProvider.getMockedAEPDataMapWithAllKeys()
         mockBundle = MockAEPPushTemplateDataProvider.getMockedAEPBundleWithAllKeys()
+    }
+
+    @After
+    fun tearDown() {
+        unmockkAll()
     }
 
     @Test
