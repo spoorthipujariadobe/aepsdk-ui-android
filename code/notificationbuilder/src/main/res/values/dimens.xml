@@ -33,7 +33,7 @@
     <dimen name="zero_bezel_title_margin_horizontal">3dp</dimen>
     <dimen name="product_catalog_cta_button_height">48dp</dimen>
     <dimen name="product_catalog_cta_button_width">80dp</dimen>
-    <dimen name="product_catalog_horizontal_mid_row_margin_top">5dp</dimen>
+    <dimen name="product_catalog_horizontal_mid_row_margin_top">16dp</dimen>
     <dimen name="product_catalog_horizontal_mid_row_height">32dp</dimen>
     <dimen name="product_catalog_horizontal_mid_row_width">0dp</dimen>
     <dimen name="product_catalog_horizontal_mid_row_text_padding">7dp</dimen>
