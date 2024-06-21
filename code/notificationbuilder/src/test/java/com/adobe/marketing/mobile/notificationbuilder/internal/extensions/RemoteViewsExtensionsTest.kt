@@ -35,8 +35,8 @@ import io.mockk.slot
 import io.mockk.unmockkAll
 import io.mockk.verify
 import org.junit.After
-import org.junit.Assert
 import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
@@ -295,29 +295,29 @@ class RemoteViewsExtensionsTest {
         val pendingIntentCapture = slot<PendingIntent>()
         verify(exactly = 1) { remoteViews.setOnClickPendingIntent(1, capture(pendingIntentCapture)) }
         val pendingIntent = pendingIntentCapture.captured
-        Assert.assertNotNull(pendingIntent)
+        assertNotNull(pendingIntent)
         val shadowPendingIntent = Shadows.shadowOf(pendingIntent)
         assertTrue(shadowPendingIntent.isActivityIntent)
-        Assert.assertEquals(context, shadowPendingIntent.savedContext)
-        Assert.assertEquals(
+        assertEquals(context, shadowPendingIntent.savedContext)
+        assertEquals(
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,
             shadowPendingIntent.flags
         )
 
         val intent = shadowPendingIntent.savedIntent
-        Assert.assertNotNull(intent)
-        Assert.assertEquals(PushTemplateConstants.NotificationAction.CLICKED, intent.action)
-        Assert.assertEquals(trackerActivityClass.name, intent.component?.className)
-        Assert.assertEquals(
+        assertNotNull(intent)
+        assertEquals(PushTemplateConstants.NotificationAction.CLICKED, intent.action)
+        assertEquals(trackerActivityClass.name, intent.component?.className)
+        assertEquals(
             Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP,
             intent.flags
         )
-        Assert.assertEquals("testValue", intent.getStringExtra("testKey"))
-        Assert.assertEquals(
+        assertEquals("testValue", intent.getStringExtra("testKey"))
+        assertEquals(
             testActionUri,
             intent.getStringExtra(PushTemplateConstants.TrackingKeys.ACTION_URI)
         )
-        Assert.assertEquals(
+        assertEquals(
             testActionID,
             intent.getStringExtra(PushTemplateConstants.TrackingKeys.ACTION_ID)
         )
@@ -332,23 +332,23 @@ class RemoteViewsExtensionsTest {
         val pendingIntentCapture = slot<PendingIntent>()
         verify(exactly = 1) { remoteViews.setOnClickPendingIntent(1, capture(pendingIntentCapture)) }
         val pendingIntent = pendingIntentCapture.captured
-        Assert.assertNotNull(pendingIntent)
+        assertNotNull(pendingIntent)
         val shadowPendingIntent = Shadows.shadowOf(pendingIntent)
         assertTrue(shadowPendingIntent.isActivityIntent)
-        Assert.assertEquals(context, shadowPendingIntent.savedContext)
-        Assert.assertEquals(
+        assertEquals(context, shadowPendingIntent.savedContext)
+        assertEquals(
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,
             shadowPendingIntent.flags
         )
 
         val intent = shadowPendingIntent.savedIntent
-        Assert.assertNotNull(intent)
-        Assert.assertEquals(PushTemplateConstants.NotificationAction.CLICKED, intent.action)
-        Assert.assertEquals(null, intent.component?.className)
-        Assert.assertEquals(
+        assertNotNull(intent)
+        assertEquals(PushTemplateConstants.NotificationAction.CLICKED, intent.action)
+        assertEquals(null, intent.component?.className)
+        assertEquals(
             Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP,
             intent.flags
         )
-        Assert.assertEquals(null, intent.extras)
+        assertEquals(null, intent.extras)
     }
 }
