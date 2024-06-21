@@ -9,10 +9,9 @@
   governing permissions and limitations under the License.
 */
 
-package com.adobe.marketing.mobile.notificationbuilder.internal
+package com.adobe.marketing.mobile.notificationbuilder
 
 import androidx.core.app.NotificationCompat
-import com.adobe.marketing.mobile.notificationbuilder.NotificationVisibility
 import org.junit.Assert.assertEquals
 import org.junit.Test
 class NotificationVisibilityTests {
